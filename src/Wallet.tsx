@@ -61,7 +61,7 @@ function getErrorMessage(error: Error) {
     if (error instanceof NoEthereumProviderError) {
         return 'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.'
     } else if (error instanceof UnsupportedChainIdError) {
-        return "You're connected to an unsupported network."
+        return "You're connected to an unsupported network. Please change to polygon/matic"
     } else if (
         error instanceof UserRejectedRequestErrorInjected ||
         error instanceof UserRejectedRequestErrorWalletConnect ||
@@ -76,7 +76,7 @@ function getErrorMessage(error: Error) {
 
 export function Wallet() {
     const context = useWeb3React<Web3Provider>()
-    const { connector, library, chainId, account, activate, deactivate, active, error } = context
+    const { connector, activate, deactivate, active, error } = context
 
     // handle logic to recognize the connector currently being activated
     const [activatingConnector, setActivatingConnector] = React.useState<any>()
@@ -98,7 +98,6 @@ export function Wallet() {
                 {Object.keys(connectorsByName).map(name => {
                     // @ts-ignore
                     const currentConnector = connectorsByName[name]
-                    const activating = currentConnector === activatingConnector
                     const connected = currentConnector === connector
                     const disabled = !triedEager || !!activatingConnector || connected || !!error
                     const bgColor = connected ? 'bg-light_blue' : 'bg-black'
