@@ -54,7 +54,7 @@ export function BentoForm(): JSX.Element {
                                 const tx = await contractHelper.bentoBox.withdraw(tokenAddr, account, account, BigNumber.from(tokenAmount), 0);
                                 setTxPending(tx.hash);
                                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
-                                await web3Provider.waitForTransaction(tx.hash, 5);
+                                await web3Provider.waitForTransaction(tx.hash, 1);
                                 setTxPending('');
                                 alert('Transaction successfully mined !');
                             }
