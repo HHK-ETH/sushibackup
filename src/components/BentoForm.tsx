@@ -13,7 +13,7 @@ export function BentoForm(): JSX.Element {
     let tokenAmount: string = "";
     const contractHelper = ContractHelper.getInstance();
 
-    if (!active || !contractHelper) {
+    if (!active) {
         return (<div className={"p-8 text-center"}>
             Plz connect your wallet and switch to Polygon/Matic network
         </div>);
@@ -56,6 +56,7 @@ export function BentoForm(): JSX.Element {
                                 const web3Provider = new providers.Web3Provider(await connector.getProvider());
                                 await web3Provider.waitForTransaction(tx.hash, 5);
                                 setTxPending('');
+                                alert('Transaction successfully mined !');
                             }
                         }
                         withdraw();
