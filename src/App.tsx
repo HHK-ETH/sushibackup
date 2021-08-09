@@ -19,8 +19,8 @@ function App(): JSX.Element {
     return (
         <Router>
             <Web3ReactProvider getLibrary={getLibrary}>
+                <Header/>
                 <div className="App grid grid-cols-3">
-                    <Header/>
                     <div className={""}>
                         test
                     </div>
