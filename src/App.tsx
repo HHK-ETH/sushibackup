@@ -8,6 +8,7 @@ import {
     Link
 } from "react-router-dom";
 import { Web3ReactProvider } from '@web3-react/core';
+import {BentoForm} from "./components/BentoForm";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -20,10 +21,10 @@ function App(): JSX.Element {
         <Router>
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Header/>
-                <div className="App grid grid-cols-3">
-                    <div className={""}>
-                        test
-                    </div>
+                <div className="App">
+                    <Route path={"/"}>
+                        <BentoForm/>
+                    </Route>
                 </div>
             </Web3ReactProvider>
         </Router>
