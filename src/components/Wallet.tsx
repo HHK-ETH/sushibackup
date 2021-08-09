@@ -8,53 +8,20 @@ import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } fro
 import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3-react/frame-connector'
 import { Web3Provider } from '@ethersproject/providers'
 
-import { useEagerConnect, useInactiveListener } from './hooks'
+import { useEagerConnect, useInactiveListener } from '../hooks'
 import {
     injected,
-    network,
-    walletconnect,
-    walletlink,
-    ledger,
-    trezor,
-    lattice,
-    frame,
-    authereum,
-    fortmatic,
-    magic,
-    portis,
-    torus
-} from './connectors'
+    walletconnect
+} from '../connectors'
 
 enum ConnectorNames {
-    Injected = 'Injected',
-    Network = 'Network',
-    WalletConnect = 'WalletConnect',
-    WalletLink = 'WalletLink',
-    Ledger = 'Ledger',
-    Trezor = 'Trezor',
-    Lattice = 'Lattice',
-    Frame = 'Frame',
-    Authereum = 'Authereum',
-    Fortmatic = 'Fortmatic',
-    Magic = 'Magic',
-    Portis = 'Portis',
-    Torus = 'Torus'
+    Injected = 'Injected/Metamask',
+    WalletConnect = 'WalletConnect'
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
     [ConnectorNames.Injected]: injected,
-    [ConnectorNames.Network]: network,
-    [ConnectorNames.WalletConnect]: walletconnect,
-    [ConnectorNames.WalletLink]: walletlink,
-    [ConnectorNames.Ledger]: ledger,
-    [ConnectorNames.Trezor]: trezor,
-    [ConnectorNames.Lattice]: lattice,
-    [ConnectorNames.Frame]: frame,
-    [ConnectorNames.Authereum]: authereum,
-    [ConnectorNames.Fortmatic]: fortmatic,
-    [ConnectorNames.Magic]: magic,
-    [ConnectorNames.Portis]: portis,
-    [ConnectorNames.Torus]: torus
+    [ConnectorNames.WalletConnect]: walletconnect
 }
 
 function getErrorMessage(error: Error) {
@@ -100,7 +67,7 @@ export function Wallet() {
                     const currentConnector = connectorsByName[name]
                     const connected = currentConnector === connector
                     const disabled = !triedEager || !!activatingConnector || connected || !!error
-                    const bgColor = connected ? 'bg-light_blue' : 'bg-black'
+                    const bgColor = connected ? 'bg-green-500' : 'bg-black'
 
                     return (
                         <button
