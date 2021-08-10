@@ -45,7 +45,7 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 type="text" onChange={e => {
                 tokenAmount = parseFloat(e.target.value)
-            }} placeholder="Amount (plz add decimal)"/>
+            }} placeholder="Amount"/>
             <div>
                 <button
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
