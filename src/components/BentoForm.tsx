@@ -6,13 +6,12 @@ import {providers} from "ethers";
 import {TxPendingModal} from "./TxPendingModal";
 import {TOKENS} from "../constant";
 
-export function BentoForm(): JSX.Element {
+export function BentoForm({contractHelper}: {contractHelper: ContractHelper | undefined}): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const [txPending, setTxPending] = useState('');
     let tokenAmount: number = 0;
     let tokenSelected: any = TOKENS[0];
-    const contractHelper = ContractHelper.getInstance();
 
     if (!active) {
         return (<div className={"p-8 text-center"}>
