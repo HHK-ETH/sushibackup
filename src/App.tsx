@@ -7,7 +7,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import { Web3ReactProvider } from '@web3-react/core';
+import {Web3ReactProvider} from '@web3-react/core';
 import {BentoForm} from "./components/BentoForm";
 
 function getLibrary(provider: any) {
