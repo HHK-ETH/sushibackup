@@ -13,10 +13,9 @@ export function Header({setContractHelper} : {setContractHelper: Function}): JSX
 
     useEffect(() => {
         async function init() {
-            if (active && connector && account) {
-                console.log('ko')
-                const web3Provider = new providers.Web3Provider(await connector.getProvider());
-                ContractHelper.init(web3Provider);
+            if (active && connector && account && chainId) {
+                const web3Provider: Web3Provider = new providers.Web3Provider(await connector.getProvider());
+                ContractHelper.init(web3Provider, chainId);
                 setContractHelper(ContractHelper.getInstance());
             }
         }

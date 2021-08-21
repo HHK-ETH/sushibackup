@@ -1,7 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationIcon } from '@heroicons/react/outline'
 import {Wallet} from "./Wallet";
 
 export function ConnectModal({open, setOpen}: {open: boolean, setOpen: Function}): JSX.Element {

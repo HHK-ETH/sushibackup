@@ -10,12 +10,13 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const [txPending, setTxPending] = useState('');
+    const TOKEN_LIST = chainId && (chainId === 1 || chainId === 137) ? TOKENS[chainId] : TOKENS[1];
     let tokenAmount: number = 0;
-    let tokenSelected: any = TOKENS[0];
+    let tokenSelected: any = TOKEN_LIST[0];
 
-    if (!active) {
+    if (!active || (chainId !== 1 && chainId !== 137)) {
         return (<div className={"p-8 text-center"}>
-            Plz connect your wallet and switch to Polygon/Matic network
+            Plz connect your wallet and switch to Ethereum or Polygon/Matic network
         </div>);
     }
 
@@ -28,11 +29,11 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
             <select
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 onChange={e => {
-                    tokenSelected = TOKENS.find((token) => {
+                    tokenSelected = TOKEN_LIST.find((token) => {
                         return token.address === e.target.value;
                     });
                 }} placeholder="Token address">
-                {TOKENS.map((token, index) => {
+                {TOKEN_LIST.map((token, index) => {
                     return (
                         <option key={index} value={token.address}>{token.name + ' (' + token.symbol + ')'}</option>
                     )
@@ -75,7 +76,6 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                     onClick={() => {
                         async function withdraw() {
                             if (contractHelper && connector) {
-                                console.log('ok')
                                 const tx = await contractHelper.bentoBox.withdraw(
                                     tokenSelected.address,
                                     account,
