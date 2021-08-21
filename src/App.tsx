@@ -10,6 +10,8 @@ import {
 import {Web3ReactProvider} from '@web3-react/core';
 import {BentoForm} from "./components/BentoForm";
 import {ContractHelper} from "./contractHelper";
+import {Home} from "./components/Home";
+import {Miso} from "./components/Miso";
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -25,9 +27,17 @@ function App(): JSX.Element {
             <Web3ReactProvider getLibrary={getLibrary}>
                 <Header setContractHelper={setContractHelper}/>
                 <div className="App">
-                    <Route path={"/"}>
-                        <BentoForm contractHelper={contractHelper}/>
-                    </Route>
+                    <Switch>
+                        <Route path={"/bento"}>
+                            <BentoForm contractHelper={contractHelper}/>
+                        </Route>
+                        <Route path={"/miso"}>
+                            <Miso/>
+                        </Route>
+                        <Route path={"/"}>
+                            <Home/>
+                        </Route>
+                    </Switch>
                 </div>
             </Web3ReactProvider>
         </Router>

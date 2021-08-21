@@ -5,6 +5,7 @@ import {ContractHelper} from "../contractHelper";
 import {providers} from "ethers";
 import {TxPendingModal} from "./TxPendingModal";
 import {TOKENS} from "../constant";
+import {GoHome} from "./GoHome";
 
 export function BentoForm({contractHelper}: {contractHelper: ContractHelper | undefined}): JSX.Element {
     const context = useWeb3React<Web3Provider>();
@@ -15,9 +16,12 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
     let tokenSelected: any = TOKEN_LIST[0];
 
     if (!active || (chainId !== 1 && chainId !== 137)) {
-        return (<div className={"p-8 text-center"}>
-            Plz connect your wallet and switch to Ethereum or Polygon/Matic network
-        </div>);
+        return (
+            <div className={"p-8 text-center"}>
+                Plz connect your wallet and switch to Ethereum or Polygon/Matic network
+                <GoHome/>
+            </div>
+        );
     }
 
     return (
@@ -98,6 +102,7 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                 >Withdraw
                 </button>
             </div>
+            <GoHome/>
         </div>
     );
 }
