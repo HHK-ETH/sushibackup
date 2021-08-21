@@ -1,5 +1,6 @@
 import {Contract} from "ethers";
-import {BENTO_ABI, BENTO_ADDR} from "./constant";
+import {BENTO_ADDR} from "./constant";
+import BENTO_ABI from './abis/bento.json'
 
 export class ContractHelper {
 
