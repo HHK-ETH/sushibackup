@@ -23,9 +23,11 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
     return (
         <div className={"p-8 text-center"}>
             <TxPendingModal txPending={txPending}/>
+            <h1 className={"text-3xl mb-12"}>Remove and deposit into BentoBox</h1>
             <label className="text-small font-bold mb-2 block">
-                Token address
+                Token
             </label>
+            <small className={"block"}>(TIP: when opening the list, on your keyboard tap the first letter of the asset to find it)</small>
             <select
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 onChange={e => {
