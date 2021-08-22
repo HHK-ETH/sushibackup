@@ -1,10 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export function Home(): JSX.Element {
     return (
         <div className={"text-center p-4"}>
-            <h1 className={"text-3xl m-8"}>Welcome to sushibackup.com</h1>
+            <div className={"mt-8 mb-20"}>
+                <h1 className={"text-3xl"}>Welcome to sushibackup.com</h1>
+                <p className={"text-xl"}>A list of different tools to help users when the official UI is down</p>
+                <a target={"_blank"} href={"https://github.com/HHK-ETH/sushibackup"} className={"block underline text-blue-500 text-sm"}>Github</a>
+            </div>
             <Link to={"/bento"}>
                 <button
                     type="button"
