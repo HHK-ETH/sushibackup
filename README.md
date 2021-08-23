@@ -1,3 +1,2 @@
-## Backup UI for BentoBox if official one is down, to allows users to remove liquidity easily
-
+## A list of different tools to help users when the official UI is down
 ### OFFICIAL DOMAIN : https://sushibackup.com
