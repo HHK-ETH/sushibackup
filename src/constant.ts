@@ -3,6 +3,7 @@ import TOKENS_ETHEREUM from './tokens/ethereum.json';
 import batch from './abis/miso/batch.json';
 import crowd from './abis/miso/crowd.json';
 import dutch from './abis/miso/dutch.json';
+import erc20 from './abis/erc20.json';
 
 export const BENTO_ADDR = {
     1: "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966",
@@ -14,6 +15,8 @@ export const MISO_TYPES_LIST = {
     "CrowdSale": crowd,
     "DutchAuction": dutch
 }
+
+export const ERC20 = erc20;
 
 export const TOKENS = {
     1: TOKENS_ETHEREUM,
