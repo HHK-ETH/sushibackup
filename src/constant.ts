@@ -39,4 +39,14 @@ export const AUCTION_LIST = [
         address: "0x4c4564a1FE775D97297F9e3Dc2e762e0Ed5Dda0e",
         type: "DutchAuction"
     },
+    {
+        name: "Wrapped NCG (WNCG)",
+        address: "0x7a004834888586DC68aA39dfB2AE47AF00710a12",
+        type: "BatchAuction"
+    },
+    {
+        name: "MaidCoin ($MAID)",
+        address: "0x872b40099B7d4c96632ae138834713Ae0B224385",
+        type: "DutchAuction"
+    },
 ]
