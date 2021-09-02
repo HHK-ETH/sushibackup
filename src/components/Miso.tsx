@@ -63,7 +63,7 @@ export function Miso(): JSX.Element {
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 type="text" onChange={e => {
                 tokenAmount = parseFloat(e.target.value);
-            }} placeholder="Amount to commit (let empty if withdrawing)"/></>}
+            }} placeholder="Amount to commit"/></>}
             <div>
                 {!auctionOpen && <><button
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
