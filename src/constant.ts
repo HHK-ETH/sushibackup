@@ -22,3 +22,21 @@ export const TOKENS = {
     1: TOKENS_ETHEREUM,
     137: TOKENS_POLYGON
 }
+
+export const AUCTION_LIST = [
+    {
+        name: "The Doge NFT (DOG)",
+        address: "0x5e29C9Bf97c45e55f1c2257D0Ecf6909726745f3",
+        type: "BatchAuction"
+    },
+    {
+        name: "BitDAO (BIT) with SUSHI token",
+        address: "0x831dC63790468299c57928809ec4eA34DC8C475f",
+        type: "DutchAuction"
+    },
+    {
+        name: "BitDAO (BIT) with ETH token",
+        address: "0x4c4564a1FE775D97297F9e3Dc2e762e0Ed5Dda0e",
+        type: "DutchAuction"
+    },
+]
