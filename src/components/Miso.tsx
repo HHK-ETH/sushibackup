@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import {GoHome} from "./GoHome";
@@ -12,8 +12,21 @@ export function Miso(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const [txPending, setTxPending] = useState('');
-    let auction: any = AUCTION_LIST[0];
     let tokenAmount: number = 0;
+    const [auctionOpen, setAuctionOpen] = useState(true);
+    const [auction, setAuction] = useState(AUCTION_LIST[0]);
+
+    useEffect(() => {
+        async function fetchAuctionOpen() {
+            if (!connector) return;
+            const web3Provider = new providers.Web3Provider(await connector.getProvider());
+            // @ts-ignore
+            const miso: Contract = new Contract(auction.address, MISO_TYPES_LIST[auction.type], web3Provider);
+            const finalized: boolean = await miso.finalized();
+            setAuctionOpen(!finalized);
+        };
+        fetchAuctionOpen();
+    }, [auction, connector]);
 
     if (!active || chainId !== 1) {
         return (
@@ -34,25 +47,26 @@ export function Miso(): JSX.Element {
             <select
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 onChange={e => {
-                    auction = AUCTION_LIST.find((auction) => {
+                    const newAuction = AUCTION_LIST.find((auction) => {
                         return auction.address === e.target.value;
-                    })
+                    });
+                    if (newAuction) setAuction(newAuction);
                 }} placeholder="MISO auction">
                 {AUCTION_LIST.map((auction) => {
                     return <option key={auction.address} value={auction.address}>{auction.name}</option>
                 })}
             </select>
-            <label className="text-small font-bold mb-2 block">
-                Amount of token to commit
+            {auctionOpen && <><label className="text-small font-bold mb-2 block">
+                Amount to commit
             </label>
             <input
                 className="shadow w-6/12 border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-8"
                 type="text" onChange={e => {
                 tokenAmount = parseFloat(e.target.value);
-            }} placeholder="Amount of token to commit (let empty if withdrawing)"/>
+            }} placeholder="Amount to commit (let empty if withdrawing)"/></>}
             <div>
-                <button
-                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg mr-8"
+                {!auctionOpen && <><button
+                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function withdraw() {
                             if (active && connector && account && chainId) {
@@ -73,9 +87,9 @@ export function Miso(): JSX.Element {
                         withdraw();
                     }}
                 >Withdraw
-                </button>
-                <button
-                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg mr-8"
+                </button></>}
+                {auctionOpen && <><button
+                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function approve() {
                             if (active && connector && account && chainId) {
@@ -112,7 +126,7 @@ export function Miso(): JSX.Element {
                 >Approve
                 </button>
                 <button
-                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg mr-8"
+                    className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function commit() {
                             if (active && connector && account && chainId) {
@@ -147,7 +161,7 @@ export function Miso(): JSX.Element {
                         commit();
                     }}
                 >Commit
-                </button>
+                </button></>}
             </div>
             <GoHome/>
         </div>
