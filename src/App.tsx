@@ -12,6 +12,7 @@ import {BentoForm} from "./components/BentoForm";
 import {ContractHelper} from "./contractHelper";
 import {Home} from "./components/Home";
 import {Miso} from "./components/Miso";
+import { Masterchef } from './components/Masterchef';
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -33,6 +34,9 @@ function App(): JSX.Element {
                         </Route>
                         <Route path={"/miso"}>
                             <Miso/>
+                        </Route>
+                        <Route path={"/masterchef"}>
+                            <Masterchef/>
                         </Route>
                         <Route path={"/"}>
                             <Home/>
