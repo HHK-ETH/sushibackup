@@ -3,14 +3,15 @@ import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
 import {TxPendingModal} from "./TxPendingModal";
 import {GoHome} from "./GoHome";
-import { Contract, providers } from "ethers";
-import { MASTERCHEF_ABI, MASTERCHEF_ADDR } from "../constant";
+import { BigNumber, Contract, providers } from "ethers";
+import { MASTERCHEF_ABI, MASTERCHEF_ADDR, SLP_ABI } from "../constant";
+import { formatUnits } from "@ethersproject/units";
 
 export function Masterchef(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const [txPending, setTxPending] = useState('');
-    const [poolInfos, setPoolInfos] = useState('');
+    const [poolInfos, setPoolInfos]: [poolInfos: any, setPoolInfos: Function] = useState({});
     let contractAddress: string = '';
 
     if (!active || chainId !== 1) {
@@ -39,7 +40,7 @@ export function Masterchef(): JSX.Element {
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function verify() {
-                            if (contractAddress.length > 0) {
+                            if (contractAddress.length > 0 && connector) {
                                 const res = await fetch("https://api.thegraph.com/subgraphs/name/sushiswap/master-chef", 
                                 {
                                     method: 'POST',
@@ -59,12 +60,24 @@ export function Masterchef(): JSX.Element {
                                     `})
                                 });
                                 const resJson = await res.json();
-                                console.log(resJson);
                                 if (resJson.data === undefined || resJson.data.pools[0] === undefined) {
                                     alert("This contract has no pool in masterchef!");
                                     return;
                                 }
-                                setPoolInfos(resJson.data.pools[0].id);
+                                const web3Provider = new providers.Web3Provider(await connector.getProvider());
+                                //masterchef
+                                const masterchef: Contract = new Contract(MASTERCHEF_ADDR, MASTERCHEF_ABI, web3Provider);
+                                const userInfo = await masterchef.userInfo(resJson.data.pools[0].id, account);
+                                const pendingSushi = await masterchef.pendingSushi(resJson.data.pools[0].id, account);
+                                //slp
+                                const slp: Contract = new Contract(contractAddress, SLP_ABI, web3Provider);
+                                const userNotStakedBalance = await slp.balanceOf(account);
+                                setPoolInfos({
+                                    pid: resJson.data.pools[0].id,
+                                    userStakedBalance: BigNumber.from(userInfo.amount),
+                                    userNotStakedBalance: BigNumber.from(userNotStakedBalance),
+                                    pendingSushi: BigNumber.from(pendingSushi)
+                                });
                             } else {
                                 alert("Please connect wallet and enter an address!");
                             }
@@ -73,20 +86,24 @@ export function Masterchef(): JSX.Element {
                     }}
                 >Fetch pool
                 </button>
-                <div>Pair _pid : {poolInfos}</div>
-                {poolInfos.length > 0 &&
+                {poolInfos.pid &&
                     <>
+                    <div>
+                        <p>Pair _pid : {poolInfos.pid}</p>
+                        <p>Amount staked : {formatUnits(poolInfos.userStakedBalance, 18)} SLPs</p>
+                        <p>Amount not staked : {formatUnits(poolInfos.userNotStakedBalance, 18)} SLPs</p>
+                        <p>available to harvest : {formatUnits(poolInfos.pendingSushi, 18)} $SUSHI</p>
+                    </div>
+                    <div>
                         <button
                         className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                         onClick={() => {
                             async function withdraw() {
                                 if (active && connector && account && chainId) {
                                     const web3Provider = new providers.Web3Provider(await connector.getProvider());
-                                    // @ts-ignore
                                     const masterchef: Contract = new Contract(MASTERCHEF_ADDR, MASTERCHEF_ABI, web3Provider);
-                                    const userInfo = await masterchef.userInfo(poolInfos, account);
                                     const masterchefWithSigner: Contract = masterchef.connect(web3Provider.getSigner());
-                                    const tx = await masterchefWithSigner.withdraw(poolInfos, userInfo.amount);
+                                    const tx = await masterchefWithSigner.withdraw(poolInfos.pid, poolInfos.userStakedBalance);
                                     setTxPending(tx.hash);
                                     await web3Provider.waitForTransaction(tx.hash, 1);
                                     setTxPending('');
@@ -95,11 +112,54 @@ export function Masterchef(): JSX.Element {
                                     alert("Please connect wallet and enter an address");
                                 }
                             }
-
                             withdraw();
                         }}
-                        >Withdraw
+                        >Withdraw all your SLPs
                         </button>
+                        <button
+                        className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
+                        onClick={() => {
+                            async function deposit() {
+                                if (active && connector && account && chainId) {
+                                    const web3Provider = new providers.Web3Provider(await connector.getProvider());
+                                    const masterchef: Contract = new Contract(MASTERCHEF_ADDR, MASTERCHEF_ABI, web3Provider);
+                                    const masterchefWithSigner: Contract = masterchef.connect(web3Provider.getSigner());
+                                    const tx = await masterchefWithSigner.deposit(poolInfos.pid, poolInfos.userNotStakedBalance);
+                                    setTxPending(tx.hash);
+                                    await web3Provider.waitForTransaction(tx.hash, 1);
+                                    setTxPending('');
+                                    alert('Transaction successfully mined !');
+                                } else {
+                                    alert("Please connect wallet and enter an address");
+                                }
+                            }
+                            deposit();
+                        }}
+                        >Deposit all your SLPs
+                        </button>
+                        <button
+                        className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
+                        onClick={() => {
+                            async function harvest() {
+                                if (active && connector && account && chainId) {
+                                    const web3Provider = new providers.Web3Provider(await connector.getProvider());
+                                    const masterchef: Contract = new Contract(MASTERCHEF_ADDR, MASTERCHEF_ABI, web3Provider);
+                                    const masterchefWithSigner: Contract = masterchef.connect(web3Provider.getSigner());
+                                    const tx = await masterchefWithSigner.deposit(poolInfos.pid, 0);
+                                    setTxPending(tx.hash);
+                                    await web3Provider.waitForTransaction(tx.hash, 1);
+                                    setTxPending('');
+                                    alert('Transaction successfully mined !');
+                                } else {
+                                    alert("Please connect wallet and enter an address");
+                                }
+                            }
+                            harvest();
+                        }}
+                        >Harvest
+                        </button>
+                    </div>
+                    <small>Deposit and withdraw will automatically harvest the pending SUSHI.</small>
                     </>
                 }
             </div>
