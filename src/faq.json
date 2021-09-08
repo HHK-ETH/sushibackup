@@ -1,0 +1,26 @@
+[
+    {
+        "question": "What is sushibackup.com ?",
+        "answer": "Sushibackup is a little UI made to help users encountering issues with the main UI."
+    },
+    {
+        "question": "How can I trust it ?",
+        "answer": "First make sure the url you are on is : sushibackup.com. \n You can find the source code here : https://github.com/HHK-ETH/sushibackup and usually it will be linked to you by sushi samurais which are part of the sushi official support team. \n But its up to you, if you don't feel safe using it, don't use it."
+    },
+    {
+        "question": "Something is not working.",
+        "answer": "If having any issue using it, pls dm me on discord, you can find me on the official sushi discord."
+    },
+    {
+        "question": "can you add a new feature ?",
+        "answer": "If you want a new feature, pls dm me on discord, you can find me on the official sushi discord."
+    },
+    {
+        "question": "UI is not pretty",
+        "answer": "Yes I know, its only a backup UI, will improve it when I have more free time."
+    },
+    {
+        "question": "Code is not pretty",
+        "answer": "Yes I know, its only a backup UI, will improve it when I have more free time."
+    }
+]

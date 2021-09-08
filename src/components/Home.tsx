@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import faq from "./../faq.json";
 
 export function Home(): JSX.Element {
     return (
@@ -30,6 +31,17 @@ export function Home(): JSX.Element {
                 >Go to Masterchef
                 </button>
             </Link>
+            <div className={"mt-24"}>
+                <h1 className={"text-3xl font-bold m-2"}>FAQ</h1>
+                {faq.map((element) => {
+                    return (
+                        <>
+                            <h3 className={"text-xl font-bold"}>{element.question}</h3>
+                            <p className={"mb-2 whitespace-pre-line"}>{element.answer}</p>
+                        </>
+                    );
+                })}
+            </div>
         </div>
     );
 }
