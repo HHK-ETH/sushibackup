@@ -11,17 +11,20 @@ import { Web3Provider } from '@ethersproject/providers'
 import { useEagerConnect, useInactiveListener } from '../hooks'
 import {
     injected,
-    walletconnect
+    walletconnect,
+    walletlink
 } from '../connectors'
 
 enum ConnectorNames {
     Injected = 'Injected/Metamask',
-    WalletConnect = 'WalletConnect'
+    WalletConnect = 'WalletConnect',
+    WalletLink = 'WalletLink'
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
     [ConnectorNames.Injected]: injected,
-    [ConnectorNames.WalletConnect]: walletconnect
+    [ConnectorNames.WalletConnect]: walletconnect,
+    [ConnectorNames.WalletLink]: walletlink
 }
 
 function getErrorMessage(error: Error) {
