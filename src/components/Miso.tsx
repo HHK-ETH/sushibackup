@@ -86,7 +86,7 @@ export function Miso(): JSX.Element {
 
                         withdraw();
                     }}
-                >Withdraw
+                >Claim
                 </button></>}
                 {auctionOpen && <><button
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
