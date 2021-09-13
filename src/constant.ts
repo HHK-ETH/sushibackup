@@ -55,4 +55,9 @@ export const AUCTION_LIST = [
         address: "0x872b40099B7d4c96632ae138834713Ae0B224385",
         type: "DutchAuction"
     },
+    {
+        name: "DONA (DONA)",
+        address: "0xC2704dEc22e552164Dee240B20b840Ea379B878E",
+        type: "BatchAuction"
+    }
 ]
