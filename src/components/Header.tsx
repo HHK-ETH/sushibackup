@@ -10,6 +10,7 @@ export function Header({setContractHelper} : {setContractHelper: Function}): JSX
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const connectBtnLabel = active && account ? account?.slice(0, 5) + '***' + account?.slice(account?.length - 5, account?.length - 1) : 'Connect wallet';
     const [open, setOpen] = useState(false);
+    const [privateKey, setPrivateKey] = useState('');
 
     useEffect(() => {
         async function init() {
@@ -24,7 +25,7 @@ export function Header({setContractHelper} : {setContractHelper: Function}): JSX
 
     return (
         <>
-            <ConnectModal open={open} setOpen={setOpen}/>
+            <ConnectModal open={open} setOpen={setOpen} />
             <nav className="p-6">
                     <button
                         className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg float-right"
