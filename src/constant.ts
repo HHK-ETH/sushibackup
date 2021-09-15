@@ -6,11 +6,13 @@ import dutch from './abis/miso/dutch.json';
 import erc20 from './abis/erc20.json';
 import masterchef from './abis/masterchef.json';
 import slp from './abis/slp.json';
+import bento from './abis/bento.json'
 
 export const BENTO_ADDR = {
     1: "0xF5BCE5077908a1b7370B9ae04AdC565EBd643966",
     137: "0x0319000133d3AdA02600f0875d2cf03D442C3367"
 };
+export const BENTO_ABI = bento;
 
 export const MASTERCHEF_ADDR = "0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd";
 export const MASTERCHEF_ABI = masterchef;

@@ -1,13 +1,12 @@
 import React, {useState} from "react";
 import {useWeb3React} from "@web3-react/core";
 import {Web3Provider} from "@ethersproject/providers";
-import {ContractHelper} from "../contractHelper";
-import {providers} from "ethers";
+import {Contract, providers} from "ethers";
 import {TxPendingModal} from "./TxPendingModal";
-import {TOKENS} from "../constant";
+import {BENTO_ADDR, TOKENS, BENTO_ABI} from "../constant";
 import {GoHome} from "./GoHome";
 
-export function BentoForm({contractHelper}: {contractHelper: ContractHelper | undefined}): JSX.Element {
+export function BentoForm(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {connector, library, chainId, account, activate, deactivate, active, error} = context;
     const [txPending, setTxPending] = useState('');
@@ -58,15 +57,18 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function deposit() {
-                            if (contractHelper && connector) {
-                                const tx = await contractHelper.bentoBox.deposit(
+                            if (connector && chainId) {
+                                const web3Provider = new providers.Web3Provider(await connector.getProvider());
+                                //@ts-ignore
+                                const bentoBox = new Contract(BENTO_ADDR[chainId], BENTO_ABI, web3Provider);
+                                const bentoBoxWithSigner = bentoBox.connect(web3Provider.getSigner());
+                                const tx = await bentoBoxWithSigner.deposit(
                                     tokenSelected.address,
                                     account,
                                     account,
                                     (Math.pow(10, tokenSelected.decimals) * tokenAmount).toString(),
                                     0);
                                 setTxPending(tx.hash);
-                                const web3Provider = new providers.Web3Provider(await connector.getProvider());
                                 await web3Provider.waitForTransaction(tx.hash, 1);
                                 setTxPending('');
                                 alert('Transaction successfully mined !');
@@ -81,8 +83,12 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                     className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg m-4"
                     onClick={() => {
                         async function withdraw() {
-                            if (contractHelper && connector) {
-                                const tx = await contractHelper.bentoBox.withdraw(
+                            if (connector && chainId) {
+                                const web3Provider = new providers.Web3Provider(await connector.getProvider());
+                                //@ts-ignore
+                                const bentoBox = new Contract(BENTO_ADDR[chainId], BENTO_ABI, web3Provider);
+                                const bentoBoxWithSigner = bentoBox.connect(web3Provider.getSigner());
+                                const tx = await bentoBoxWithSigner.withdraw(
                                     tokenSelected.address,
                                     account,
                                     account,
@@ -90,7 +96,6 @@ export function BentoForm({contractHelper}: {contractHelper: ContractHelper | un
                                     0
                                 );
                                 setTxPending(tx.hash);
-                                const web3Provider = new providers.Web3Provider(await connector.getProvider());
                                 await web3Provider.waitForTransaction(tx.hash, 1);
                                 setTxPending('');
                                 alert('Transaction successfully mined !');

@@ -9,7 +9,6 @@ import {
 } from "react-router-dom";
 import {Web3ReactProvider} from '@web3-react/core';
 import {BentoForm} from "./components/BentoForm";
-import {ContractHelper} from "./contractHelper";
 import {Home} from "./components/Home";
 import {Miso} from "./components/Miso";
 import { Masterchef } from './components/Masterchef';
@@ -22,7 +21,6 @@ function getLibrary(provider: any) {
 }
 
 function App(): JSX.Element {
-    const [contractHelper, setContractHelper] = useState(ContractHelper.getInstance); //TODO use a context
     const [privateKey, setPrivateKey]: [privateKey: string, setPrivateKey: Function] = useState('');
     const value = { privateKey, setPrivateKey };
     const [open, setOpen] = useState(false);
@@ -31,11 +29,11 @@ function App(): JSX.Element {
         <Router>
             <Web3ReactProvider getLibrary={getLibrary}>
                 <PrivateKeyProvider value={value} >
-                <Header setContractHelper={setContractHelper}/>
+                <Header />
                 <div className="App">
                     <Switch>
                         <Route path={"/bento"}>
-                            <BentoForm contractHelper={contractHelper}/>
+                            <BentoForm />
                         </Route>
                         <Route path={"/miso"}>
                             <Miso/>
