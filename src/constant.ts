@@ -61,5 +61,35 @@ export const AUCTION_LIST = [
         name: "DONA (DONA)",
         address: "0xC2704dEc22e552164Dee240B20b840Ea379B878E",
         type: "BatchAuction"
+    },
+    {
+        name: "Ethernaal (NAAL)",
+        address: "0xF894EB0c73f37a0f9A4FCB16A3b002b4CFF317fc",
+        type: "DutchAuction"
+    },
+    {
+        name: "Ethernaal NFT Pack (ENFT)",
+        address: "0x486d4e4c04228f69Ff212a78F95489537f051f8C",
+        type: "DutchAuction"
+    },
+    {
+        name: "Non-Fungible Tattoo Token (NF2T)",
+        address: "0xd3B68678Fc665c804351Ea7cD525591126C65de7",
+        type: "DutchAuction"
+    },
+    {
+        name: "DivergenceProtocol (DIVER)",
+        address: "0x4c7e2B2cFF8bb572FA0A3c161aCEA35E02aD4C32",
+        type: "DutchAuction"
+    },
+    {
+        name: "MARS4 (MARS4) public",
+        address: "0x9FB256ef5465B33a766ecE2F319C178376f6BBF8",
+        type: "BatchAuction"
+    },
+    {
+        name: "MARS4 (MARS4) private",
+        address: "0xCfce6b93583Db87b1D27054Ca8be713D23A1F801",
+        type: "BatchAuction"
     }
 ]

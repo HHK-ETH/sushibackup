@@ -6,7 +6,6 @@ import {TxPendingModal} from "./TxPendingModal";
 import {BigNumber, Contract, ethers, providers} from "ethers";
 import {AUCTION_LIST, ERC20, MISO_TYPES_LIST} from "../constant";
 import { formatUnits, parseUnits } from "@ethersproject/units";
-import { format } from "path";
 
 export function Miso(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
