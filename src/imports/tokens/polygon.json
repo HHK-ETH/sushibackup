@@ -480,14 +480,6 @@
     "logoURI": "https://s2.coinmarketcap.com/static/img/coins/64x64/8292.png"
   },
   {
-    "name": "The Sandbox",
-    "address": "0xC6d54D2f624bc83815b49d9c2203b1330B841cA0",
-    "symbol": "SAND",
-    "decimals": 18,
-    "chainId": 137,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/sand.jpg"
-  },
-  {
     "name": "Synthetix Network Token",
     "address": "0x50B728D8D964fd00C2d0AAD81718b71311feF68a",
     "symbol": "SNX",
@@ -704,20 +696,12 @@
     "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC68e83a305b0FaD69E264A1769a0A070F190D2d6/logo.png"
   },
   {
-    "name": "Standard",
-    "address": "0x0795106fE1D6B169E26AeC99EFDf27a4262a4a9e",
-    "symbol": "STND",
-    "decimals": 18,
-    "chainId": 137,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0795106fe1d6b169e26aec99efdf27a4262a4a9e/logo.png"
-  },
-  {
     "chainId": 137,
     "address": "0x2628568509E87c4429fBb5c664Ed11391BE1BD29",
     "name": "renDGB",
     "symbol": "renDGB",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x2628568509E87c4429fBb5c664Ed11391BE1BD29/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2628568509E87c4429fBb5c664Ed11391BE1BD29/logo.png"
   },
   {
     "chainId": 137,
@@ -725,7 +709,7 @@
     "name": "renFIL",
     "symbol": "renFIL",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xc4Ace9278e7E01755B670C0838c3106367639962/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xc4Ace9278e7E01755B670C0838c3106367639962/logo.png"
   },
   {
     "chainId": 137,
@@ -733,7 +717,7 @@
     "name": "axMatic",
     "symbol": "AXMATIC",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1221591c1d77A9c334aBb0fe530ae6EE3aF51Af9/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x1221591c1d77A9c334aBb0fe530ae6EE3aF51Af9/logo.png"
   },
   {
     "chainId": 137,
@@ -741,6 +725,198 @@
     "name": "Polygon Bunny Token",
     "symbol": "polyBUNNY",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x4C16f69302CcB511c5Fac682c7626B9eF0Dc126a/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x4C16f69302CcB511c5Fac682c7626B9eF0Dc126a/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x2C89bbc92BD86F8075d1DEcc58C7F4E0107f286b",
+    "name": "Avalanche Token",
+    "symbol": "AVAX",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2C89bbc92BD86F8075d1DEcc58C7F4E0107f286b/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7",
+    "name": "Aavegotchi GHST Token",
+    "symbol": "GHST",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x385Eeac5cB85A38A9a07A70c73e0a3271CfB54A7/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x137Ee749f0F8c2eD34cA00dE33BB59E3dafA494A",
+    "name": "WrappedConceal",
+    "symbol": "wCCX",
+    "decimals": 6,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x137Ee749f0F8c2eD34cA00dE33BB59E3dafA494A/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x08BE454de533509e8832B257116C5506E55b0b64",
+    "name": "Standard",
+    "symbol": "STND",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x08BE454de533509e8832B257116C5506E55b0b64/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x65A05DB8322701724c197AF82C9CaE41195B0aA8",
+    "name": "ShapeShift FOX Token",
+    "symbol": "FOX",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x65A05DB8322701724c197AF82C9CaE41195B0aA8/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x25788a1a171ec66Da6502f9975a15B609fF54CF6",
+    "name": "PoolTogether",
+    "symbol": "POOL",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x25788a1a171ec66Da6502f9975a15B609fF54CF6/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x6002410dDA2Fb88b4D0dc3c1D562F7761191eA80",
+    "name": "The Employment Commons Work Token",
+    "symbol": "WORK",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x6002410dDA2Fb88b4D0dc3c1D562F7761191eA80/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0xe20B9e246db5a0d21BF9209E4858Bc9A3ff7A034",
+    "name": "Wrapped Banano",
+    "symbol": "wBAN",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xe20B9e246db5a0d21BF9209E4858Bc9A3ff7A034/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x8a0e8b4b0903929f47C3ea30973940D4a9702067",
+    "name": "InsurAce",
+    "symbol": "INSUR",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets//logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x255707B70BF90aa112006E1b07B9AeA6De021424",
+    "name": "TETU Reward Token",
+    "symbol": "TETU",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x255707B70BF90aa112006E1b07B9AeA6De021424/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x5647Fe4281F8F6F01E84BCE775AD4b828A7b8927",
+    "name": "Million",
+    "symbol": "MM",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x5647Fe4281F8F6F01E84BCE775AD4b828A7b8927/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x0B048D6e01a6b9002C291060bF2179938fd8264c",
+    "name": "PolyAlpha Finance",
+    "symbol": "ALPHA",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0B048D6e01a6b9002C291060bF2179938fd8264c/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x8DF26a1BD9bD98e2eC506fc9d8009954716A05DC",
+    "name": "PolyPup Finance",
+    "symbol": "COLLAR",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x8DF26a1BD9bD98e2eC506fc9d8009954716A05DC/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x855D4248672a1fCE482165e8DBE1207b94b1968a",
+    "name": "WOWSwap",
+    "symbol": "WOW",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x3405A1bd46B85c5C029483FbECf2F3E611026e45/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0x46D502Fac9aEA7c5bC7B13C8Ec9D02378C33D36F",
+    "name": "WolfSafePoorPeople",
+    "symbol": "WSPP",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x46D502Fac9aEA7c5bC7B13C8Ec9D02378C33D36F/logo.png"
+  },
+  {
+   "name": "Kommunitas",
+   "address": "0xC004e2318722EA2b15499D6375905d75Ee5390B8",
+   "symbol": "KOM",
+   "decimals": 8,
+   "chainId": 137,
+   "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC004e2318722EA2b15499D6375905d75Ee5390B8/logo.png"
+ },
+ {
+    "chainId": 137,
+    "address": "0x3f717919deF69f81d17b80839bf8af35697ccbFa",
+    "name": "Data Exchange Token",
+    "symbol": "DTX",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x3f717919deF69f81d17b80839bf8af35697ccbFa/logo.png"
+  },
+  {
+    "chainId": 137,
+    "address": "0xe0Ce60AF0850bF54072635e66E79Df17082A1109",
+    "name": "Propel",
+    "symbol": "Propel",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xe0ce60af0850bf54072635e66e79df17082a1109/logo.png"
+  },
+  {
+    "name": "PolyQuity Dollar",
+    "address": "0x0527c8C43250279D6Eb74dA1078193f5316fc9a0",
+    "symbol": "PYD",
+    "decimals": 18,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x0527c8C43250279D6Eb74dA1078193f5316fc9a0/logo.png"
+  },
+  {
+    "name": "Klima DAO",
+    "address": "0x4e78011Ce80ee02d2c3e649Fb657E45898257815",
+    "symbol": "KLIMA",
+    "decimals": 9,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x4e78011Ce80ee02d2c3e649Fb657E45898257815/logo.png"
+  },
+  {
+    "name": "Toucan Protocol: Base Carbon Tonne",
+    "address": "0x2F800Db0fdb5223b3C3f354886d907A671414A7F",
+    "symbol": "BCT",
+    "decimals": 18,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0x2F800Db0fdb5223b3C3f354886d907A671414A7F/logo.png"
+  },
+  {
+    "name": "DFX Token",
+    "address": "0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395",
+    "symbol": "DFX",
+    "decimals": 18,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xE7804D91dfCDE7F776c90043E03eAa6Df87E6395/logo.png"
+  },
+  {
+    "name": "Idle",
+    "address": "0xC25351811983818c9Fe6D8c580531819c8ADe90f",
+    "symbol": "IDLE",
+    "decimals": 18,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xC25351811983818c9Fe6D8c580531819c8ADe90f/logo.png"
+  },
+  {
+    "name": "Polygon Ecosystem Index",
+    "address": "0xA9536B9c75A9E0faE3B56a96AC8EdF76AbC91978",
+    "symbol": "PECO",
+    "decimals": 18,
+    "chainId": 137,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/polygon/assets/0xA9536B9c75A9E0faE3B56a96AC8EdF76AbC91978/logo.png"
   }
 ]

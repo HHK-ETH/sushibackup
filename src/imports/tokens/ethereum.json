@@ -1170,7 +1170,7 @@
   {
     "address": "0xa283aA7CfBB27EF0cfBcb2493dD9F4330E0fd304",
     "chainId": 1,
-    "name": "MM Token",
+    "name": "MMToken",
     "symbol": "MM",
     "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xa283aA7CfBB27EF0cfBcb2493dD9F4330E0fd304/logo.png"
@@ -1976,14 +1976,6 @@
     "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/btc.jpg"
   },
   {
-    "address": "0xE452E6Ea2dDeB012e20dB73bf5d3863A3Ac8d77a",
-    "chainId": 1,
-    "name": "Wrapped Celo",
-    "symbol": "WCELO",
-    "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg"
-  },
-  {
     "address": "0x76280AF9D18a868a0aF3dcA95b57DDE816c1aaf2",
     "chainId": 1,
     "name": "WaifuEnhancementToken",
@@ -2021,7 +2013,7 @@
     "name": "WOM Protocol",
     "symbol": "WOM",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/4559/small/wom_logo_small.png?1572098941"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wom.jpg"
   },
   {
     "address": "0x4691937a7508860F876c9c0a2a617E7d9E945D4B",
@@ -2029,7 +2021,7 @@
     "name": "Wootrade Network",
     "symbol": "WOO",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x4691937a7508860F876c9c0a2a617E7d9E945D4B/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/woo.jpg"
   },
   {
     "address": "0xD0660cD418a64a1d44E9214ad8e459324D8157f1",
@@ -2037,7 +2029,7 @@
     "name": "Woofy",
     "symbol": "WOOFY",
     "decimals": 12,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xD0660cD418a64a1d44E9214ad8e459324D8157f1/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/woofy.jpg"
   },
   {
     "address": "0x2B89bF8ba858cd2FCee1faDa378D5cd6936968Be",
@@ -2045,7 +2037,7 @@
     "name": "Wrapped SCRT",
     "symbol": "WSCRT",
     "decimals": 6,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x2B89bF8ba858cd2FCee1faDa378D5cd6936968Be/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wscrt.jpg"
   },
   {
     "address": "0x465e07d6028830124BE2E4aA551fBe12805dB0f5",
@@ -2053,7 +2045,7 @@
     "name": "Wrapped XMR",
     "symbol": "WXMR",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/unknown.jpg"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wxmr.jpg"
   },
   {
     "address": "0xABe580E7ee158dA464b51ee1a83Ac0289622e6be",
@@ -2061,7 +2053,7 @@
     "name": "Offshift",
     "symbol": "XFT",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xABe580E7ee158dA464b51ee1a83Ac0289622e6be/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/xft.jpg"
   },
   {
     "address": "0x0AaCfbeC6a24756c20D41914F2caba817C0d8521",
@@ -2069,7 +2061,7 @@
     "name": "YAM",
     "symbol": "YAM",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x0AaCfbeC6a24756c20D41914F2caba817C0d8521/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yam.jpg"
   },
   {
     "address": "0xb1dC9124c395c1e97773ab855d66E879f053A289",
@@ -2133,7 +2125,7 @@
     "name": "YOP",
     "symbol": "YOP",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xAE1eaAE3F627AAca434127644371b67B18444051/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yop.jpg"
   },
   {
     "address": "0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31",
@@ -2141,7 +2133,7 @@
     "name": "PieDAO Yearn Ecosystem Pie",
     "symbol": "YPIE",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/ypie.jpg"
   },
   {
     "address": "0x837010619aeb2AE24141605aFC8f66577f6fb2e7",
@@ -2149,7 +2141,7 @@
     "name": "zHEGIC",
     "symbol": "ZHEGIC",
     "decimals": 18,
-    "logoURI": "https://static.alchemyapi.io/images/assets/7601.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/zhegic.jpg"
   },
   {
     "address": "0x7BeBd226154E865954A87650FAefA8F485d36081",
@@ -2157,7 +2149,7 @@
     "name": "ZigCoin",
     "symbol": "ZIG",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x7BeBd226154E865954A87650FAefA8F485d36081/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/zig.jpg"
   },
   {
     "address": "0xA8e7AD77C60eE6f30BaC54E2E7c0617Bd7B5A03E",
@@ -2165,7 +2157,7 @@
     "name": "zLot Finance",
     "symbol": "ZLOT",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xA8e7AD77C60eE6f30BaC54E2E7c0617Bd7B5A03E/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/zlot.jpg"
   },
   {
     "address": "0xE41d2489571d322189246DaFA5ebDe1F4699F498",
@@ -2181,7 +2173,7 @@
     "name": "Alchemix USD",
     "symbol": "alUSD",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xBC6DA0FE9aD5f3b0d58160288917AA56653660E9/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/alusd.jpg"
   },
   {
     "address": "0x1337DEF18C680aF1f9f45cBcab6309562975b1dD",
@@ -2189,7 +2181,7 @@
     "name": "Armor NXM",
     "symbol": "arNXM",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1337DEF18C680aF1f9f45cBcab6309562975b1dD/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/arnxm.jpg"
   },
   {
     "address": "0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28",
@@ -2197,7 +2189,7 @@
     "name": "Badger Sett Badger",
     "symbol": "bBADGER",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/bbadger.jpg"
   },
   {
     "address": "0x7e7E112A68d8D2E221E11047a72fFC1065c38e1a",
@@ -2205,7 +2197,7 @@
     "name": "Badger Sett Digg",
     "symbol": "bDIGG",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x7e7E112A68d8D2E221E11047a72fFC1065c38e1a/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/bdigg.jpg"
   },
   {
     "address": "0x673f9488619821aB4f4155FdFFe06f6139De518F",
@@ -2213,7 +2205,7 @@
     "name": "BarnBridge junior cDAI",
     "symbol": "bbcDAI",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x673f9488619821aB4f4155FdFFe06f6139De518F/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/bbcdai.jpg"
   },
   {
     "address": "0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
@@ -2221,7 +2213,7 @@
     "name": "Compound Dai",
     "symbol": "cDAI",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x5d3a536E4D6DbD6114cc1Ead35777bAB948E3643/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/cdai.jpg"
   },
   {
     "address": "0x62B9c7356A2Dc64a1969e19C23e4f579F9810Aa7",
@@ -2229,7 +2221,7 @@
     "name": "Convex CRV",
     "symbol": "cvxCRV",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x62B9c7356A2Dc64a1969e19C23e4f579F9810Aa7/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/cvxcrv.jpg"
   },
   {
     "address": "0xc4E15973E6fF2A35cC804c2CF9D2a1b817a8b40F",
@@ -2237,7 +2229,7 @@
     "name": "Interest-Bearing BTC",
     "symbol": "ibBTC",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xc4E15973E6fF2A35cC804c2CF9D2a1b817a8b40F/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/ibbtc.jpg"
   },
   {
     "address": "0xeEa3311250FE4c3268F8E684f7C87A82fF183Ec1",
@@ -2245,7 +2237,7 @@
     "name": "Interest Bearing Ether v2",
     "symbol": "ibETHv2",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xeEa3311250FE4c3268F8E684f7C87A82fF183Ec1/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/ibethv2.jpg"
   },
   {
     "address": "0x53dfEa0A8CC2A2A2e425E1C174Bc162999723ea0",
@@ -2253,7 +2245,7 @@
     "name": "Jarvis Synthetic Swiss Franc",
     "symbol": "jCHF",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x53dfEa0A8CC2A2A2e425E1C174Bc162999723ea0/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/jchf.jpg"
   },
   {
     "address": "0x0f17BC9a994b87b5225cFb6a2Cd4D667ADb4F20B",
@@ -2261,7 +2253,7 @@
     "name": "Jarvis Synthetic Euro",
     "symbol": "jEUR",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x0f17BC9a994b87b5225cFb6a2Cd4D667ADb4F20B/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/jeur.jpg"
   },
   {
     "address": "0x7409856CAE628f5d578B285B45669b36E7005283",
@@ -2269,7 +2261,7 @@
     "name": "Jarvis Synthetic British Pound",
     "symbol": "jGBP",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x7409856CAE628f5d578B285B45669b36E7005283/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/jgbp.jpg"
   },
   {
     "address": "0x945Facb997494CC2570096c74b5F66A3507330a1",
@@ -2285,7 +2277,7 @@
     "name": "Wrapped Mirror QQQ Token",
     "symbol": "mQQQ",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mqqq.jpg"
   },
   {
     "address": "0x26cF82e4aE43D31eA51e72B663d26e26a75AF729",
@@ -2293,7 +2285,7 @@
     "name": "Moonbase",
     "symbol": "mbBASED",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x26cF82e4aE43D31eA51e72B663d26e26a75AF729/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mbbased.jpg"
   },
   {
     "address": "0x44Ea84a85616F8e9cD719Fc843DE31D852ad7240",
@@ -2301,7 +2293,7 @@
     "name": "No Trump",
     "symbol": "nTRUMP",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x44Ea84a85616F8e9cD719Fc843DE31D852ad7240/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/ntrump.jpg"
   },
   {
     "address": "0x8064d9Ae6cDf087b1bcd5BDf3531bD5d8C537a68",
@@ -2309,7 +2301,7 @@
     "name": "BoringDAO BTC",
     "symbol": "oBTC",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8064d9Ae6cDf087b1bcd5BDf3531bD5d8C537a68/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/obtc.jpg"
   },
   {
     "address": "0xC88F47067dB2E25851317A2FDaE73a22c0777c37",
@@ -2317,7 +2309,7 @@
     "name": "oneBTC",
     "symbol": "oneBTC",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xC88F47067dB2E25851317A2FDaE73a22c0777c37/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/onebtc.jpg"
   },
   {
     "address": "0xEc0d77a58528a218cBf41Fa6E1585c8D7A085868",
@@ -2325,7 +2317,7 @@
     "name": "oneETH",
     "symbol": "oneETH",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xEc0d77a58528a218cBf41Fa6E1585c8D7A085868/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/oneeth.jpg"
   },
   {
     "address": "0x18Cc17a1EeD37C02A77B0B96b7890C7730E2a2CF",
@@ -2333,7 +2325,7 @@
     "name": "oneLINK",
     "symbol": "oneLINK",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x18Cc17a1EeD37C02A77B0B96b7890C7730E2a2CF/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/onelink.jpg"
   },
   {
     "address": "0x7BD198b9107496fD5cC3d7655AF52f43a8eDBc4C",
@@ -2341,7 +2333,7 @@
     "name": "oneVBTC",
     "symbol": "oneVBTC",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x7BD198b9107496fD5cC3d7655AF52f43a8eDBc4C/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/onevbtc.jpg"
   },
   {
     "address": "0x8F041A3940a5e6FB580075C3774E15FcFA0E1618",
@@ -2349,7 +2341,7 @@
     "name": "oneWING",
     "symbol": "oneWING",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8F041A3940a5e6FB580075C3774E15FcFA0E1618/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/onewing.jpg"
   },
   {
     "address": "0xcb46C550539ac3DB72dc7aF7c89B11c306C727c2",
@@ -2357,7 +2349,7 @@
     "name": "Poly Ontology Token",
     "symbol": "pONT",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xcb46C550539ac3DB72dc7aF7c89B11c306C727c2/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/pont.jpg"
   },
   {
     "address": "0xDb0f18081b505A7DE20B18ac41856BCB4Ba86A1a",
@@ -2365,7 +2357,7 @@
     "name": "Poly Ontology Wing Token",
     "symbol": "pWING",
     "decimals": 9,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xDb0f18081b505A7DE20B18ac41856BCB4Ba86A1a/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/pwing.jpg"
   },
   {
     "address": "0x459086F2376525BdCebA5bDDA135e4E9d3FeF5bf",
@@ -2373,7 +2365,7 @@
     "name": "renBCH",
     "symbol": "renBCH",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x459086F2376525BdCebA5bDDA135e4E9d3FeF5bf/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/renbch.jpg"
   },
   {
     "address": "0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D",
@@ -2381,7 +2373,7 @@
     "name": "renBTC",
     "symbol": "renBTC",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xEB4C2781e4ebA804CE9a9803C67d0893436bB27D/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/renbtc.jpg"
   },
   {
     "address": "0x3832d2F059E55934220881F831bE501D180671A7",
@@ -2389,7 +2381,7 @@
     "name": "renDOGE",
     "symbol": "renDOGE",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x3832d2F059E55934220881F831bE501D180671A7/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/rendoge.jpg"
   },
   {
     "address": "0x1C5db575E2Ff833E46a2E9864C22F4B22E0B37C2",
@@ -2397,7 +2389,7 @@
     "name": "renZEC",
     "symbol": "renZEC",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1C5db575E2Ff833E46a2E9864C22F4B22E0B37C2/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/renzch.jpg"
   },
   {
     "address": "0xeABACD844A196D7Faf3CE596edeBF9900341B420",
@@ -2405,7 +2397,7 @@
     "name": "Synth sCEX",
     "symbol": "sCEX",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/11833/small/sCEX.png?1616149820"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/scex.jpg"
   },
   {
     "address": "0xe1aFe1Fd76Fd88f78cBf599ea1846231B8bA3B6B",
@@ -2413,7 +2405,7 @@
     "name": "Synth sDEFI",
     "symbol": "sDEFI",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/11832/small/sDEFI.png?1616150059"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/sdefi.jpg"
   },
   {
     "address": "0x57Ab1ec28D129707052df4dF418D58a2D46d5f51",
@@ -2429,7 +2421,7 @@
     "name": "Synth XRP",
     "symbol": "sXRP",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/xrp.jpg"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/sxrp.jpg"
   },
   {
     "address": "0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D",
@@ -2437,7 +2429,7 @@
     "name": "stakedETH",
     "symbol": "stETH/StakeHound",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xDFe66B14D37C77F4E9b180cEb433d1b164f0281D/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/steth.jpg"
   },
   {
     "address": "0x160B1E5aaBFD70B2FC40Af815014925D71CEEd7E",
@@ -2445,7 +2437,7 @@
     "name": "stakedFiro",
     "symbol": "stFIRO",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x160B1E5aaBFD70B2FC40Af815014925D71CEEd7E/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/stfiro.jpg"
   },
   {
     "address": "0x8F5E78888f8933Ed676a62bB6B58a4b279aBE408",
@@ -2453,7 +2445,7 @@
     "name": "stakedXYM",
     "symbol": "stXYM",
     "decimals": 6,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8F5E78888f8933Ed676a62bB6B58a4b279aBE408/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/styxm.jpg"
   },
   {
     "address": "0x31B595e7cfDB624D10A3E7A562eD98c3567e3865",
@@ -2461,7 +2453,7 @@
     "name": "stakedZEN",
     "symbol": "stZEN",
     "decimals": 8,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x31B595e7cfDB624D10A3E7A562eD98c3567e3865/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/stzen.jpg"
   },
   {
     "address": "0x8dAEBADE922dF735c38C80C7eBD708Af50815fAa",
@@ -2469,7 +2461,7 @@
     "name": "tBTC",
     "symbol": "tBTC",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8dAEBADE922dF735c38C80C7eBD708Af50815fAa/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/tbtc.jpg"
   },
   {
     "address": "0xa1e72267084192Db7387c8CC1328fadE470e4149",
@@ -2477,7 +2469,7 @@
     "name": "TrueFi TrueUSD",
     "symbol": "tfTUSD",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xa1e72267084192Db7387c8CC1328fadE470e4149/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/tftusd.jpg"
   },
   {
     "address": "0xe1406825186D63980fd6e2eC61888f7B91C4bAe4",
@@ -2485,7 +2477,7 @@
     "name": "vBTC",
     "symbol": "vBTC",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xe1406825186D63980fd6e2eC61888f7B91C4bAe4/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/vbtc.jpg"
   },
   {
     "address": "0x0d438F3b5175Bebc262bF23753C1E53d03432bDE",
@@ -2501,7 +2493,7 @@
     "name": "wanWASP",
     "symbol": "wanWASP",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xEF5C6A88710a3C857105058F947D249bc490909D/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wanwasp.jpg"
   },
   {
     "address": "0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272",
@@ -2517,7 +2509,7 @@
     "name": "yearn Curve",
     "symbol": "yUSD",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yusd.jpg"
   },
   {
     "address": "0x9d409a0A012CFbA9B15F6D4B36Ac57A46966Ab9a",
@@ -2525,7 +2517,7 @@
     "name": "Yearn Compounding veCRV yVault",
     "symbol": "yvBOOST",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9d409a0A012CFbA9B15F6D4B36Ac57A46966Ab9a/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yvboost.jpg"
   },
   {
     "address": "0xc5bDdf9843308380375a611c18B50Fb9341f502A",
@@ -2533,7 +2525,7 @@
     "name": "veCRV-DAO yVault",
     "symbol": "yveCRV-DAO",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xc5bDdf9843308380375a611c18B50Fb9341f502A/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yvecrvdao.jpg"
   },
   {
     "chainId": 1,
@@ -2541,7 +2533,7 @@
     "name": "Mirrored Amazon",
     "symbol": "MAMZN",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mamzn.jpg"
   },
   {
     "chainId": 1,
@@ -2549,7 +2541,7 @@
     "name": "M US Oil",
     "symbol": "MUSO",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/muso.jpg"
   },
   {
     "chainId": 1,
@@ -2557,7 +2549,7 @@
     "name": "M Google",
     "symbol": "MGOOGL",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mgoogl.jpg"
   },
   {
     "chainId": 1,
@@ -2565,7 +2557,7 @@
     "name": "Mirrored ProShares",
     "symbol": "MVIXY",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mvixy.jpg"
   },
   {
     "chainId": 1,
@@ -2573,7 +2565,7 @@
     "name": "Mirrored Alibaba",
     "symbol": "MBABA",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mbaba.jpg"
   },
   {
     "chainId": 1,
@@ -2581,7 +2573,7 @@
     "name": "Mirrored Facebook",
     "symbol": "MFB",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mfb.jpg"
   },
   {
     "chainId": 1,
@@ -2589,7 +2581,7 @@
     "name": "Mirrored Microsoft",
     "symbol": "MMSFT",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mmsft.jpg"
   },
   {
     "chainId": 1,
@@ -2597,7 +2589,7 @@
     "name": "Mirrored iShares Si",
     "symbol": "MSLV",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mslv.jpg"
   },
   {
     "chainId": 1,
@@ -2605,7 +2597,7 @@
     "name": "Mirrored Tesla",
     "symbol": "MTSLA",
     "decimals": 18,
-    "logoURI": "https://assets.coingecko.com/coins/images/13645/small/mirror_logo_transparent.png?1611565327"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/mtsla.jpg"
   },
   {
     "chainId": 1,
@@ -2613,7 +2605,7 @@
     "name": "Yield Guild Games Token",
     "symbol": "YGG",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x25f8087EAD173b73D6e8B84329989A8eEA16CF73/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/ygg.jpg"
   },
   {
     "chainId": 1,
@@ -2621,7 +2613,7 @@
     "name": "Eden",
     "symbol": "EDEN",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1559FA1b8F28238FD5D76D9f434ad86FD20D1559/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/eden.jpg"
   },
   {
     "chainId": 1,
@@ -2629,7 +2621,7 @@
     "name": "MaidCoin",
     "symbol": "MAID",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x4Af698B479D0098229DC715655c667Ceb6cd8433/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/maid.jpg"
   },
   {
     "chainId": 1,
@@ -2645,7 +2637,7 @@
     "name": "Bad Trip",
     "symbol": "LSD",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x749b964F3dd571b177fc6E415A07F62b05047dA4/logo.png"
+	"logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/lsd.jpg"
   },
   {
     "chainId": 1,
@@ -2692,7 +2684,7 @@
     "address": "0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5",
     "name": "renFIL",
     "symbol": "renFIL",
-    "decimals": 8,
+    "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xD5147bc8e386d91Cc5DBE72099DAC6C9b99276F5/logo.png"
   },
   {
@@ -2765,7 +2757,7 @@
     "name": "BitDAO",
     "symbol": "BIT",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1A4b46696b2bB4794Eb3D4c26f1c55F9170fa4C5/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/bit.jpg"
   },
   {
     "chainId": 1,
@@ -2773,7 +2765,7 @@
     "name": "Wrapped NCG",
     "symbol": "WNCG",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xf203Ca1769ca8e9e8FE1DA9D147DB68B6c919817/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wncg.jpg"
   },
   {
     "chainId": 1,
@@ -2781,7 +2773,7 @@
     "name": "Wrapped Liquid Staked Ether 2.0",
     "symbol": "wstETH",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/wsteth.jpg"
   },
   {
     "chainId": 1,
@@ -2805,7 +2797,7 @@
     "name": "PIXEL",
     "symbol": "Pixel",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x1590ABe3612Be1CB3ab5B0f28874D521576e97Dc/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/pixel.jpg"
   },
   {
     "chainId": 1,
@@ -2818,7 +2810,7 @@
   {
     "chainId": 1,
     "address": "0x0c7D5ae016f806603CB1782bEa29AC69471CAb9c",
-    "name": "BitFrost",
+    "name": "Bifrost",
     "symbol": "BFC",
     "decimals": 18,
     "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x0c7D5ae016f806603CB1782bEa29AC69471CAb9c/logo.png"
@@ -2829,6 +2821,254 @@
     "name": "BiFi",
     "symbol": "BIFI",
     "decimals": 18,
-    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x2791BfD60D232150Bff86b39B7146c0eaAA2BA81/logo.png"
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/bifi.jpg"
+  },
+  {
+    "chainId": 1,
+    "address": "0xDFDb7f72c1F195C5951a234e8DB9806EB0635346",
+    "name": "Feisty Doge NFT",
+    "symbol": "NFD",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xDFDb7f72c1F195C5951a234e8DB9806EB0635346/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xBAac2B4491727D78D2b78815144570b9f2Fe8899",
+    "name": "The Doge NFT",
+    "symbol": "DOG",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xBAac2B4491727D78D2b78815144570b9f2Fe8899/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x32353A6C91143bfd6C7d363B546e62a9A2489A20",
+    "name": "Adventure Gold",
+    "symbol": "AGLD",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x32353A6C91143bfd6C7d363B546e62a9A2489A20/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xEBd9D99A3982d547C5Bb4DB7E3b1F9F14b67Eb83",
+    "name": "Everest ID",
+    "symbol": "ID",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xEBd9D99A3982d547C5Bb4DB7E3b1F9F14b67Eb83/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x5f98805A4E8be255a32880FDeC7F6728C6568bA0",
+    "name": "LUSD Stablecoin",
+    "symbol": "LUSD",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x5f98805A4E8be255a32880FDeC7F6728C6568bA0/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xbA7970f10D9f0531941DcEd1dda7ef3016B24e5b",
+    "name": "Based Gold",
+    "symbol": "BGLD",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xbA7970f10D9f0531941DcEd1dda7ef3016B24e5b/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xE2311ae37502105b442bBef831E9b53c5d2e9B3b",
+    "name": "Banana",
+    "symbol": "BANANA",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xE2311ae37502105b442bBef831E9b53c5d2e9B3b/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x92D6C1e31e14520e676a687F0a93788B716BEff5",
+    "name": "dYdX",
+    "symbol": "DYDX",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x92D6C1e31e14520e676a687F0a93788B716BEff5/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x8f693ca8D21b157107184d29D398A8D082b38b76",
+    "name": "Streamr",
+    "symbol": "DATA/Streamr",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8f693ca8D21b157107184d29D398A8D082b38b76/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x33d63Ba1E57E54779F7dDAeaA7109349344cf5F1",
+    "name": "Data Economy Index",
+    "symbol": "DATA/Index",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x33d63Ba1E57E54779F7dDAeaA7109349344cf5F1/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x8642A849D0dcb7a15a974794668ADcfbe4794B56",
+    "name": "Prosper",
+    "symbol": "PROS",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x8642A849D0dcb7a15a974794668ADcfbe4794B56/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x0f2D719407FdBeFF09D87557AbB7232601FD9F29",
+    "name": "Synapse",
+    "symbol": "SYN",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x0f2D719407FdBeFF09D87557AbB7232601FD9F29/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x2610F0bFC21EF389fe4D03CFB7De9ac1E6C99D6E",
+    "name": "Skyrim Finance",
+    "symbol": "SKYRIM",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x2610F0bFC21EF389fe4D03CFB7De9ac1E6C99D6E/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x9C4A4204B79dd291D6b6571C5BE8BbcD0622F050",
+    "name": "Tracer",
+    "symbol": "TCR",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9C4A4204B79dd291D6b6571C5BE8BbcD0622F050/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xea7Cc765eBC94C4805e3BFf28D7E4aE48D06468A",
+    "name": "NearPad",
+    "symbol": "PAD",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xea7Cc765eBC94C4805e3BFf28D7E4aE48D06468A/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x6B4c7A5e3f0B99FCD83e9c089BDDD6c7FCe5c611",
+    "name": "Million",
+    "symbol": "MM/Million",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x6B4c7A5e3f0B99FCD83e9c089BDDD6c7FCe5c611/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x16CDA4028e9E872a38AcB903176719299beAed87",
+    "name": "MARS4",
+    "symbol": "MARS4",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x16CDA4028e9E872a38AcB903176719299beAed87/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x84d821F7FbDD595c4C4A50842913e6b1E07d7a53",
+    "name": "BNPL Pay",
+    "symbol": "BNPL",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x84d821F7FbDD595c4C4A50842913e6b1E07d7a53/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x725C263e32c72dDC3A19bEa12C5a0479a81eE688",
+    "name": "Bridge Mutual",
+    "symbol": "BMI",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x725C263e32c72dDC3A19bEa12C5a0479a81eE688/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x65Def5029A0e7591e46B38742bFEdd1Fb7b24436",
+    "name": "Kanpeki",
+    "symbol": "KAE",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x65Def5029A0e7591e46B38742bFEdd1Fb7b24436/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xadd5E881984783dD432F80381Fb52F45B53f3e70",
+    "name": "Vite",
+    "symbol": "VITE",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xadd5E881984783dD432F80381Fb52F45B53f3e70/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x3405A1bd46B85c5C029483FbECf2F3E611026e45",
+    "name": "WOWSwap",
+    "symbol": "WOW",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x3405A1bd46B85c5C029483FbECf2F3E611026e45/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x44017598f2AF1bD733F9D87b5017b4E7c1B28DDE",
+    "name": "pSTAKE Staked Atom",
+    "symbol": "stkATOM",
+    "decimals": 6,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x44017598f2AF1bD733F9D87b5017b4E7c1B28DDE/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x332E824e46FcEeB9E59ba9491B80d3e6d42B0B59",
+    "name": "CheeseFry",
+    "symbol": "CHEESE",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x332E824e46FcEeB9E59ba9491B80d3e6d42B0B59/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xe76C6c83af64e4C60245D8C7dE953DF673a7A33D",
+    "name": "Rail",
+    "symbol": "RAIL",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xe76C6c83af64e4C60245D8C7dE953DF673a7A33D/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x1e33dBA7cd47e79C4385Ba39442A693B910a0A8a",
+    "name": "Celo native",
+    "symbol": "CELO",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/celo.jpg"
+  },
+  {
+    "chainId": 1,
+    "address": "0x3c8D2FCE49906e11e71cB16Fa0fFeB2B16C29638",
+    "name": "Nifty League",
+    "symbol": "NFTL",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x3c8D2FCE49906e11e71cB16Fa0fFeB2B16C29638/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x97872EAfd79940C7b24f7BCc1EADb1457347ADc9",
+    "name": "Strips Token",
+    "symbol": "STRP",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x97872EAfd79940C7b24f7BCc1EADb1457347ADc9/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xEe9801669C6138E84bD50dEB500827b776777d28",
+    "name": "O3 Swap Token",
+    "symbol": "O3",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xEe9801669C6138E84bD50dEB500827b776777d28/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0xFb782396c9b20E564A64896181c7AC8d8979d5F4",
+    "name": "DivergenceProtocol",
+    "symbol": "DIVER",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0xFb782396c9b20E564A64896181c7AC8d8979d5F4/logo.png"
+  },
+  {
+    "chainId": 1,
+    "address": "0x9d3EE6B64e69Ebe12a4bF0b01D031CB80F556eE4",
+    "name": "Polygon Ecosystem Index",
+    "symbol": "PECO",
+    "decimals": 18,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/ethereum/assets/0x9d3EE6B64e69Ebe12a4bF0b01D031CB80F556eE4/logo.png"
   }
 ]
