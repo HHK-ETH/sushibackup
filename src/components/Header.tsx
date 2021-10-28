@@ -6,7 +6,7 @@ import {useWeb3React} from "@web3-react/core";
 export function Header(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
     const {account, active} = context;
-    const connectBtnLabel = active && account ? account?.slice(0, 5) + '***' + account?.slice(account?.length - 5, account?.length - 1) : 'Connect wallet';
+    const connectBtnLabel = active && account ? account.slice(0, 5) + '***' + account?.slice(account.length - 5, account.length) : 'Connect wallet';
     const [open, setOpen] = useState(false);
 
     return (
