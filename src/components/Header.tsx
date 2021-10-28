@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {ConnectModal} from "./ConnectModal";
+import React, {useState} from "react";
+import {ConnectModal} from "./wallet/ConnectModal";
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
-import {providers} from "ethers";
 
 export function Header(): JSX.Element {
     const context = useWeb3React<Web3Provider>();
-    const {connector, library, chainId, account, activate, deactivate, active, error} = context;
+    const {account, active} = context;
     const connectBtnLabel = active && account ? account?.slice(0, 5) + '***' + account?.slice(account?.length - 5, account?.length - 1) : 'Connect wallet';
     const [open, setOpen] = useState(false);
-    const [privateKey, setPrivateKey] = useState('');
 
     return (
         <>
