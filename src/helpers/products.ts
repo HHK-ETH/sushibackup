@@ -1,10 +1,11 @@
-import kashiLightLogo from "./../imports/images/products/kashi-full-logo-light.png";
+import kashiLogo from "./../imports/images/products/kashi.png";
 import bentoBoxLogo from "./../imports/images/products/bentoBox.png";
 
-interface IProduct {
+export interface IProduct {
     name: string,
     link: string,
     logo: string, //logo path
+    description: string,
     active: boolean
 }
 
@@ -12,12 +13,15 @@ export const PRODUCTS: IProduct[] = [
     {
         name: "Kashi",
         link: "kashi",
-        logo: kashiLightLogo,
+        logo: kashiLogo,
+        description: "Isolated lending and borrowing.",
         active: true
-    },{
+    },
+    {
         name: "BentoBox",
         link: "bentobox",
         logo: bentoBoxLogo,
+        description: "Interest bearing vault.",
         active: true
     }
 ];

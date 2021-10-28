@@ -24,7 +24,7 @@ function getBackground(): string {
 function App(): JSX.Element {
 
     return (
-        <div className="App text-white bg-cover bg-no-repeat bg-center w-full h-screen" style={{backgroundImage: "url("+getBackground()+")"}}>
+        <div className="App bg-cover bg-no-repeat bg-center w-full h-screen" style={{backgroundImage: "url("+getBackground()+")"}}>
             <Router>
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Header />

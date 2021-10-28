@@ -68,11 +68,11 @@ export function Wallet() {
                     const currentConnector = connectorsByName[name]
                     const connected = currentConnector === connector
                     const disabled = !triedEager || !!activatingConnector || connected || !!error
-                    const bgColor = connected ? 'bg-green-500' : 'bg-black'
+                    const bgColor = connected ? 'bg-green-500 hover:bg-green-600' : 'bg-pink-500 hover:bg-pink-600'
 
                     return (
                         <button
-                            className={bgColor +" text-white px-9 focus:outline-none border-rounded font-medium text-medium w-full"}
+                            className={bgColor +" text-white text-md px-8 py-2 rounded-full w-full"}
                             disabled={disabled}
                             key={name}
                             onClick={() => {
@@ -84,20 +84,6 @@ export function Wallet() {
                         </button>
                     )
                 })}
-            </div>
-            <div className={"grid justify-items-center mt-3"}>
-                {(active || error) && (
-                    <button
-                        className="bg-black text-white px-9 focus:outline-none border-rounded font-medium text-medium"
-                        onClick={() => {
-                            deactivate()
-                        }}
-                    >
-                        Deactivate
-                    </button>
-                )}
-
-                {!!error && <h4>{getErrorMessage(error)}</h4>}
             </div>
         </div>
     )
