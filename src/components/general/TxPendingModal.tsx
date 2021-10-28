@@ -14,7 +14,7 @@ export function TxPendingModal({txPending}: { txPending: string }) {
             leaveTo="opacity-0"
         >
             <div className={"bg-white p-2 text-center shadow-2xl border rounded-lg absolute top-18 right-6"}>
-                <a className={"underline text-blue-400"} href={'https://polygonscan.com/tx/'+txPending} target={"_blank"}>Transaction sent.</a>
+                <a className={"underline text-blue-400"} href={'https://polygonscan.com/tx/'+txPending} target={"_blank"} rel={"noreferrer"}>Transaction sent.</a>
                 <h3>Waiting for confirmation...</h3>
                 <div className={"pl-20"}>
                     <Spinner radius={40} color={"#333"} stroke={2} visible={true}/>

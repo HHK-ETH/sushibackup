@@ -14,7 +14,7 @@ export function Header(): JSX.Element {
             <ConnectModal open={open} setOpen={setOpen} />
             <nav className="p-6">
                     <button
-                        className="bg-black text-white px-12 focus:outline-none rounded font-medium text-lg float-right"
+                        className="bg-pink-500 hover:bg-pink-600 text-white px-12 focus:outline-none rounded font-medium text-lg float-right"
                         onClick={() => setOpen(true)}
                     >{connectBtnLabel}
                     </button>
