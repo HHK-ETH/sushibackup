@@ -14,7 +14,7 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/walletconnect-connector": "^6.2.0",
     "@web3-react/walletlink-connector": "^6.2.1",
-    "ethers": "^5.3.1",
+    "ethers": "^5.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "CI= yarn craco build",
     "eject": "node_modules/.bin/react-scripts eject"
   },
   "eslintConfig": {
