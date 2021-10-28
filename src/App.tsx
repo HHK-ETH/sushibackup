@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import {Web3ReactProvider} from '@web3-react/core';
 import {Home} from "./components/Home";
+import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -15,21 +16,26 @@ function getLibrary(provider: any) {
     return library
 }
 
+function getBackground(): string {
+    const date = new Date().getTime();
+    return BACKGROUNDS[date % 5];
+}
+
 function App(): JSX.Element {
 
     return (
-        <Router>
-            <Web3ReactProvider getLibrary={getLibrary}>
-                <Header />
-                <div className="App">
-                    <Switch>
-                        <Route path={"/"}>
-                            <Home/>
-                        </Route>
-                    </Switch>
-                </div>
-            </Web3ReactProvider>
-        </Router>
+        <div className="App text-white bg-cover bg-no-repeat bg-center w-full h-screen" style={{backgroundImage: "url("+getBackground()+")"}}>
+            <Router>
+                <Web3ReactProvider getLibrary={getLibrary}>
+                    <Header />
+                        <Switch>
+                            <Route path={"/"}>
+                                <Home/>
+                            </Route>
+                        </Switch>
+                </Web3ReactProvider>
+            </Router>
+        </div>
     );
 }
 
