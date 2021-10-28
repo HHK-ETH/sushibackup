@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header} from "./components/Header";
+import {Header} from "./components/general/Header";
 import {Web3Provider} from "@ethersproject/providers";
 import {
     BrowserRouter as Router,
@@ -7,7 +7,7 @@ import {
     Route
 } from "react-router-dom";
 import {Web3ReactProvider} from '@web3-react/core';
-import {Home} from "./components/Home";
+import {Home} from "./components/general/Home";
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
 
 function getLibrary(provider: any) {

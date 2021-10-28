@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ConnectModal} from "./wallet/ConnectModal";
+import {ConnectModal} from "../wallet/ConnectModal";
 import {Web3Provider} from "@ethersproject/providers";
 import {useWeb3React} from "@web3-react/core";
 

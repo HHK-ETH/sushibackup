@@ -1,5 +1,5 @@
 import React from "react";
-import { PRODUCTS } from "../helpers/products";
+import { PRODUCTS } from "../../helpers/products";
 
 export function Home(): JSX.Element {
     return (
