@@ -31,7 +31,7 @@ function getErrorMessage(error: Error) {
     if (error instanceof NoEthereumProviderError) {
         return 'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.'
     } else if (error instanceof UnsupportedChainIdError) {
-        return "You're connected to an unsupported network. Supported networks are : "+NETWORKS.map((network) => {return " "+network.name})+"."
+        return "You're connected to an unsupported network. Supported networks are : "+Object.values(NETWORKS).map((network) => {return " "+network.name})+"."
     } else if (
         error instanceof UserRejectedRequestErrorInjected ||
         error instanceof UserRejectedRequestErrorWalletConnect

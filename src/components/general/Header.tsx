@@ -19,7 +19,7 @@ export function Header(): JSX.Element {
                         onClick={() => setOpen(true)}
                     >
                         {chainId &&
-                            <img className={"h-6 inline-block mr-4 -ml-4 -mt-1 py-1"} alt={"chain-logo"} src={NETWORKS.find((network) => {return network.id === chainId})?.logo}/>
+                            <img className={"h-6 inline-block mr-4 -ml-4 -mt-1 py-1"} alt={"chain-logo"} src={NETWORKS[chainId].logo}/>
                         }
                         {connectBtnLabel}
                     </button>

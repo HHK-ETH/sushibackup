@@ -6,7 +6,7 @@ export function Home(): JSX.Element {
     return (
         <div className={"container mx-auto pt-16 p-4 grid grid-cols-4 gap-4"}>
             {
-                PRODUCTS.map((product) => {
+                Object.values(PRODUCTS).map((product) => {
                     return (
                         <ProductBox product={product}/>
                     )

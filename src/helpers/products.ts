@@ -6,22 +6,39 @@ export interface IProduct {
     link: string,
     logo: string, //logo path
     description: string,
-    active: boolean
+    active: boolean,
+    networks: {[id: number]: string}
 }
 
-export const PRODUCTS: IProduct[] = [
-    {
+export const PRODUCTS: {[name: string]: IProduct} = {
+    "Kashi": {
         name: "Kashi",
         link: "kashi",
         logo: kashiLogo,
         description: "Isolated lending and borrowing.",
-        active: true
+        active: true,
+        networks: {
+            1: "",
+            42161: "",
+            43114: "",
+            56: "",
+            137: "",
+            100: ""
+        }
     },
-    {
+    "BentoBox": {
         name: "BentoBox",
         link: "bentobox",
         logo: bentoBoxLogo,
         description: "Interest bearing vault.",
-        active: true
+        active: true,
+        networks: {
+            1: "",
+            42161: "",
+            43114: "",
+            56: "",
+            137: "",
+            100: ""
+        }
     }
-];
+};

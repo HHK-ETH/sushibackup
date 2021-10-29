@@ -4,11 +4,11 @@ import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { NETWORKS } from '../../helpers/network'
 
 const RPC_URLS: { [chainId: number]: string } = {};
-NETWORKS.map((network) => {
+Object.values(NETWORKS).map((network) => {
     RPC_URLS[network.id] = network.rpc
 });
 
-export const injected = new InjectedConnector({ supportedChainIds: NETWORKS.map((network) => {return network.id}) })
+export const injected = new InjectedConnector({ supportedChainIds: Object.values(NETWORKS).map((network) => {return network.id}) })
 
 export const walletconnect = new WalletConnectConnector({
     rpc: RPC_URLS,
