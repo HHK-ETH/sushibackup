@@ -13,24 +13,25 @@ import {
     walletconnect,
     walletlink
 } from './connectors'
+import { NETWORKS } from "../../helpers/network";
 
 enum ConnectorNames {
     Injected = 'Injected/Metamask',
     WalletConnect = 'WalletConnect',
-    WalletLink = 'WalletLink'
+    //WalletLink = 'WalletLink'
 }
 
 const connectorsByName: { [connectorName in ConnectorNames]: any } = {
     [ConnectorNames.Injected]: injected,
-    [ConnectorNames.WalletConnect]: walletconnect,
-    [ConnectorNames.WalletLink]: walletlink
+    [ConnectorNames.WalletConnect]: walletconnect
+    //[ConnectorNames.WalletLink]: walletlink
 }
 
 function getErrorMessage(error: Error) {
     if (error instanceof NoEthereumProviderError) {
         return 'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.'
     } else if (error instanceof UnsupportedChainIdError) {
-        return "You're connected to an unsupported network. Supported networks are : Ethereum, Polygon, Arbitrum, Avalanche, BSC, Celo, Fantom, Harmony, Moonriver, XDAI"
+        return "You're connected to an unsupported network. Supported networks are : "+NETWORKS.map((network) => {return " "+network.name})+"."
     } else if (
         error instanceof UserRejectedRequestErrorInjected ||
         error instanceof UserRejectedRequestErrorWalletConnect
@@ -84,8 +85,10 @@ export function Wallet() {
                         </button>
                     )
                 })}
-                {!!error && <h4>{getErrorMessage(error)}</h4>}
             </div>
+            {!!error && 
+                <p className="text-white text-center w-96 mx-auto mt-4">{getErrorMessage(error)}</p>
+            }
         </div>
     )
 }

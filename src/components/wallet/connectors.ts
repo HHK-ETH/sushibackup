@@ -1,20 +1,22 @@
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
+import { NETWORKS } from '../../helpers/network'
 
-const RPC_URLS: { [chainId: number]: string } = {
-    1: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
-    4: 'https://rinkeby.infura.io/v3/84842078b09946638c03157f83405213',
-}
+const RPC_URLS: { [chainId: number]: string } = {};
+NETWORKS.map((network) => {
+    RPC_URLS[network.id] = network.rpc
+});
 
-export const injected = new InjectedConnector({ supportedChainIds: [137, 1] })
+export const injected = new InjectedConnector({ supportedChainIds: NETWORKS.map((network) => {return network.id}) })
 
 export const walletconnect = new WalletConnectConnector({
-    rpc: { 1: RPC_URLS[1] },
+    rpc: RPC_URLS,
     qrcode: true
 })
 
+// todo: add multichain walletlink
 export const walletlink = new WalletLinkConnector({
     url: RPC_URLS[1],
-    appName: 'web3-react example'
+    appName: 'Sushi backup'
 })
