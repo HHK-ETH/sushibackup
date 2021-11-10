@@ -13,9 +13,9 @@ export function Header(): JSX.Element {
     return (
         <>
             <ConnectModal open={open} setOpen={setOpen} />
-            <nav className="p-6">
+            <nav className="p-6 mb-6">
                     <button
-                        className="bg-pink-500 hover:bg-pink-600 text-white px-12 focus:outline-none rounded font-medium text-lg float-right"
+                        className="float-right px-12 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600 focus:outline-none"
                         onClick={() => setOpen(true)}
                     >
                         {chainId &&
