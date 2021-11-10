@@ -7,9 +7,12 @@ export function Home(): JSX.Element {
         <div className={"container mx-auto pt-16 p-4 grid grid-cols-4 gap-4"}>
             {
                 Object.values(PRODUCTS).map((product) => {
-                    return (
-                        <ProductBox product={product}/>
-                    )
+                    if (product.active) { 
+                        return (
+                            <ProductBox product={product}/>
+                        )
+                    }
+                    return <></>
                 })
             }
         </div>

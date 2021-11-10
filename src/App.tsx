@@ -9,6 +9,7 @@ import {
 import {Web3ReactProvider} from '@web3-react/core';
 import {Home} from "./components/general/Home";
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
+import { Kashi } from './components/Kashi/Kashi';
 
 function getLibrary(provider: any) {
     const library = new Web3Provider(provider)
@@ -29,6 +30,9 @@ function App(): JSX.Element {
                 <Web3ReactProvider getLibrary={getLibrary}>
                     <Header />
                         <Switch>
+                            <Route path={"/kashi"}>
+                                <Kashi/>
+                            </Route>
                             <Route path={"/"}>
                                 <Home/>
                             </Route>
