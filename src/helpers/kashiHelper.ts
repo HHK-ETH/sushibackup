@@ -25,5 +25,7 @@ export async function fetchKashiPairsData(web3Provider: Web3Provider, account: s
         totalBorrow: totalBorrow,
         utilization: utilization
       }
+    }).sort((pairA: IKashiPairData, pairB: IKashiPairData) => {
+      return pairA.apr > pairB.apr ? -1 : 1;
     });
 }

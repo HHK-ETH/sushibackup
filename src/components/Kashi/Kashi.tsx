@@ -48,8 +48,9 @@ export function Kashi(): JSX.Element {
                 <div className="">TVL</div>
             </div>
             {kashiPairsData.map((pair, i) => {
+                const lendApr: number = pair.utilization > 0.0001 ? pair.apr * pair.utilization * 0.9 : 0;
                 return (
-                    <div className="grid grid-cols-6 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75">
+                    <div key={i} className="grid grid-cols-6 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75">
                         <div className="">
                             <img className="inline-block h-10 mr-2" alt="logo" src={pair.asset.logoURI}/>
                             {pair.asset.symbol}
@@ -58,10 +59,13 @@ export function Kashi(): JSX.Element {
                             <img className="inline-block h-10 mr-2" alt="logo" src={pair.collateral.logoURI}/>
                             {pair.collateral.symbol}
                         </div>
-                        <div className="">Lend APR</div>
-                        <div className="">Borrow APR</div>
-                        <div className="">Utilization</div>
-                        <div className="">TVL</div>
+                        <div className="">{lendApr.toFixed(2)}%</div>
+                        <div className="">{pair.apr.toFixed(2)}%</div>
+                        <div className="">{pair.utilization > 0.0001 ? (pair.utilization * 100).toFixed(2) : 0}%</div>
+                        <div className="">
+                            <div>{pair.totalAsset.toFixed(2)} {pair.asset.symbol}</div>
+                            <div>{pair.totalBorrow.toFixed(2)} {pair.collateral.symbol}</div>
+                        </div>
                     </div>
                 )
             })}
