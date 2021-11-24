@@ -21,5 +21,6 @@ export interface IKashiPairData {
     apr: number,
     totalAsset: number,
     totalBorrow: number,
-    utilization: number
+    utilization: number,
+    userAsset: number
 }
