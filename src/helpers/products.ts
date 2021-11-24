@@ -3,6 +3,7 @@ import bentoBoxLogo from "./../imports/images/products/bentoBox.png";
 import kashiABI from "./../imports/abis/kashi.json";
 import bentoBoxABI from "./../imports/abis/bento.json";
 import boringHelperABI from "./../imports/abis/boringhelper.json";
+import sushiFactoryABI from "./../imports/abis/sushiFactory.json";
 import { CHAIN_IDS } from "./network";
 
 export interface IProduct {
@@ -60,5 +61,25 @@ export const PRODUCTS: {[name: string]: IProduct} = {
             [CHAIN_IDS.XDAI]: "0x97e4a0fb71243A83A6FbaEF7Cf73617594e4cF2F"
         },
         ABI: boringHelperABI
+    },
+    "SushiMaker": {
+        name: "SushiMaker",
+        link: "sushimaker",
+        logo: "",
+        description: "See how much fees available for the SushiBar.",
+        active: true,
+        networks: {
+            [CHAIN_IDS.ARBITRUM]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.AVALANCHE]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.BSC]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.CELO]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.ETHEREUM]: "0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac",
+            [CHAIN_IDS.FANTOM]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.HARMONY]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.MOONRIVER]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.POLYGON]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+            [CHAIN_IDS.XDAI]: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
+        },
+        ABI: sushiFactoryABI
     }
 };
