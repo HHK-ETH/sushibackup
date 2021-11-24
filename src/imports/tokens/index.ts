@@ -33,7 +33,7 @@ export const TOKENS: {[id: number]: IToken[]} = {
 
 export function getToken(address: string, chainId: number): IToken {
     const token: IToken | undefined = TOKENS[chainId].find((token) => {
-        return token.address === address;
+        return token.address.toLowerCase() === address.toLowerCase();
     })
     if (token !== undefined) return token;
     return {
