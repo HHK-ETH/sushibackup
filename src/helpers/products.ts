@@ -1,5 +1,6 @@
 import kashiLogo from "./../imports/images/products/kashi.png";
 import bentoBoxLogo from "./../imports/images/products/bentoBox.png";
+import sushiMakerLogo from "./../imports/images/products/sushiMaker.png";
 import kashiABI from "./../imports/abis/kashi.json";
 import bentoBoxABI from "./../imports/abis/bento.json";
 import boringHelperABI from "./../imports/abis/boringhelper.json";
@@ -65,7 +66,7 @@ export const PRODUCTS: {[name: string]: IProduct} = {
     "SushiMaker": {
         name: "SushiMaker",
         link: "sushimaker",
-        logo: "",
+        logo: sushiMakerLogo,
         description: "See how much fees available for the SushiBar.",
         active: true,
         networks: {
