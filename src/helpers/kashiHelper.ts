@@ -1,31 +1,65 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { BigNumber, Contract } from "ethers";
 import { PRODUCTS } from "./products";
-import {IKashiPairData, KASHI_PAIRS} from "./../imports/kashiPairs";
+import { IKashiPairData, KASHI_PAIRS } from "./../imports/kashiPairs";
 import { getToken, IToken } from "../imports/tokens";
 import { formatUnits } from "ethers/lib/utils";
 
-export async function fetchKashiPairsData(web3Provider: Web3Provider, account: string, chainId: number): Promise<IKashiPairData[]> {
-    const boringhelper: Contract = new Contract(PRODUCTS["BoringHelper"].networks[chainId], PRODUCTS["BoringHelper"].ABI, web3Provider.getSigner());
-    const kashiPairs: string[] = KASHI_PAIRS[chainId];
-    const pairsData: any[] = await boringhelper.pollKashiPairs(account, kashiPairs);
-    return pairsData.map((pair, index): IKashiPairData => {
+export async function fetchKashiPairsData(
+  web3Provider: Web3Provider,
+  account: string,
+  chainId: number
+): Promise<IKashiPairData[]> {
+  const boringhelper: Contract = new Contract(
+    PRODUCTS["BoringHelper"].networks[chainId],
+    PRODUCTS["BoringHelper"].ABI,
+    web3Provider.getSigner()
+  );
+  const kashiPairs: string[] = KASHI_PAIRS[chainId];
+  const pairsData: any[] = await boringhelper.pollKashiPairs(
+    account,
+    kashiPairs
+  );
+  return (await Promise.all(pairsData
+    .map(async(pair, index): Promise<IKashiPairData> => {
       const asset: IToken = getToken(pair.asset, chainId);
       const collateral: IToken = getToken(pair.collateral, chainId);
-      const apr: number = parseFloat(formatUnits(BigNumber.from(pair.accrueInfo.interestPerSecond).mul(BigNumber.from(3600*24*365*100))));
-      const totalAsset: number = parseFloat(formatUnits(BigNumber.from(pair.totalBorrow.elastic).add(BigNumber.from(pair.totalAsset.elastic)), asset.decimals));
-      const totalBorrow: number = parseFloat(formatUnits(BigNumber.from(pair.totalBorrow.elastic), asset.decimals));
+      const apr: number = parseFloat(
+        formatUnits(
+          BigNumber.from(pair.accrueInfo.interestPerSecond).mul(
+            BigNumber.from(3600 * 24 * 365 * 100)
+          )
+        )
+      );
+      const totalAsset: number = parseFloat(
+        formatUnits(
+          BigNumber.from(pair.totalBorrow.elastic).add(
+            BigNumber.from(pair.totalAsset.elastic)
+          ),
+          asset.decimals
+        )
+      );
+      const totalBorrow: number = parseFloat(
+        formatUnits(BigNumber.from(pair.totalBorrow.elastic), asset.decimals)
+      );
+      const bentoContract: Contract = new Contract(PRODUCTS["BentoBox"].networks[chainId], PRODUCTS["BentoBox"].ABI, web3Provider.getSigner());
       const utilization: number = totalBorrow / totalAsset;
+      const allShare = pair.totalAsset.elastic.add(
+        await bentoContract.toShare(asset.address, pair.totalBorrow.elastic, true)
+      );
+      const userShares = pair.totalAsset.base.gt(0) ? pair.userAssetFraction.mul(allShare).div(pair.totalAsset.base) : 0;
+      const userAsset = parseFloat(formatUnits(await bentoContract.toAmount(asset.address, userShares, true), asset.decimals));
       return {
         address: kashiPairs[index],
         asset: asset,
         collateral: collateral,
-        apr: (apr),
+        apr: apr,
         totalAsset: totalAsset,
         totalBorrow: totalBorrow,
-        utilization: utilization
-      }
-    }).sort((pairA: IKashiPairData, pairB: IKashiPairData) => {
+        utilization: utilization,
+        userAsset: userAsset,
+      };
+    }))).sort((pairA: IKashiPairData, pairB: IKashiPairData) => {
       return pairA.apr > pairB.apr ? -1 : 1;
     });
 }
