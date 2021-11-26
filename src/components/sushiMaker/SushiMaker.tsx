@@ -6,9 +6,10 @@ import { getAllpairs, IPairData } from "./../../helpers/sushiMaker";
 
 export function SushiMaker(): JSX.Element {
   const context = useWeb3React<Web3Provider>();
-  const { account, active, chainId, connector } = context;
+  const { active, chainId, connector } = context;
   const [loading, setLoading]: [boolean, Function] = useState(false);
   const [pairs, setPairs]: [IPairData[], Function] = useState([]);
+  const [totalFees, setTotalFees]: [number, Function] = useState(0);
 
   useEffect(() => {
     async function fetchPairs() {
@@ -18,10 +19,16 @@ export function SushiMaker(): JSX.Element {
         await connector.getProvider(),
         "any"
       );
-      setPairs(((await getAllpairs(web3Provider, chainId)).sort((pairA, pairB) => {
+      const tempAllPairs = ((await getAllpairs(web3Provider, chainId)).sort((pairA, pairB) => {
         if (pairA.value > pairB.value) return -1;
         return +1;
-      })));
+      }));
+      let tempTotalFees = 0;
+      tempAllPairs.map((pair) => {
+        tempTotalFees += pair.value;
+      });
+      setPairs(tempAllPairs);
+      setTotalFees(tempTotalFees);
       setLoading(false);
     }
     fetchPairs();
@@ -29,6 +36,7 @@ export function SushiMaker(): JSX.Element {
 
   return (
     <div className="container p-16 mx-auto text-center text-white">
+      <h1 className="text-xl">Total fees available: {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</h1>
       {loading && <div className={"text-white"}>loading data...</div>}
       <div className="grid grid-cols-6 py-8 bg-indigo-900 rounded-t-xl">
         <div className="">Pair</div>
