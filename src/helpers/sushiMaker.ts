@@ -27,12 +27,10 @@ export async function getAllpairs(
     web3Provider
   );
   const feeTo: string = await sushiFactory.feeTo();
-  const pairsLength: number = BigNumber.from(
-    await sushiFactory.allPairsLength()
-  ).toNumber();
-  const pairInfos = await boringHelper.getPairs(
+  const pairsLength: BigNumber = await sushiFactory.allPairsLength();
+  const pairInfos = await getPairInfos(
+    boringHelper,
     sushiFactory.address,
-    0,
     pairsLength
   );
   const pairAddresses = pairInfos.map((pair: any) => {
@@ -49,8 +47,7 @@ export async function getAllpairs(
     NETWORKS[chainId].coingeckoId,
     tokenAddresses
   );
-  console.log(prices);
-  const pairBalances = await boringHelper.pollPairs(feeTo, pairAddresses);
+  const pairBalances = await getPairBalances(boringHelper, feeTo, pairAddresses);
   return pairInfos.map((pair: any, index: number): IPairData => {
     const pairBalance = pairBalances[index];
     const totalSupply: number = parseFloat(
@@ -95,13 +92,35 @@ export async function getAllpairs(
   });
 }
 
+export async function getPairInfos(
+  boringHelper: Contract,
+  sushiFactory: string,
+  length: BigNumber
+): Promise<any[]> {
+    const pairs: any[] = [];
+    for (let i = 0; i < length.toNumber(); i += 250) {
+        const max = i + 250 > length.toNumber() ? length : i + 250;
+        pairs.push(...(await boringHelper.getPairs(sushiFactory, i, max)));
+    }
+    return pairs;
+}
+
+export async function getPairBalances(boringHelper: Contract, feeTo: string, pairAddresses: string[]): Promise<any[]> {
+    const pairs: any[] = [];
+    for (let i = 0; i < pairAddresses.length; i += 250) {
+        const tempAddr = pairAddresses.slice(i, i + 250);
+        pairs.push(...(await boringHelper.pollPairs(feeTo, tempAddr)));
+    }
+    return pairs;
+}
+
 export async function getCoingeckoPrices(
   coingeckoChainId: string,
   addresses: string[]
 ) {
-  const prices: {[address: string]: number} = {};
+  const prices: { [address: string]: number } = {};
   for (let i = 0; i < addresses.length; i += 100) {
-      const tempAddr = addresses.slice(i, i + 100);
+    const tempAddr = addresses.slice(i, i + 100);
     const res = await fetch(
       `https://api.coingecko.com/api/v3/simple/token_price/${coingeckoChainId}?contract_addresses=${tempAddr.join(
         ","
@@ -110,7 +129,7 @@ export async function getCoingeckoPrices(
     );
     const temp = await res.json();
     Object.keys(temp).map((address: string) => {
-        prices[address] = temp[address].usd;
+      prices[address] = temp[address].usd;
     });
   }
   return prices;

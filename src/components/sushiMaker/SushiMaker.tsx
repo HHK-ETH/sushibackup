@@ -45,7 +45,7 @@ export function SushiMaker(): JSX.Element {
             <div className="">{pair.name}</div>
             <div className="col-span-2">{pair.tokenA}</div>
             <div className="col-span-2">{pair.tokenB}</div>
-            <div className="">{pair.value.toFixed(2)}$</div>
+            <div className="">{pair.value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}$</div>
           </div>
         );
       })}
