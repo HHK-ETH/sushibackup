@@ -2,6 +2,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { providers } from "ethers";
 import { useEffect, useState } from "react";
+import { PRODUCTS } from "../../helpers/products";
 import { getAllpairs, IPairData } from "./../../helpers/sushiMaker";
 
 export function SushiMaker(): JSX.Element {
@@ -33,6 +34,21 @@ export function SushiMaker(): JSX.Element {
     }
     fetchPairs();
   }, [active, chainId, connector]);
+
+  if (!active) {
+    return (
+      <div className="text-xl text-center text-white">
+        Please connect your wallet.
+      </div>
+    );
+  }
+  if (chainId && !PRODUCTS["SushiMaker"].networks[chainId]) {
+    return (
+      <div className={"mt-24 text-xl text-center text-white"}>
+        Kashi is not available on this network.
+      </div>
+    );
+  }
 
   return (
     <div className="container p-16 mx-auto text-center text-white">
