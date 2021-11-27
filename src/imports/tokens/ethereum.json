@@ -2064,6 +2064,14 @@
     "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yam.jpg"
   },
   {
+    "address": "0xaba8cac6866b83ae4eec97dd07ed254282f6ad8a",
+    "chainId": 1,
+    "name": "YAMv2",
+    "symbol": "YAMv2",
+    "decimals": 24,
+    "logoURI": "https://raw.githubusercontent.com/sushiswap/icons/master/token/yam.jpg"
+  },
+  {
     "address": "0xb1dC9124c395c1e97773ab855d66E879f053A289",
     "chainId": 1,
     "name": "yAxis",
