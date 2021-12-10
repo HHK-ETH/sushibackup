@@ -1,6 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { BigNumber, Contract } from "ethers";
-import { PRODUCTS } from "./products";
+import { PRODUCTS, PRODUCT_IDS } from "./products";
 import { IKashiPairData, KASHI_PAIRS } from "./../imports/kashiPairs";
 import { getToken, IToken } from "../imports/tokens";
 import { formatUnits } from "ethers/lib/utils";
@@ -11,8 +11,8 @@ export async function fetchKashiPairsData(
   chainId: number
 ): Promise<IKashiPairData[]> {
   const boringhelper: Contract = new Contract(
-    PRODUCTS["BoringHelper"].networks[chainId],
-    PRODUCTS["BoringHelper"].ABI,
+    PRODUCTS[PRODUCT_IDS.BORING_HELPER].networks[chainId],
+    PRODUCTS[PRODUCT_IDS.BORING_HELPER].ABI,
     web3Provider.getSigner()
   );
   const kashiPairs: string[] = KASHI_PAIRS[chainId];
@@ -42,7 +42,7 @@ export async function fetchKashiPairsData(
       const totalBorrow: number = parseFloat(
         formatUnits(BigNumber.from(pair.totalBorrow.elastic), asset.decimals)
       );
-      const bentoContract: Contract = new Contract(PRODUCTS["BentoBox"].networks[chainId], PRODUCTS["BentoBox"].ABI, web3Provider.getSigner());
+      const bentoContract: Contract = new Contract(PRODUCTS[PRODUCT_IDS.BENTOBOX].networks[chainId], PRODUCTS[PRODUCT_IDS.BENTOBOX].ABI, web3Provider.getSigner());
       const utilization: number = totalBorrow / totalAsset;
       const allShare = pair.totalAsset.elastic.add(
         await bentoContract.toShare(asset.address, pair.totalBorrow.elastic, true)

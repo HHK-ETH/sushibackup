@@ -2,7 +2,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { providers } from "ethers";
 import { useEffect, useState } from "react";
-import { PRODUCTS } from "../../helpers/products";
+import { PRODUCTS, PRODUCT_IDS } from "../../helpers/products";
 import { getAllpairs, IPairData } from "./../../helpers/sushiMaker";
 
 export function SushiMaker(): JSX.Element {
@@ -42,7 +42,7 @@ export function SushiMaker(): JSX.Element {
       </div>
     );
   }
-  if (chainId && !PRODUCTS["SushiMaker"].networks[chainId]) {
+  if (chainId && !PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]) {
     return (
       <div className={"mt-24 text-xl text-center text-white"}>
         Kashi is not available on this network.

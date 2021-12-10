@@ -17,8 +17,15 @@ export interface IProduct {
     ABI: any
 }
 
-export const PRODUCTS: {[name: string]: IProduct} = {
-    "Kashi": {
+export enum PRODUCT_IDS {
+    KASHI = 0,
+    BENTOBOX = 1,
+    BORING_HELPER = 2,
+    SUSHI_MAKER = 3
+}
+
+export const PRODUCTS: {[id: number]: IProduct} = {
+    [PRODUCT_IDS.KASHI]: {
         name: "Kashi",
         link: "kashi",
         logo: kashiLogo,
@@ -33,7 +40,7 @@ export const PRODUCTS: {[name: string]: IProduct} = {
         },
         ABI: kashiABI
     },
-    "BentoBox": {
+    [PRODUCT_IDS.BENTOBOX]: {
         name: "BentoBox",
         link: "bentobox",
         logo: bentoBoxLogo,
@@ -48,7 +55,7 @@ export const PRODUCTS: {[name: string]: IProduct} = {
         },
         ABI: bentoBoxABI
     },
-    "BoringHelper": {
+    [PRODUCT_IDS.BORING_HELPER]: {
         name: "BoringHelper",
         link: "",
         logo: "",
@@ -68,7 +75,7 @@ export const PRODUCTS: {[name: string]: IProduct} = {
         },
         ABI: boringHelperABI
     },
-    "SushiMaker": {
+    [PRODUCT_IDS.SUSHI_MAKER]: {
         name: "SushiMaker",
         link: "sushimaker",
         logo: sushiMakerLogo,

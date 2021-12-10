@@ -1,6 +1,6 @@
 import { Web3Provider } from "@ethersproject/providers";
 import { BigNumber, Contract } from "ethers";
-import { PRODUCTS } from "./products";
+import { PRODUCTS, PRODUCT_IDS } from "./products";
 import { getToken, WETH, WNATIVE } from "./../imports/tokens";
 import { formatUnits } from "ethers/lib/utils";
 import { NETWORKS } from "./network";
@@ -17,13 +17,13 @@ export async function getAllpairs(
   chainId: number
 ): Promise<IPairData[]> {
   const sushiFactory: Contract = new Contract(
-    PRODUCTS["SushiMaker"].networks[chainId],
-    PRODUCTS["SushiMaker"].ABI,
+    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId],
+    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].ABI,
     web3Provider
   );
   const boringHelper: Contract = new Contract(
-    PRODUCTS["BoringHelper"].networks[chainId],
-    PRODUCTS["BoringHelper"].ABI,
+    PRODUCTS[PRODUCT_IDS.BORING_HELPER].networks[chainId],
+    PRODUCTS[PRODUCT_IDS.BORING_HELPER].ABI,
     web3Provider
   );
   const feeTo: string = await sushiFactory.feeTo();
