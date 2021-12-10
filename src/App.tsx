@@ -1,50 +1,47 @@
-import React from 'react';
-import {Header} from "./components/general/Header";
-import {Web3Provider} from "@ethersproject/providers";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route
-} from "react-router-dom";
-import {Web3ReactProvider} from '@web3-react/core';
-import {Home} from "./components/general/Home";
+import Header from './components/general/Header';
+import { Web3Provider } from '@ethersproject/providers';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Web3ReactProvider } from '@web3-react/core';
+import Home from './components/general/Home';
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
-import { Kashi } from './components/Kashi/Kashi';
+import Kashi from './components/Kashi/Kashi';
 import { SushiMaker } from './components/sushiMaker/SushiMaker';
 
 function getLibrary(provider: any) {
-    const library = new Web3Provider(provider)
-    library.pollingInterval = 12000
-    return library
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
 }
 
 function getBackground(): string {
-    const date = new Date().getTime();
-    return BACKGROUNDS[date % 5];
+  const date = new Date().getTime();
+  return BACKGROUNDS[date % 5];
 }
 
 function App(): JSX.Element {
-
-    return (
-        <div className="w-full h-screen overflow-scroll bg-center bg-no-repeat bg-cover App" style={{backgroundImage: "url("+getBackground()+")"}}>
-            <Router>
-                <Web3ReactProvider getLibrary={getLibrary}>
-                    <Header />
-                        <Switch>
-                            <Route path={"/kashi"}>
-                                <Kashi/>
-                            </Route>
-                            <Route path={"/sushimaker"}>
-                                <SushiMaker/>
-                            </Route>
-                            <Route path={"/"}>
-                                <Home/>
-                            </Route>
-                        </Switch>
-                </Web3ReactProvider>
-            </Router>
-        </div>
-    );
+  return (
+    <div
+      className="w-full h-screen overflow-scroll bg-center bg-no-repeat bg-cover App"
+      style={{ backgroundImage: 'url(' + getBackground() + ')' }}
+    >
+      <Router>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Header />
+          <Switch>
+            <Route path={'/kashi'}>
+              <Kashi />
+            </Route>
+            <Route path={'/sushimaker'}>
+              <SushiMaker />
+            </Route>
+            <Route path={'/'}>
+              <Home />
+            </Route>
+          </Switch>
+        </Web3ReactProvider>
+      </Router>
+    </div>
+  );
 }
 
 export default App;

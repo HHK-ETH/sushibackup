@@ -1,6 +1,6 @@
-import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
-import { IKashiPairData } from "../../imports/kashiPairs";
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { IKashiPairData } from '../../imports/kashiPairs';
 
 export function KashiModal({
   open,
@@ -35,10 +35,7 @@ export function KashiModal({
           </Transition.Child>
 
           {/* This element is to trick the browser into centering the modal contents. */}
-          <span
-            className="hidden sm:inline-block sm:align-middle sm:h-screen"
-            aria-hidden="true"
-          >
+          <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
             &#8203;
           </span>
           <Transition.Child
@@ -57,11 +54,7 @@ export function KashiModal({
                     <div>
                       <h2 className="mb-2 text-xl">Your lending position</h2>
                       <div className="m-2">
-                        <img
-                          className="inline-block h-10 mr-2"
-                          alt="logo"
-                          src={pair.asset.logoURI}
-                        />
+                        <img className="inline-block h-10 mr-2" alt="logo" src={pair.asset.logoURI} />
                         {pair.asset.symbol} lent: {pair.userAsset.toFixed(2)}
                       </div>
                       <button
