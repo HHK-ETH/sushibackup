@@ -6,6 +6,7 @@ import kashiABI from '../imports/abis/kashi.json';
 import bentoBoxABI from '../imports/abis/bento.json';
 import boringHelperABI from '../imports/abis/boringhelper.json';
 import sushiFactoryABI from '../imports/abis/sushiFactory.json';
+import wethMaker from '../imports/abis/wethMaker.json';
 
 export interface IProduct {
   name: string;
@@ -22,6 +23,7 @@ export enum PRODUCT_IDS {
   BENTOBOX = 1,
   BORING_HELPER = 2,
   SUSHI_MAKER = 3,
+  UNWINDOOOR = 4,
 }
 
 export const PRODUCTS: { [id: number]: IProduct } = {
@@ -94,5 +96,25 @@ export const PRODUCTS: { [id: number]: IProduct } = {
       [CHAIN_IDS.XDAI]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
     },
     ABI: sushiFactoryABI,
+  },
+  [PRODUCT_IDS.UNWINDOOOR]: {
+    name: 'Unwindooor',
+    link: 'unwindooor',
+    logo: sushiMakerLogo,
+    description: 'Remove liquidity to serve the bar.',
+    active: true,
+    networks: {
+      [CHAIN_IDS.ARBITRUM]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.AVALANCHE]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.BSC]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.CELO]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.ETHEREUM]: '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac',
+      [CHAIN_IDS.FANTOM]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.HARMONY]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.MOONRIVER]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.POLYGON]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      [CHAIN_IDS.XDAI]: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+    },
+    ABI: wethMaker,
   },
 };

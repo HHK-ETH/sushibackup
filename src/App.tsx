@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
 import Home from './components/general/Home';
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
-import Kashi from './components/Kashi/Kashi';
-import { SushiMaker } from './components/sushiMaker/SushiMaker';
+import Kashi from './components/kashi/Kashi';
+import SushiMaker from './components/sushiMaker/SushiMaker';
+import Unwindoor from './components/unwindooor/Unwindooor';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
@@ -33,6 +34,9 @@ function App(): JSX.Element {
             </Route>
             <Route path={'/sushimaker'}>
               <SushiMaker />
+            </Route>
+            <Route path={'/unwindooor'}>
+              <Unwindoor />
             </Route>
             <Route path={'/'}>
               <Home />

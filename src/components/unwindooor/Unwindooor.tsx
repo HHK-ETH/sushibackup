@@ -3,14 +3,15 @@ import { useWeb3React } from '@web3-react/core';
 import { providers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
-import { getAllpairs, IPairData } from './../../helpers/sushiMaker';
+import { getAllpairs, IPairData } from '../../helpers/sushiMaker';
 
-const SushiMaker = (): JSX.Element => {
+const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector } = context;
   const [loading, setLoading]: [boolean, Function] = useState(false);
   const [pairs, setPairs]: [IPairData[], Function] = useState([]);
   const [totalFees, setTotalFees]: [number, Function] = useState(0);
+  const [selectedPairs, setselectedPairs]: [IPairData[], Function] = useState([]);
 
   useEffect(() => {
     async function fetchPairs() {
@@ -48,6 +49,7 @@ const SushiMaker = (): JSX.Element => {
         <div className="col-span-2">Token A</div>
         <div className="col-span-2">Token B</div>
         <div className="">Value</div>
+        <div className="">Select</div>
       </div>
       {pairs.map((pair, i) => {
         return (
@@ -56,6 +58,9 @@ const SushiMaker = (): JSX.Element => {
             <div className="col-span-2">{pair.tokenA}</div>
             <div className="col-span-2">{pair.tokenB}</div>
             <div className="">{pair.value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
+            <div>
+              <input type={'checkbox'} />
+            </div>
           </div>
         );
       })}
@@ -63,4 +68,4 @@ const SushiMaker = (): JSX.Element => {
   );
 };
 
-export default SushiMaker;
+export default Unwindooor;
