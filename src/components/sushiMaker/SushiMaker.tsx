@@ -36,7 +36,7 @@ const SushiMaker = (): JSX.Element => {
     return <div className="text-xl text-center text-white">Please connect your wallet.</div>;
   }
   if (chainId && !PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]) {
-    return <div className={'mt-24 text-xl text-center text-white'}>Kashi is not available on this network.</div>;
+    return <div className={'mt-24 text-xl text-center text-white'}>SushiMaker is not available on this network.</div>;
   }
 
   return (
