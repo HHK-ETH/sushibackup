@@ -38,7 +38,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: arbitrum,
     rpc: 'https://arb1.arbitrum.io/rpc',
     coingeckoId: 'arbitrum-one',
-    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/arbitrum-exchange',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/arbitrum-exchange',
   },
   [CHAIN_IDS.AVALANCHE]: {
     id: 43114,
@@ -46,7 +46,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: avalanche,
     rpc: 'https://api.avax.network/ext/bc/C/rpc',
     coingeckoId: 'avalanche',
-    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/avalanche-exchange',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/avalanche-exchange',
   },
   [CHAIN_IDS.BSC]: {
     id: 56,
@@ -102,7 +102,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: polygon,
     rpc: 'https://polygon-rpc.com/',
     coingeckoId: 'polygon-pos',
-    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/matic-exchange',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/matic-exchange',
   },
   [CHAIN_IDS.XDAI]: {
     id: 100,
@@ -110,6 +110,6 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: xdai,
     rpc: 'https://rpc.xdaichain.com',
     coingeckoId: 'xdai',
-    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/xdai-exchange',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/xdai-exchange',
   },
 };
