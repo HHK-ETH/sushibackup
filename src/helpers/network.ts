@@ -15,6 +15,7 @@ export interface INetwork {
   logo: string;
   rpc: string;
   coingeckoId: string;
+  exchangeSubgraph: string;
 }
 
 export enum CHAIN_IDS {
@@ -37,6 +38,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: arbitrum,
     rpc: 'https://arb1.arbitrum.io/rpc',
     coingeckoId: 'arbitrum-one',
+    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/arbitrum-exchange',
   },
   [CHAIN_IDS.AVALANCHE]: {
     id: 43114,
@@ -44,6 +46,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: avalanche,
     rpc: 'https://api.avax.network/ext/bc/C/rpc',
     coingeckoId: 'avalanche',
+    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/avalanche-exchange',
   },
   [CHAIN_IDS.BSC]: {
     id: 56,
@@ -51,6 +54,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: bsc,
     rpc: 'https://bsc-dataseed1.binance.org',
     coingeckoId: 'binance-smart-chain',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/bsc-exchange',
   },
   [CHAIN_IDS.CELO]: {
     id: 42220,
@@ -58,6 +62,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: celo,
     rpc: 'https://forno.celo.org',
     coingeckoId: 'celo',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/celo-exchange',
   },
   [CHAIN_IDS.ETHEREUM]: {
     id: 1,
@@ -65,6 +70,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: ethereum,
     rpc: 'https://api.mycryptoapi.com/eth',
     coingeckoId: 'ethereum',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/exchange',
   },
   [CHAIN_IDS.FANTOM]: {
     id: 250,
@@ -72,6 +78,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: fantom,
     rpc: 'https://rpc.ftm.tools',
     coingeckoId: 'fantom',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/fantom-exchange',
   },
   [CHAIN_IDS.HARMONY]: {
     id: 1666600000,
@@ -79,6 +86,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: harmony,
     rpc: 'https://api.harmony.one',
     coingeckoId: 'harmony-shard-0',
+    exchangeSubgraph: 'https://sushi.graph.t.hmny.io/subgraphs/name/sushiswap/harmony-exchange',
   },
   [CHAIN_IDS.MOONRIVER]: {
     id: 1285,
@@ -86,6 +94,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: moonriver,
     rpc: 'https://rpc.moonriver.moonbeam.network',
     coingeckoId: 'moonriver',
+    exchangeSubgraph: 'https://api.thegraph.com/subgraphs/name/sushiswap/moonriver-exchange',
   },
   [CHAIN_IDS.POLYGON]: {
     id: 137,
@@ -93,6 +102,7 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: polygon,
     rpc: 'https://polygon-rpc.com/',
     coingeckoId: 'polygon-pos',
+    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/matic-exchange',
   },
   [CHAIN_IDS.XDAI]: {
     id: 100,
@@ -100,5 +110,6 @@ export const NETWORKS: { [id: number]: INetwork } = {
     logo: xdai,
     rpc: 'https://rpc.xdaichain.com',
     coingeckoId: 'xdai',
+    exchangeSubgraph: 'https://thegraph.com/explorer/subgraph/sushiswap/xdai-exchange',
   },
 };
