@@ -22,24 +22,12 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
     })
   );
   const [outputs, setOutputs]: [priceImpacts: any[], setPriceImpacts: Function] = useState([]);
-  const [provider, setProvider]: [provider: JsonRpcProvider, setProvider: Function] = useState(
-    new providers.JsonRpcProvider('https://eth-mainnet.alchemyapi.io/v2/Y1q21D8WUrAEbkgvEIcnAv5V1R8DN6XL')
-  );
   const [pendingTx, setPendingTx] = useState('');
-
-  console.log(outputs);
-
-  useEffect(() => {
-    const getWalletProvider = async () => {
-      if (!connector) return;
-      const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      setProvider(web3Provider);
-    };
-    getWalletProvider();
-  }, [active, chainId, connector]);
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!connector) return;
+      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const tempPriceImpacts = await Promise.all(
         unwindData.map(async (data, index) => {
           const wethMaker = new WethMaker({
@@ -62,7 +50,7 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
       setOutputs(tempPriceImpacts);
     };
     fetchData();
-  }, [unwindData, slippage]);
+  }, [unwindData, slippage, connector]);
 
   if (!active) {
     return <div className="text-white">Please connect your wallet first.</div>;
@@ -110,7 +98,6 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
             const minimumOut = parseFloat(
               formatUnits(outputs[index] ? outputs[index].minimumOut : 0, prefToken.decimals)
             );
-            console.log(price);
             return (
               <>
                 <button
@@ -157,11 +144,11 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
                     }}
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-3 text-sm">
                   {outputs[index]
-                    ? minimumOut.toFixed(3) +
+                    ? minimumOut.toFixed(4) +
                       ' (' +
-                      (price !== 0 ? minimumOut / price - 1 : 0).toFixed(3) +
+                      (price !== 0 ? minimumOut / price - 1 : 0).toFixed(2) +
                       '%) ' +
                       prefToken.symbol
                     : 'loading...'}
@@ -174,7 +161,8 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
           className="px-8 py-2 text-white bg-pink-500 rounded-b-lg hover:bg-pink-600 text-md"
           onClick={() => {
             const execUnwindPairs = async () => {
-              if (!chainId || !provider) return;
+              if (!chainId || !connector) return;
+              const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
               const maker = new Contract(
                 PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
                 PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
