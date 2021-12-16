@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
 import Home from './components/general/Home';
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
-import Kashi from './components/kashi/Kashi';
 import SushiMaker from './components/sushiMaker/SushiMaker';
 import Unwindoor from './components/unwindooor/Unwindooor';
+import Kashi from './components/kashi/Kashi';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
