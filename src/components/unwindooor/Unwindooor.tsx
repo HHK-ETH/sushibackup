@@ -130,8 +130,8 @@ const Unwindooor = (): JSX.Element => {
         )}
         <div className="grid grid-cols-7 py-8 bg-indigo-900 rounded-t-xl">
           <div className="">Pair</div>
-          <div className="col-span-2">Token A</div>
-          <div className="col-span-2">Token B</div>
+          <div className="col-span-2">Token 0</div>
+          <div className="col-span-2">Token 1</div>
           <div className="">Value</div>
           <div className="">Select</div>
         </div>
@@ -147,14 +147,16 @@ const Unwindooor = (): JSX.Element => {
           .map((position: any, i: number) => {
             const pair = position.pair;
             const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
+            const amount0 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve0;
+            const amount1 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve1;
             return (
               <div
                 key={i}
                 className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
               >
                 <div className="">{pair.name}</div>
-                <div className="col-span-2">{pair.token0.name}</div>
-                <div className="col-span-2">{pair.token1.name}</div>
+                <div className="col-span-2">{amount0.toFixed(2) + ' ' + pair.token0.symbol}</div>
+                <div className="col-span-2">{amount1.toFixed(2) + ' ' + pair.token1.symbol}</div>
                 <div className="">{value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
                 <div>
                   <input

@@ -80,8 +80,8 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
           })}
         </div>
         <div className="grid grid-cols-6 gap-1 p-4 mt-8 bg-indigo-800 rounded-xl">
-          <div>Token A</div>
-          <div>Token B</div>
+          <div>Token 0</div>
+          <div>Token 1</div>
           <div>Share</div>
           <div className="col-span-3">Receive</div>
           {pairs.map((pair: any, index: number) => {
