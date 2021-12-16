@@ -6,7 +6,7 @@ import Home from './components/general/Home';
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
 import SushiMaker from './components/sushiMaker/SushiMaker';
 import Unwindoor from './components/unwindooor/Unwindooor';
-import Kashi from './components/kashi/KashiMarkets';
+//import Kashi from './components/kashi/KashiMarkets';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
@@ -30,7 +30,7 @@ function App(): JSX.Element {
           <Header />
           <Switch>
             <Route path={'/kashi'}>
-              <Kashi />
+              <div></div>
             </Route>
             <Route path={'/sushimaker'}>
               <SushiMaker />
