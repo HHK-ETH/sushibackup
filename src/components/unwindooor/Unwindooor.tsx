@@ -12,54 +12,39 @@ const defaultClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const pairQuery = `
+  pair {
+    id
+    reserveUSD
+    totalSupply
+    name
+    reserve0
+    reserve1
+    token0 {
+      id
+      symbol
+      name
+      decimals
+    }
+    token1 {
+      id
+      name
+      symbol
+      decimals
+    }
+  }
+`;
+
 const getQuery = (feeTo: string) => {
   return gql`
     query positions {
       users(first: 1, where: { id: "${feeTo.toLocaleLowerCase()}" }) {
         lp1: liquidityPositions(first: 1000, orderBy: timestamp, orderDirection: desc) {
-          pair {
-            id
-            reserveUSD
-            totalSupply
-            name
-            reserve0
-            reserve1
-            token0 {
-              id
-              symbol
-              name
-              decimals
-            }
-            token1 {
-              id
-              name
-              symbol
-              decimals
-            }
-          }
+          ${pairQuery}
           liquidityTokenBalance
         }
         lp2: liquidityPositions(skip: 1000, first: 1000, orderBy: timestamp, orderDirection: desc) {
-          pair {
-            id
-            reserveUSD
-            totalSupply
-            name
-            reserve0
-            reserve1
-            token0 {
-              id
-              name
-              symbol
-              decimals
-            }
-            token1 {
-              id
-              name
-              symbol
-              decimals
-            }
-          }
+          ${pairQuery}
           liquidityTokenBalance
         }
       }
