@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
-import TxPendingModal from '../general/TxPendingModal';
 
-const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
+const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
   const [slippage, setSlippage]: [slippage: number, setSlippage: Function] = useState(0.1);
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector } = context;
@@ -22,7 +21,6 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
     })
   );
   const [outputs, setOutputs]: [priceImpacts: any[], setPriceImpacts: Function] = useState([]);
-  const [pendingTx, setPendingTx] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +56,6 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={pendingTx} />
       <div className="text-center text-white">
         <div className="grid grid-cols-4 gap-4">
           <p>Max slippage:</p>
@@ -181,9 +178,9 @@ const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
                 return output.keepToken0;
               });
               const tx = await maker.unwindPairs(lpTokens, amounts, minimumOuts, keepToken0);
-              setPendingTx(tx.hash);
+              setTxPending(tx.hash);
               await provider.waitForTransaction(tx.hash, 1);
-              setPendingTx('');
+              setTxPending('');
             };
             execUnwindPairs();
           }}

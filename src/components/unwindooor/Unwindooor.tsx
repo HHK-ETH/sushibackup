@@ -5,6 +5,7 @@ import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
 import { NETWORKS } from '../../helpers/network';
 import UnwindModal from './UnwindModal';
+import TxPendingModal from '../general/TxPendingModal';
 
 const defaultClient = new ApolloClient({
   uri: NETWORKS[1].exchangeSubgraph,
@@ -81,8 +82,10 @@ const Unwindooor = (): JSX.Element => {
   );
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [openModal, setOpenModal]: [boolean, Function] = useState(false);
+  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
 
   useEffect(() => {
+    if (txPending !== '') return;
     if (active && chainId && chainId !== 1 && NETWORKS[chainId]) {
       setClient(
         new ApolloClient({
@@ -92,7 +95,7 @@ const Unwindooor = (): JSX.Element => {
       );
       setSelectedPairs([]);
     }
-  }, [active, chainId]);
+  }, [active, chainId, txPending]);
 
   useEffect(() => {
     if (data) {
@@ -116,7 +119,13 @@ const Unwindooor = (): JSX.Element => {
 
   return (
     <>
-      <UnwindModal openModal={openModal} setOpenModal={setOpenModal} pairs={selectedPairs} />
+      <TxPendingModal txPending={txPending} />
+      <UnwindModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        pairs={selectedPairs}
+        setTxPending={setTxPending}
+      />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">Total fees available: {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h1>
         {loading && <div className={'text-white'}>loading data...</div>}

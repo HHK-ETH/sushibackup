@@ -6,10 +6,12 @@ const UnwindModal = ({
   openModal,
   setOpenModal,
   pairs,
+  setTxPending,
 }: {
   openModal: boolean;
   setOpenModal: Function;
   pairs: string[];
+  setTxPending: Function;
 }): JSX.Element => {
   return (
     <Transition.Root show={openModal} as={Fragment}>
@@ -49,7 +51,7 @@ const UnwindModal = ({
           >
             <div className="inline-block overflow-hidden align-bottom transition-all transform rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="px-4 pt-5 pb-4 bg-indigo-900 sm:p-6 sm:pb-4">
-                <UnwindPairs pairs={pairs} />
+                <UnwindPairs pairs={pairs} setTxPending={setTxPending} />
               </div>
               <div className="px-4 py-4 text-right bg-indigo-900">
                 <button
