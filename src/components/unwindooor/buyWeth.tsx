@@ -49,9 +49,16 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
             erc20Abi,
             provider
           );
+          const pairAddress = await wethMaker._getPair(swap.token);
+          const { token0, reserve0, reserve1 } = await wethMaker._getMarketData(pairAddress, swap.token);
+          const sellingToken0 = swap.token.toUpperCase() === token0.toUpperCase();
+          const reserveIn = sellingToken0 ? reserve0 : reserve1;
+          const reserveOut = sellingToken0 ? reserve1 : reserve0;
+          const noPriceImpactAmountOut = reserveOut.mul(amountIn).div(reserveIn);
           return {
             amountIn: amountIn,
             minimumOut: minimumOut,
+            noPriceImpactAmountOut: noPriceImpactAmountOut,
             decimals: await outputToken.decimals(),
             symbol: await outputToken.symbol(),
           };
@@ -85,8 +92,12 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       </div>
       {swapList.map((swap, index) => {
         const output = outputs[index];
+        const minimumOut = output ? parseFloat(formatUnits(output.minimumOut, output.decimals)) : 0;
+        const noPriceImpactAmountOut = output
+          ? parseFloat(formatUnits(output.noPriceImpactAmountOut, output.decimals))
+          : 0;
         return (
-          <div className="p-2 mt-4 text-lg border-2 border-indigo-700 rounded-lg">
+          <div key={index} className="p-2 mt-4 text-lg border-2 border-indigo-700 rounded-lg">
             <div className="grid grid-cols-5 mb-4">
               <h3>From:</h3>
               <input
@@ -119,7 +130,11 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
               <h3>Receive:</h3>
               <h3 className="col-span-3">
                 {output
-                  ? parseFloat(formatUnits(output.minimumOut, output.decimals)).toFixed(4) + ' ' + output.symbol
+                  ? minimumOut.toFixed(4) +
+                    ' (' +
+                    (minimumOut / noPriceImpactAmountOut - 1).toFixed(2) +
+                    '%) ' +
+                    output.symbol
                   : 'Loading...'}
               </h3>
             </div>
