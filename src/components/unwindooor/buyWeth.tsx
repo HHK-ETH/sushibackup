@@ -92,6 +92,8 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
     fetchOutputs();
   }, [active, chainId, connector, swapList, slippage]);
 
+  if (!active) return <div className="text-center text-white">Please connect your wallet.</div>;
+
   return (
     <div className="text-center text-white">
       <div className="grid grid-cols-4 gap-4">
