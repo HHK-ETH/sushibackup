@@ -12,9 +12,9 @@ const TxPendingModal = ({ txPending }: { txPending: string }): JSX.Element => {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className={'bg-white p-2 text-center shadow-2xl border rounded-lg absolute top-18 right-6'}>
+      <div className={'bg-pink-500 text-white p-2 text-center shadow-2xl rounded-lg absolute top-18 right-6'}>
         <a
-          className={'underline text-blue-400'}
+          className={'underline'}
           href={'https://polygonscan.com/tx/' + txPending}
           target={'_blank'}
           rel={'noreferrer'}
