@@ -7,7 +7,15 @@ import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
 import erc20Abi from './../../imports/abis/erc20.json';
 
-const Dashboard = ({ totalFees, setOpenModal }: { totalFees: number; setOpenModal: Function }): JSX.Element => {
+const Dashboard = ({
+  totalFees,
+  setOpenModal,
+  setParams,
+}: {
+  totalFees: number;
+  setOpenModal: Function;
+  setParams: Function;
+}): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector } = context;
   const [wethBalance, setWethBalance] = useState(BigNumber.from(0));
@@ -34,8 +42,13 @@ const Dashboard = ({ totalFees, setOpenModal }: { totalFees: number; setOpenModa
           Buy WETH
         </button>
         <button
-          className="px-16 text-lg font-medium text-white bg-gray-400 rounded hover:bg-gray-500"
-          onClick={() => {}}
+          className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+          onClick={() => {
+            setParams({
+              wethBalance: parseFloat(formatUnits(wethBalance)),
+            });
+            setOpenModal('withdraw');
+          }}
         >
           Transfer WETH
         </button>

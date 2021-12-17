@@ -69,6 +69,7 @@ const Unwindooor = (): JSX.Element => {
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [openModal, setOpenModal]: [string, Function] = useState('');
   const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
+  const [params, setParams] = useState({});
 
   useEffect(() => {
     if (txPending !== '') return;
@@ -106,21 +107,20 @@ const Unwindooor = (): JSX.Element => {
   return (
     <>
       <TxPendingModal txPending={txPending} />
-      <UnwindModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        params={{
-          pairs: selectedPairs,
-          setTxPending: setTxPending,
-        }}
-      />
+      <UnwindModal openModal={openModal} setOpenModal={setOpenModal} params={params} />
       <div className="container p-16 mx-auto text-center text-white">
-        <Dashboard totalFees={totalFees} setOpenModal={setOpenModal} />
+        <Dashboard totalFees={totalFees} setOpenModal={setOpenModal} setParams={setParams} />
         {loading && <div className={'text-white'}>loading data...</div>}
         {selectedPairs.length > 0 && (
           <button
             className="absolute px-16 text-lg font-medium text-white bg-pink-500 rounded bottom-6 right-6 hover:bg-pink-600"
-            onClick={() => setOpenModal('unwind')}
+            onClick={() => {
+              setParams({
+                pairs: selectedPairs,
+                setTxPending: setTxPending,
+              });
+              setOpenModal('unwind');
+            }}
           >
             Unwind!
           </button>
