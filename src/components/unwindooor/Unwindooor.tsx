@@ -81,7 +81,7 @@ const Unwindooor = (): JSX.Element => {
       );
       setSelectedPairs([]);
     }
-  }, [active, chainId, txPending]);
+  }, [active, chainId]);
 
   useEffect(() => {
     if (data) {
