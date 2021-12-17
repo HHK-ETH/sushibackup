@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
 import { NETWORKS } from '../../helpers/network';
-import UnwindModal from './UnwindModal';
+import UnwindModal from './modal';
 import TxPendingModal from '../general/TxPendingModal';
+import Dashboard from './dashboard';
 
 const defaultClient = new ApolloClient({
   uri: NETWORKS[1].exchangeSubgraph,
@@ -66,7 +67,7 @@ const Unwindooor = (): JSX.Element => {
     }
   );
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
-  const [openModal, setOpenModal]: [boolean, Function] = useState(false);
+  const [openModal, setOpenModal]: [string, Function] = useState('');
   const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
 
   useEffect(() => {
@@ -108,21 +109,23 @@ const Unwindooor = (): JSX.Element => {
       <UnwindModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        pairs={selectedPairs}
-        setTxPending={setTxPending}
+        params={{
+          pairs: selectedPairs,
+          setTxPending: setTxPending,
+        }}
       />
       <div className="container p-16 mx-auto text-center text-white">
-        <h1 className="text-xl">Total fees available: {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h1>
+        <Dashboard totalFees={totalFees} setOpenModal={setOpenModal} />
         {loading && <div className={'text-white'}>loading data...</div>}
         {selectedPairs.length > 0 && (
           <button
             className="absolute px-16 text-lg font-medium text-white bg-pink-500 rounded bottom-6 right-6 hover:bg-pink-600"
-            onClick={() => setOpenModal(true)}
+            onClick={() => setOpenModal('unwind')}
           >
             Unwind!
           </button>
         )}
-        <div className="grid grid-cols-7 py-8 bg-indigo-900 rounded-t-xl">
+        <div className="grid grid-cols-7 py-8 mt-4 bg-indigo-900 rounded-t-xl">
           <div className="">Pair</div>
           <div className="col-span-2">Token 0</div>
           <div className="col-span-2">Token 1</div>

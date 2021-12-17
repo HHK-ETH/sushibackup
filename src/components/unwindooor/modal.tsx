@@ -1,27 +1,26 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import UnwindPairs from './UnwindPairs';
+import BuyWeth from './buyWeth';
 
 const UnwindModal = ({
   openModal,
   setOpenModal,
-  pairs,
-  setTxPending,
+  params,
 }: {
-  openModal: boolean;
+  openModal: string;
   setOpenModal: Function;
-  pairs: string[];
-  setTxPending: Function;
+  params: any;
 }): JSX.Element => {
   return (
-    <Transition.Root show={openModal} as={Fragment}>
+    <Transition.Root show={openModal !== ''} as={Fragment}>
       <Dialog
         as="div"
         static
         className="fixed inset-0 z-10 overflow-y-auto"
-        open={openModal}
+        open={openModal !== ''}
         // @ts-ignore
-        onClose={setOpenModal}
+        onClose={() => setOpenModal('')}
       >
         <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -51,13 +50,14 @@ const UnwindModal = ({
           >
             <div className="inline-block overflow-hidden align-bottom transition-all transform rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="px-4 pt-5 pb-4 bg-indigo-900 sm:p-6 sm:pb-4">
-                <UnwindPairs pairs={pairs} setTxPending={setTxPending} />
+                {openModal === 'unwind' && <UnwindPairs pairs={params.pairs} setTxPending={params.setTxPending} />}
+                {openModal === 'buyWeth' && <BuyWeth setTxPending={params.setTxPending} />}
               </div>
               <div className="px-4 py-4 text-right bg-indigo-900">
                 <button
                   type="button"
                   className="px-8 py-2 text-white bg-pink-500 rounded-full hover:bg-pink-600 text-md"
-                  onClick={() => setOpenModal(false)}
+                  onClick={() => setOpenModal('')}
                 >
                   Close
                 </button>
