@@ -16,6 +16,29 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const [swapList, setSwapList] = useState([{ token: '', share: BigNumber.from(100) }]);
   const [outputs, setOutputs]: [outputs: any, setOutputs: Function] = useState([]);
 
+  const execBuyWeth = async () => {
+    if (!chainId || !connector) return;
+    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
+    const maker = new Contract(
+      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
+      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
+      provider
+    ).connect(provider.getSigner());
+    const tokens = swapList.map((swap) => {
+      return swap.token;
+    });
+    const amounts = outputs.map((output: any) => {
+      return output.amountIn;
+    });
+    const minimumOuts = outputs.map((output: any) => {
+      return output.minimumOut;
+    });
+    const tx = await maker.buyWeth(tokens, amounts, minimumOuts);
+    setTxPending(tx.hash);
+    await provider.waitForTransaction(tx.hash, 1);
+    setTxPending('');
+  };
+
   useEffect(() => {
     const fetchOutputs = async () => {
       if (!connector || !chainId) return;
@@ -168,31 +191,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       </div>
       <button
         className={'px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600'}
-        onClick={() => {
-          const execBuyWeth = async () => {
-            if (!chainId || !connector) return;
-            const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-            const maker = new Contract(
-              PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-              PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
-              provider
-            ).connect(provider.getSigner());
-            const tokens = swapList.map((swap) => {
-              return swap.token;
-            });
-            const amounts = outputs.map((output: any) => {
-              return output.amountIn;
-            });
-            const minimumOuts = outputs.map((output: any) => {
-              return output.minimumOut;
-            });
-            const tx = await maker.buyWeth(tokens, amounts, minimumOuts);
-            setTxPending(tx.hash);
-            await provider.waitForTransaction(tx.hash, 1);
-            setTxPending('');
-          };
-          execBuyWeth();
-        }}
+        onClick={() => execBuyWeth()}
       >
         Execute
       </button>
