@@ -112,7 +112,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
       [CHAIN_IDS.FANTOM]: '',
       [CHAIN_IDS.HARMONY]: '',
       [CHAIN_IDS.MOONRIVER]: '',
-      [CHAIN_IDS.POLYGON]: '0x86484112ec86e5C977dd9bAd457E66b61F7b963a',
+      [CHAIN_IDS.POLYGON]: '0x6A0743d493a06820D4A3b5E1e4035Ae1549aE9E5',
       [CHAIN_IDS.XDAI]: '',
     },
     ABI: wethMaker,
