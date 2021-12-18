@@ -76,84 +76,84 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
             );
           })}
         </div>
-        <div className="grid grid-cols-6 gap-1 p-4 mt-8 bg-indigo-800 rounded-xl">
+        <div className="grid grid-cols-6 gap-1 p-2 px-4 mt-4 bg-indigo-800 rounded-t-xl">
           <div>Token 0</div>
           <div>Token 1</div>
           <div>Share</div>
           <div className="col-span-3">Receive</div>
-          {pairs.map((pair: any, index: number) => {
-            const data: any = unwindData[index];
-            const prefToken: any = data.prefToken === pair.token0.id ? pair.token0 : pair.token1;
-            const price: number =
-              data.prefToken === pair.token0.id
-                ? (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
-                  parseFloat(pair.reserve0) *
-                  2
-                : (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
-                  parseFloat(pair.reserve1) *
-                  2;
-            const minimumOut = parseFloat(
-              formatUnits(outputs[index] ? outputs[index].minimumOut : 0, prefToken.decimals)
-            );
-            return (
-              <>
-                <button
-                  className={
-                    data.prefToken === pair.token0.id
-                      ? 'text-md font-medium text-white rounded-full bg-purple-700'
-                      : 'text-md font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
-                  }
-                  onClick={() => {
-                    const tempData = [...unwindData];
-                    tempData[index].prefToken = pair.token0.id;
-                    setUnwindData(tempData);
-                  }}
-                >
-                  {pair.token0.symbol}
-                </button>
-                <button
-                  className={
-                    data.prefToken === pair.token1.id
-                      ? 'text-md font-medium text-white rounded-full bg-purple-700'
-                      : 'text-md font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
-                  }
-                  onClick={() => {
-                    const tempData = [...unwindData];
-                    tempData[index].prefToken = pair.token1.id;
-                    setUnwindData(tempData);
-                  }}
-                >
-                  {pair.token1.symbol}
-                </button>
-                <div>
-                  <input
-                    className="w-16 pr-1 font-medium text-right text-white bg-indigo-700 rounded-full text-md"
-                    type={'number'}
-                    value={data.share}
-                    onChange={(e) => {
-                      const tempData = [...unwindData];
-                      let share = parseInt(e.target.value, 10);
-                      if (isNaN(share)) share = 100;
-                      if (share > 100) share = 100;
-                      if (share < 1) share = 1;
-                      tempData[index].share = share;
-                      setUnwindData(tempData);
-                    }}
-                  />
-                </div>
-                <div className="col-span-3 text-sm">
-                  {outputs[index]
-                    ? minimumOut.toFixed(4) +
-                      ' (' +
-                      (price !== 0 ? minimumOut / price - 1 : 0).toFixed(2) +
-                      '%) ' +
-                      prefToken.symbol
-                    : 'loading...'}
-                </div>
-              </>
-            );
-          })}
         </div>
+        {pairs.map((pair: any, index: number) => {
+          const data: any = unwindData[index];
+          const prefToken: any = data.prefToken === pair.token0.id ? pair.token0 : pair.token1;
+          const price: number =
+            data.prefToken === pair.token0.id
+              ? (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
+                parseFloat(pair.reserve0) *
+                2
+              : (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
+                parseFloat(pair.reserve1) *
+                2;
+          const minimumOut = parseFloat(
+            formatUnits(outputs[index] ? outputs[index].minimumOut : 0, prefToken.decimals)
+          );
+          return (
+            <div key={index} className="grid grid-cols-6 gap-1 px-4 pb-2 bg-indigo-800 rounded-b-xl">
+              <button
+                className={
+                  data.prefToken === pair.token0.id
+                    ? 'text-md font-medium text-white rounded-full bg-purple-700'
+                    : 'text-md font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
+                }
+                onClick={() => {
+                  const tempData = [...unwindData];
+                  tempData[index].prefToken = pair.token0.id;
+                  setUnwindData(tempData);
+                }}
+              >
+                {pair.token0.symbol}
+              </button>
+              <button
+                className={
+                  data.prefToken === pair.token1.id
+                    ? 'text-md font-medium text-white rounded-full bg-purple-700'
+                    : 'text-md font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
+                }
+                onClick={() => {
+                  const tempData = [...unwindData];
+                  tempData[index].prefToken = pair.token1.id;
+                  setUnwindData(tempData);
+                }}
+              >
+                {pair.token1.symbol}
+              </button>
+              <div>
+                <input
+                  className="w-16 pr-1 font-medium text-right text-white bg-indigo-700 rounded-full text-md"
+                  type={'number'}
+                  value={data.share}
+                  onChange={(e) => {
+                    const tempData = [...unwindData];
+                    let share = parseInt(e.target.value, 10);
+                    if (isNaN(share)) share = 100;
+                    if (share > 100) share = 100;
+                    if (share < 1) share = 1;
+                    tempData[index].share = share;
+                    setUnwindData(tempData);
+                  }}
+                />
+              </div>
+              <div className="col-span-3 text-sm">
+                {outputs[index]
+                  ? minimumOut.toFixed(4) +
+                    ' (' +
+                    (price !== 0 ? minimumOut / price - 1 : 0).toFixed(2) +
+                    '%) ' +
+                    prefToken.symbol
+                  : 'loading...'}
+              </div>
+            </div>
+          );
+        })}
         <button
           className="px-8 py-2 text-white bg-pink-500 rounded-b-lg hover:bg-pink-600 text-md"
           onClick={() => {
