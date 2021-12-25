@@ -44,19 +44,26 @@ const Dashboard = ({
         <button
           className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
           onClick={() => {
-            setParams({
-              wethBalance: parseFloat(formatUnits(wethBalance)),
-            });
-            setOpenModal('withdraw');
+            if (chainId === 1) {
+              setParams({
+                wethBalance: parseFloat(formatUnits(wethBalance)),
+              });
+              setOpenModal('buySushi');
+            } else {
+              setParams({
+                wethBalance: parseFloat(formatUnits(wethBalance)),
+              });
+              setOpenModal('withdraw');
+            }
           }}
         >
-          Transfer WETH
+          {chainId === 1 ? 'Buy Sushi' : 'Transfer WETH'}
         </button>
         <button
           className="px-16 text-lg font-medium text-white bg-gray-400 rounded hover:bg-gray-500"
           onClick={() => {}}
         >
-          Bridge WETH
+          {chainId === 1 ? 'Sweep' : 'Bridge WETH'}
         </button>
       </div>
       <div className="">
