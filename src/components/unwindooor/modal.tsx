@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import UnwindPairs from './UnwindPairs';
 import BuyWeth from './buyWeth';
+import BuySushi from './buySushi';
 import Withdraw from './withdraw';
 
 const UnwindModal = ({
@@ -53,6 +54,9 @@ const UnwindModal = ({
               <div className="px-4 pt-5 pb-4 bg-indigo-900 sm:p-6 sm:pb-4">
                 {openModal === 'unwind' && <UnwindPairs pairs={params.pairs} setTxPending={params.setTxPending} />}
                 {openModal === 'buyWeth' && <BuyWeth setTxPending={params.setTxPending} />}
+                {openModal === 'buySushi' && (
+                  <BuySushi setTxPending={params.setTxPending} wethBalance={params.wethBalance} />
+                )}
                 {openModal === 'withdraw' && (
                   <Withdraw setTxPending={params.setTxPending} wethBalance={params.wethBalance} />
                 )}
