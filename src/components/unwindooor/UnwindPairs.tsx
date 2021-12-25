@@ -48,7 +48,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
       setOutputs(tempPriceImpacts);
     };
     fetchData();
-  }, [unwindData, slippage, connector]);
+  }, [unwindData, slippage, connector, chainId]);
 
   if (!active) {
     return <div className="text-white">Please connect your wallet first.</div>;
@@ -85,14 +85,6 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
         {pairs.map((pair: any, index: number) => {
           const data: any = unwindData[index];
           const prefToken: any = data.prefToken === pair.token0.id ? pair.token0 : pair.token1;
-          const price: number =
-            data.prefToken === pair.token0.id
-              ? (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
-                parseFloat(pair.reserve0) *
-                2
-              : (parseFloat(formatUnits(outputs[index] ? outputs[index].amount : 0, 18)) / pair.totalSupply) *
-                parseFloat(pair.reserve1) *
-                2;
           const minimumOut = parseFloat(
             formatUnits(outputs[index] ? outputs[index].minimumOut : 0, prefToken.decimals)
           );
@@ -143,13 +135,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
                 />
               </div>
               <div className="col-span-3 text-sm">
-                {outputs[index]
-                  ? minimumOut.toFixed(4) +
-                    ' (' +
-                    (price !== 0 ? minimumOut / price - 1 : 0).toFixed(2) +
-                    '%) ' +
-                    prefToken.symbol
-                  : 'loading...'}
+                {outputs[index] ? minimumOut.toFixed(4) + ' (xx%) ' + prefToken.symbol : 'loading...'}
               </div>
             </div>
           );
@@ -165,8 +151,16 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
                 PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
                 provider
               ).connect(provider.getSigner());
-              const lpTokens = pairs.map((pair) => {
-                return pair.id;
+              let tokensA: any[] = [];
+              let tokensB: any[] = [];
+              pairs.forEach((pair: any, index: number) => {
+                if (outputs[index].keepToken0) {
+                  tokensA.push(pair.token0.id);
+                  tokensB.push(pair.token1.id);
+                } else {
+                  tokensA.push(pair.token1.id);
+                  tokensB.push(pair.token0.id);
+                }
               });
               const amounts = outputs.map((output) => {
                 return output.amount;
@@ -174,10 +168,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
               const minimumOuts = outputs.map((output) => {
                 return output.minimumOut;
               });
-              const keepToken0 = outputs.map((output) => {
-                return output.keepToken0;
-              });
-              const tx = await maker.unwindPairs(lpTokens, amounts, minimumOuts, keepToken0);
+              const tx = await maker.unwindPairs(tokensA, tokensB, amounts, minimumOuts);
               setTxPending(tx.hash);
               await provider.waitForTransaction(tx.hash, 1);
               setTxPending('');
