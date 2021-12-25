@@ -72,8 +72,7 @@ const Unwindooor = (): JSX.Element => {
   const [params, setParams] = useState({});
 
   useEffect(() => {
-    if (txPending !== '') return;
-    if (active && chainId && chainId !== 1 && NETWORKS[chainId]) {
+    if (active && chainId && NETWORKS[chainId]) {
       setClient(
         new ApolloClient({
           uri: NETWORKS[chainId].exchangeSubgraph,
