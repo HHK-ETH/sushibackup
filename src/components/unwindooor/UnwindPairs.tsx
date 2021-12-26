@@ -35,7 +35,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
               : PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
             preferTokens: [getAddress(data.prefToken)],
             provider: provider,
-            maxPriceImpact: BigNumber.from(300),
+            maxPriceImpact: BigNumber.from(60),
             priceSlippage: BigNumber.from(slippage * 10),
             wethAddress: chainId ? WETH[chainId] : WETH[1],
             sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
@@ -43,7 +43,15 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
               ? PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]
               : PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[1],
           });
-          return await wethMaker.unwindPair(pairs[index].id, BigNumber.from(data.share));
+          const { amount, minimumOut, keepToken0 } = await wethMaker.unwindPair(
+            pairs[index].id,
+            BigNumber.from(data.share)
+          );
+          const { reserve0, reserve1, totalSupply } = await wethMaker._getUnwindData(pairs[index].id);
+          const noPiAmountOut = keepToken0
+            ? amount.mul(reserve0).div(totalSupply).mul(2)
+            : amount.mul(reserve1).div(totalSupply).mul(2);
+          return { amount: amount, minimumOut: minimumOut, noPiAmountOut: noPiAmountOut };
         })
       );
       setOutputs(tempPriceImpacts);
@@ -89,6 +97,10 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
           const minimumOut = parseFloat(
             formatUnits(outputs[index] ? outputs[index].minimumOut : 0, prefToken.decimals)
           );
+          const noPiAmountOut = parseFloat(
+            formatUnits(outputs[index] ? outputs[index].noPiAmountOut : 0, prefToken.decimals)
+          );
+          const priceImpact = ((minimumOut / noPiAmountOut - 1) * 100).toFixed(2);
           return (
             <div key={index} className="grid grid-cols-6 gap-1 px-4 pb-2 bg-indigo-800 rounded-b-xl">
               <button
@@ -136,7 +148,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
                 />
               </div>
               <div className="col-span-3 text-sm">
-                {outputs[index] ? minimumOut.toFixed(4) + ' (xx%) ' + prefToken.symbol : 'loading...'}
+                {outputs[index] ? minimumOut.toFixed(4) + ' (' + priceImpact + '%) ' + prefToken.symbol : 'loading...'}
               </div>
             </div>
           );
