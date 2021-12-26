@@ -8,6 +8,7 @@ import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
 import sushiMakerABI from '../../imports/abis/sushiMaker.json';
 import { NETWORKS } from '../../helpers/network';
+import Slippage from './slippage';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -65,25 +66,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
 
   return (
     <div className="text-center text-white">
-      <div className="grid grid-cols-4 gap-4">
-        <p>Max slippage:</p>
-        {[0.1, 0.5, 1].map((value) => {
-          return (
-            <button
-              className={
-                slippage === value
-                  ? 'text-lg font-medium text-white rounded-full bg-purple-700'
-                  : 'text-lg font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
-              }
-              onClick={() => {
-                setSlippage(value);
-              }}
-            >
-              {value}%
-            </button>
-          );
-        })}
-      </div>
+      <Slippage setSlippage={setSlippage} slippage={slippage} />
       <div className="p-2 mt-4 text-lg border-2 border-indigo-700 rounded-lg">
         <div className="grid grid-cols-5 mb-4">
           <h3 className="col-span-2">From: {((wethBalance * share) / 100).toFixed(2)} WETH</h3>
@@ -107,9 +90,10 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
             {parseFloat(formatUnits(swapData.minimumOut)).toFixed(4) +
               ' (' +
               (
-                parseFloat(formatUnits(swapData.minimumOut)) /
+                (parseFloat(formatUnits(swapData.minimumOut)) /
                   parseFloat(formatUnits(swapData.noPriceImpactAmountOut)) -
-                1
+                  1) *
+                100
               ).toFixed(2) +
               '%) SUSHI'}
           </h3>

@@ -7,6 +7,7 @@ import { WethMaker } from 'unwindooor-sdk';
 import { NETWORKS } from '../../helpers/network';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
+import Slippage from './slippage';
 
 const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
   const [slippage, setSlippage]: [slippage: number, setSlippage: Function] = useState(0.1);
@@ -66,25 +67,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
   return (
     <>
       <div className="text-center text-white">
-        <div className="grid grid-cols-4 gap-4">
-          <p>Max slippage:</p>
-          {[0.1, 0.5, 1].map((value) => {
-            return (
-              <button
-                className={
-                  slippage === value
-                    ? 'text-lg font-medium text-white rounded-full bg-purple-700'
-                    : 'text-lg font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
-                }
-                onClick={() => {
-                  setSlippage(value);
-                }}
-              >
-                {value}%
-              </button>
-            );
-          })}
-        </div>
+        <Slippage setSlippage={setSlippage} slippage={slippage} />
         <div className="grid grid-cols-6 gap-1 p-2 px-4 mt-4 bg-indigo-800 rounded-t-xl">
           <div>Token 0</div>
           <div>Token 1</div>

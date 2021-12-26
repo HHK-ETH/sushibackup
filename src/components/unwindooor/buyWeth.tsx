@@ -9,6 +9,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import erc20Abi from './../../imports/abis/erc20.json';
 import wethMakerABI from './../../imports/abis/wethMaker.json';
 import { NETWORKS } from '../../helpers/network';
+import Slippage from './slippage';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -97,25 +98,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
 
   return (
     <div className="text-center text-white">
-      <div className="grid grid-cols-4 gap-4">
-        <p>Max slippage:</p>
-        {[0.1, 0.5, 1].map((value) => {
-          return (
-            <button
-              className={
-                slippage === value
-                  ? 'text-lg font-medium text-white rounded-full bg-purple-700'
-                  : 'text-lg font-medium text-white rounded-full bg-pink-500 hover:bg-pink-600'
-              }
-              onClick={() => {
-                setSlippage(value);
-              }}
-            >
-              {value}%
-            </button>
-          );
-        })}
-      </div>
+      <Slippage setSlippage={setSlippage} slippage={slippage} />
       {swapList.map((swap, index) => {
         const output = outputs[index];
         const minimumOut = output ? parseFloat(formatUnits(output.minimumOut, output.decimals)) : 0;
@@ -158,7 +141,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
                 {output
                   ? minimumOut.toFixed(4) +
                     ' (' +
-                    (minimumOut / noPriceImpactAmountOut - 1).toFixed(2) +
+                    ((minimumOut / noPriceImpactAmountOut - 1) * 100).toFixed(2) +
                     '%) ' +
                     output.symbol
                   : 'Loading...'}
