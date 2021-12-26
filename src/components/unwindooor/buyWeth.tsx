@@ -35,7 +35,9 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
     const minimumOuts = outputs.map((output: any) => {
       return output.minimumOut;
     });
-    const tx = await maker.buyWeth(tokens, amounts, minimumOuts);
+
+    const gasQuantity = await maker.estimateGas.buyWeth(tokens, amounts, minimumOuts);
+    const tx = await maker.buyWeth(tokens, amounts, minimumOuts, { gasLimit: gasQuantity.mul(130).div(100) }); //increase gas limit by 30% to reduce out of gas errors
     setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);
     setTxPending('');
