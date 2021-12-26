@@ -52,7 +52,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
           const noPiAmountOut = keepToken0
             ? amount.mul(reserve0).div(totalSupply).mul(2)
             : amount.mul(reserve1).div(totalSupply).mul(2);
-          return { amount: amount, minimumOut: minimumOut, noPiAmountOut: noPiAmountOut };
+          return { amount: amount, minimumOut: minimumOut, noPiAmountOut: noPiAmountOut, keepToken0: keepToken0 };
         })
       );
       setOutputs(tempPriceImpacts);
@@ -150,6 +150,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
               let tokensA: any[] = [];
               let tokensB: any[] = [];
               pairs.forEach((pair: any, index: number) => {
+                console.log(outputs[index].keepToken0);
                 if (outputs[index].keepToken0) {
                   tokensA.push(pair.token0.id);
                   tokensB.push(pair.token1.id);
