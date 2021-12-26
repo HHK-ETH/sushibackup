@@ -39,7 +39,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
         wethMakerAddress: PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
         preferTokens: [],
         provider: provider,
-        maxPriceImpact: BigNumber.from(30),
+        maxPriceImpact: BigNumber.from(300),
         priceSlippage: BigNumber.from(slippage * 10),
         wethAddress: WETH[1],
         sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
