@@ -15,7 +15,7 @@ const Slippage = ({ slippage, setSlippage }: { slippage: number; setSlippage: Fu
             }}
             key={index}
           >
-            {value}%%
+            {value}%
           </button>
         );
       })}
