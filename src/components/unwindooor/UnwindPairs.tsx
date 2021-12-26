@@ -4,6 +4,7 @@ import { BigNumber, Contract, providers } from 'ethers';
 import { formatUnits, getAddress } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
+import { NETWORKS } from '../../helpers/network';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
 
@@ -169,7 +170,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
                 return output.minimumOut;
               });
               const tx = await maker.unwindPairs(tokensA, tokensB, amounts, minimumOuts);
-              setTxPending(tx.hash);
+              setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
               await provider.waitForTransaction(tx.hash, 1);
               setTxPending('');
             };

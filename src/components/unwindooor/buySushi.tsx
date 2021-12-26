@@ -7,6 +7,7 @@ import { WETH } from '../../imports/tokens';
 import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
 import sushiMakerABI from '../../imports/abis/sushiMaker.json';
+import { NETWORKS } from '../../helpers/network';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -26,7 +27,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
       provider.getSigner()
     );
     const tx = await maker.buySushi(swapData.amountIn, swapData.minimumOut);
-    setTxPending(tx.hash);
+    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);
     setTxPending('');
   };

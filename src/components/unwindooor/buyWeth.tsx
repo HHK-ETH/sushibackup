@@ -8,6 +8,7 @@ import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
 import erc20Abi from './../../imports/abis/erc20.json';
 import wethMakerABI from './../../imports/abis/wethMaker.json';
+import { NETWORKS } from '../../helpers/network';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -34,7 +35,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       return output.minimumOut;
     });
     const tx = await maker.buyWeth(tokens, amounts, minimumOuts);
-    setTxPending(tx.hash);
+    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);
     setTxPending('');
   };

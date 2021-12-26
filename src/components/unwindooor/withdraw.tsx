@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Contract, providers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
+import { NETWORKS } from '../../helpers/network';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
 
@@ -26,7 +27,7 @@ const Withdraw = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
       return;
     }
     const tx = await maker.withdraw(WETH[chainId], recipient, parseUnits(amount.toString(), 'ether'));
-    setTxPending(tx.hash);
+    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);
     setTxPending('');
   };
