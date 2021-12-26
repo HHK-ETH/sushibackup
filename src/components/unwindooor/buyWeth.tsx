@@ -50,7 +50,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
           : PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
         preferTokens: [],
         provider: provider,
-        maxPriceImpact: BigNumber.from(300),
+        maxPriceImpact: BigNumber.from(60),
         priceSlippage: BigNumber.from(slippage * 10),
         wethAddress: chainId ? WETH[chainId] : WETH[1],
         sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
