@@ -24,6 +24,41 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
   );
   const [outputs, setOutputs]: [priceImpacts: any[], setPriceImpacts: Function] = useState([]);
 
+  const execUnwindPairs = async () => {
+    if (!chainId || !connector) return;
+    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
+    const maker = new Contract(
+      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
+      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
+      provider
+    ).connect(provider.getSigner());
+    let tokensA: any[] = [];
+    let tokensB: any[] = [];
+    pairs.forEach((pair: any, index: number) => {
+      console.log(outputs[index].keepToken0);
+      if (outputs[index].keepToken0) {
+        tokensA.push(pair.token0.id);
+        tokensB.push(pair.token1.id);
+      } else {
+        tokensA.push(pair.token1.id);
+        tokensB.push(pair.token0.id);
+      }
+    });
+    const amounts = outputs.map((output) => {
+      return output.amount;
+    });
+    const minimumOuts = outputs.map((output) => {
+      return output.minimumOut;
+    });
+    const gasQuantity = await maker.estimateGas.unwindPairs(tokensA, tokensB, amounts, minimumOuts);
+    const tx = await maker.unwindPairs(tokensA, tokensB, amounts, minimumOuts, {
+      gasLimit: gasQuantity.mul(130).div(100), //increase gas limit by 30% to reduce out of gas errors
+    });
+    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
+    await provider.waitForTransaction(tx.hash, 1);
+    setTxPending('');
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (!connector) return;
@@ -138,43 +173,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
         })}
         <button
           className="px-8 py-2 text-white bg-pink-500 rounded-b-lg hover:bg-pink-600 text-md"
-          onClick={() => {
-            const execUnwindPairs = async () => {
-              if (!chainId || !connector) return;
-              const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-              const maker = new Contract(
-                PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-                PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
-                provider
-              ).connect(provider.getSigner());
-              let tokensA: any[] = [];
-              let tokensB: any[] = [];
-              pairs.forEach((pair: any, index: number) => {
-                console.log(outputs[index].keepToken0);
-                if (outputs[index].keepToken0) {
-                  tokensA.push(pair.token0.id);
-                  tokensB.push(pair.token1.id);
-                } else {
-                  tokensA.push(pair.token1.id);
-                  tokensB.push(pair.token0.id);
-                }
-              });
-              const amounts = outputs.map((output) => {
-                return output.amount;
-              });
-              const minimumOuts = outputs.map((output) => {
-                return output.minimumOut;
-              });
-              const gasQuantity = await maker.estimateGas.unwindPairs(tokensA, tokensB, amounts, minimumOuts);
-              const tx = await maker.unwindPairs(tokensA, tokensB, amounts, minimumOuts, {
-                gasLimit: gasQuantity.mul(130).div(100), //increase gas limit by 30% to reduce out of gas errors
-              });
-              setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-              await provider.waitForTransaction(tx.hash, 1);
-              setTxPending('');
-            };
-            execUnwindPairs();
-          }}
+          onClick={() => execUnwindPairs()}
         >
           Execute
         </button>
