@@ -32,7 +32,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     link: 'kashi',
     logo: kashiLogo,
     description: 'Isolated lending and borrowing.',
-    active: true,
+    active: false,
     networks: {
       [CHAIN_IDS.ETHEREUM]: '0x2cba6ab6574646badc84f0544d05059e57a5dc42',
       [CHAIN_IDS.ARBITRUM]: '0xa010ee0226cd071bebd8919a1f675cae1f1f5d3e',
@@ -47,7 +47,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     link: 'bentobox',
     logo: bentoBoxLogo,
     description: 'Interest bearing vault.',
-    active: true,
+    active: false,
     networks: {
       [CHAIN_IDS.ETHEREUM]: '0xf5bce5077908a1b7370b9ae04adc565ebd643966',
       [CHAIN_IDS.ARBITRUM]: '0x74c764D41B77DBbb4fe771daB1939B00b146894A',
