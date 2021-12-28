@@ -108,7 +108,12 @@ const Unwindooor = (): JSX.Element => {
       <TxPendingModal txPending={txPending} />
       <UnwindModal openModal={openModal} setOpenModal={setOpenModal} params={params} />
       <div className="container p-16 mx-auto text-center text-white">
-        <Dashboard totalFees={totalFees} setOpenModal={setOpenModal} setParams={setParams} />
+        <Dashboard
+          totalFees={totalFees}
+          setOpenModal={setOpenModal}
+          setParams={setParams}
+          setTxPending={setTxPending}
+        />
         {loading && <div className={'text-white'}>loading data...</div>}
         {selectedPairs.length > 0 && (
           <button

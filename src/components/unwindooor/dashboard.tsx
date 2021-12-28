@@ -10,10 +10,12 @@ import erc20Abi from './../../imports/abis/erc20.json';
 const Dashboard = ({
   totalFees,
   setOpenModal,
+  setTxPending,
   setParams,
 }: {
   totalFees: number;
   setOpenModal: Function;
+  setTxPending: Function;
   setParams: Function;
 }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -46,11 +48,13 @@ const Dashboard = ({
           onClick={() => {
             if (chainId === 1) {
               setParams({
+                setTxPending: setTxPending,
                 wethBalance: parseFloat(formatUnits(wethBalance)),
               });
               setOpenModal('buySushi');
             } else {
               setParams({
+                setTxPending: setTxPending,
                 wethBalance: parseFloat(formatUnits(wethBalance)),
               });
               setOpenModal('withdraw');
