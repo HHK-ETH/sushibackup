@@ -90,7 +90,14 @@ const Farm = (): JSX.Element => {
               >
                 <div>{position.name}</div>
                 <div>{formatUnits(position.amount)} SLP</div>
-                <div>{formatUnits(position.pendingSushi)} SUSHI</div>
+                <div>
+                  <div>{formatUnits(position.pendingSushi)} SUSHI</div>
+                  {position.rewardToken && position.pendingToken && (
+                    <div>
+                      {formatUnits(position.pendingToken)} {position.rewardToken}
+                    </div>
+                  )}
+                </div>
                 <div className="col-span-2">
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}

@@ -5,6 +5,8 @@ import { CHAIN_IDS } from './network';
 import msv1Abi from './../imports/abis/masterchef.json';
 import msv2Abi from './../imports/abis/masterchefv2.json';
 import minichefAbi from './../imports/abis/minichef.json';
+import rewarderAbi from './../imports/abis/rewarder.json';
+import erc20Abi from './../imports/abis/erc20.json';
 import { EXCHANGE_ENDPOINTS } from './exchange';
 
 export interface IFarmPosition {
@@ -13,10 +15,12 @@ export interface IFarmPosition {
   pid: string;
   amount: string;
   pendingSushi: BigNumber;
+  pendingToken: BigNumber | undefined;
+  rewardToken: string | undefined;
   contract: Contract;
 }
 
-const QUERY = gql`
+const MSV1_QUERY = gql`
   query queryFarms($address: Bytes!) {
     users(where: { address: $address }) {
       amount
@@ -24,6 +28,23 @@ const QUERY = gql`
         id
         pair
         allocPoint
+      }
+    }
+  }
+`;
+
+const MSV2_QUERY = gql`
+  query queryFarms($address: Bytes!) {
+    users(where: { address: $address }) {
+      amount
+      pool {
+        id
+        pair
+        allocPoint
+        rewarder {
+          id
+          rewardToken
+        }
       }
     }
   }
@@ -77,6 +98,8 @@ const queryFarmPositions = async (
       pid: pos.pool.id,
       amount: pos.amount,
       pendingSushi: pos.pendingSushi,
+      pendingToken: pos.pendingToken,
+      rewardToken: pos.rewardToken,
       contract: pos.contract,
     };
   });
@@ -85,8 +108,8 @@ const queryFarmPositions = async (
 const queryEthereumPositions = async (address: string, web3provider: Web3Provider): Promise<any[]> => {
   const masterchefv1 = new Contract(MASTERCHEF_ADDR, msv1Abi, web3provider);
   const masterchefv2 = new Contract(MASTERCHEFV2_ADDR, msv2Abi, web3provider);
-  const msv1 = await request(MASTERCHEF_ENDPOINT, QUERY, { address: address });
-  const msv2 = await request(MASTERCHEFV2_ENDPOINT, QUERY, { address: address });
+  const msv1 = await request(MASTERCHEF_ENDPOINT, MSV1_QUERY, { address: address });
+  const msv2 = await request(MASTERCHEFV2_ENDPOINT, MSV2_QUERY, { address: address });
   return await Promise.all([
     ...msv1.users
       .filter((pos: any) => {
@@ -110,6 +133,12 @@ const queryEthereumPositions = async (address: string, web3provider: Web3Provide
         pos.pool.name = (
           await request(EXCHANGE_ENDPOINTS[1], LP_QUERY, { address: pos.pool.pair.toLowerCase() })
         ).pair.name;
+        if (pos.pool.rewarder) {
+          const rewarder = new Contract(pos.pool.rewarder.id, rewarderAbi, web3provider);
+          pos.pendingToken = await rewarder.pendingToken(pos.pool.id, address);
+          const rewardToken = new Contract(pos.pool.rewarder.rewardToken, erc20Abi, web3provider);
+          pos.rewardToken = await rewardToken.symbol();
+        }
         pos.pendingSushi = await masterchefv2.pendingSushi(pos.pool.id, address);
         pos.contract = masterchefv2;
         return pos;
@@ -125,7 +154,7 @@ const querySidechainPositions = async (
   const minichef = new Contract(MINICHEF_ADDR[chainId], minichefAbi, web3provider);
   return await Promise.all([
     ...(
-      await request(MINICHEF_ENDPOINT[chainId], QUERY, { address: address })
+      await request(MINICHEF_ENDPOINT[chainId], MSV2_QUERY, { address: address })
     ).users
       .filter((pos: any) => {
         if (pos.pool) return true;
@@ -135,6 +164,13 @@ const querySidechainPositions = async (
         pos.pool.name = (
           await request(EXCHANGE_ENDPOINTS[chainId], LP_QUERY, { address: pos.pool.pair.toLowerCase() })
         ).pair.name;
+        if (pos.pool.rewarder) {
+          console.log(pos);
+          const rewarder = new Contract(pos.pool.rewarder.id, rewarderAbi, web3provider);
+          pos.pendingToken = await rewarder.pendingToken(pos.pool.id, address);
+          const rewardToken = new Contract(pos.pool.rewarder.rewardToken, erc20Abi, web3provider);
+          pos.rewardToken = await rewardToken.symbol();
+        }
         pos.pendingSushi = await minichef.pendingSushi(pos.pool.id, address);
         pos.contract = minichef;
         return pos;
