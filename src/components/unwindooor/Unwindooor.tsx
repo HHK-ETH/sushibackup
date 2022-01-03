@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
 import { NETWORKS } from '../../helpers/network';
+import { EXCHANGE_ENDPOINTS } from '../../helpers/exchange';
 import UnwindModal from './modal';
 import TxPendingModal from '../general/TxPendingModal';
 import Dashboard from './dashboard';
 
 const defaultClient = new ApolloClient({
-  uri: NETWORKS[1].exchangeSubgraph,
+  uri: EXCHANGE_ENDPOINTS[1],
   cache: new InMemoryCache(),
 });
 
@@ -75,7 +76,7 @@ const Unwindooor = (): JSX.Element => {
     if (active && chainId && NETWORKS[chainId]) {
       setClient(
         new ApolloClient({
-          uri: NETWORKS[chainId].exchangeSubgraph,
+          uri: EXCHANGE_ENDPOINTS[chainId],
           cache: new InMemoryCache(),
         })
       );
