@@ -2,7 +2,6 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
 import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
@@ -10,6 +9,8 @@ import erc20Abi from './../../imports/abis/erc20.json';
 import wethMakerABI from './../../imports/abis/wethMaker.json';
 import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
+import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -21,11 +22,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const execBuyWeth = async () => {
     if (!chainId || !connector) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
-      provider
-    ).connect(provider.getSigner());
+    const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
     const tokens = swapList.map((swap) => {
       return swap.token;
     });
@@ -48,9 +45,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       if (!connector || !chainId) return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const wethMaker = new WethMaker({
-        wethMakerAddress: chainId
-          ? PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId]
-          : PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
+        wethMakerAddress: UNWINDOOOR_ADDR[chainId],
         preferTokens: [],
         provider: provider,
         maxPriceImpact: BigNumber.from(60),
@@ -61,11 +56,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
           ? PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]
           : PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[1],
       });
-      const wethMakerContract = new Contract(
-        PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-        wethMakerABI,
-        provider
-      );
+      const wethMakerContract = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider);
       const tempOutputs = await Promise.all(
         swapList.map(async (swap: any) => {
           if (swap.token === '') return null;

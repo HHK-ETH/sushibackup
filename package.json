@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.5.6",
     "@craco/craco": "^6.2.0",
     "@ethersproject/providers": "^5.5.1",
     "@headlessui/react": "^1.4.0",

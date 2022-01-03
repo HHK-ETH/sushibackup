@@ -2,107 +2,39 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
-import { ApolloClient, InMemoryCache, useQuery, gql } from '@apollo/client';
-import { NETWORKS } from '../../helpers/network';
-import { EXCHANGE_ENDPOINTS } from '../../helpers/exchange';
 import UnwindModal from './modal';
 import TxPendingModal from '../general/TxPendingModal';
 import Dashboard from './dashboard';
-
-const defaultClient = new ApolloClient({
-  uri: EXCHANGE_ENDPOINTS[1],
-  cache: new InMemoryCache(),
-});
-
-const pairQuery = `
-  pair {
-    id
-    reserveUSD
-    totalSupply
-    name
-    reserve0
-    reserve1
-    token0 {
-      id
-      symbol
-      name
-      decimals
-    }
-    token1 {
-      id
-      name
-      symbol
-      decimals
-    }
-  }
-`;
-
-const getQuery = (feeTo: string) => {
-  return gql`
-    query positions {
-      users(first: 1, where: { id: "${feeTo.toLocaleLowerCase()}" }) {
-        lp1: liquidityPositions(first: 1000, orderBy: timestamp, orderDirection: desc) {
-          ${pairQuery}
-          liquidityTokenBalance
-        }
-        lp2: liquidityPositions(skip: 1000, first: 1000, orderBy: timestamp, orderDirection: desc) {
-          ${pairQuery}
-          liquidityTokenBalance
-        }
-      }
-    }
-  `;
-};
+import { UNWINDOOOR_ADDR, queryUnwindooorPositions } from './../../helpers/unwindooor';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId } = context;
-  const [totalFees, setTotalFess]: [number, Function] = useState(0);
-  const [client, setClient] = useState(defaultClient);
-  const { loading, error, data } = useQuery(
-    getQuery(
-      chainId ? PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId] : PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1]
-    ),
-    {
-      client: client,
-    }
-  );
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [openModal, setOpenModal]: [string, Function] = useState('');
   const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [params, setParams] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [data, setData]: [data: any, setData: Function] = useState({
+    totalFees: 0,
+    positions: { user: { lp1: [], lp2: [] } },
+  });
 
   useEffect(() => {
-    if (active && chainId && NETWORKS[chainId]) {
-      setClient(
-        new ApolloClient({
-          uri: EXCHANGE_ENDPOINTS[chainId],
-          cache: new InMemoryCache(),
-        })
-      );
-      setSelectedPairs([]);
-    }
+    const fetchPositions = async () => {
+      if (!active || !chainId || !UNWINDOOOR_ADDR[chainId]) return;
+      setLoading(true);
+      setData(await queryUnwindooorPositions(chainId));
+      setLoading(false);
+    };
+    fetchPositions();
   }, [active, chainId]);
 
-  useEffect(() => {
-    if (data) {
-      if (!data.users[0]) return;
-      let fees = 0;
-      [...data.users[0].lp1, ...data.users[0].lp2].forEach((position: any) => {
-        const pair = position.pair;
-        const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
-        fees += value;
-      });
-      setTotalFess(fees);
-    }
-  }, [data]);
-
-  if (chainId && !PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]) {
+  if (chainId && !UNWINDOOOR_ADDR[chainId]) {
     return <div className={'mt-24 text-xl text-center text-white'}>Unwindooor is not available on this network.</div>;
   }
   if (loading) return <div className="container p-16 mx-auto text-center text-white">Loading data...</div>;
-  if (error) return <div className="container p-16 mx-auto text-center text-white">Subgraph returned an error.</div>;
-  if (!data.users[0]) return <div className="container p-16 mx-auto text-center text-white">Nothing to unwind.</div>;
+  if (!active) return <div className="container p-16 mx-auto text-center text-white">Please connect your wallet.</div>;
 
   return (
     <>
@@ -110,7 +42,7 @@ const Unwindooor = (): JSX.Element => {
       <UnwindModal openModal={openModal} setOpenModal={setOpenModal} params={params} />
       <div className="container p-16 mx-auto text-center text-white">
         <Dashboard
-          totalFees={totalFees}
+          totalFees={data.totalFees}
           setOpenModal={setOpenModal}
           setParams={setParams}
           setTxPending={setTxPending}
@@ -137,7 +69,7 @@ const Unwindooor = (): JSX.Element => {
           <div className="">Value</div>
           <div className="">Select</div>
         </div>
-        {[...data.users[0].lp1, ...data.users[0].lp2]
+        {[...data.positions.user.lp1, ...data.positions.user.lp2]
           .sort((positionA: any, positionB: any) => {
             const pairA = positionA.pair;
             const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;

@@ -2,13 +2,14 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { WETH } from '../../imports/tokens';
 import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
-import sushiMakerABI from '../../imports/abis/sushiMaker.json';
 import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
+import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
+import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -24,9 +25,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
   const execBuySushi = async () => {
     if (!chainId || !connector) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId], sushiMakerABI, provider).connect(
-      provider.getSigner()
-    );
+    const maker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider).connect(provider.getSigner());
     const tx = await maker.buySushi(swapData.amountIn, swapData.minimumOut);
     setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);
@@ -38,7 +37,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
       if (!connector || !chainId) return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const wethMaker = new WethMaker({
-        wethMakerAddress: PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
+        wethMakerAddress: UNWINDOOOR_ADDR[chainId],
         preferTokens: [],
         provider: provider,
         maxPriceImpact: BigNumber.from(60),

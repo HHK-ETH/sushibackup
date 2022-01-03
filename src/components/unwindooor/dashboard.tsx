@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import { WETH } from '../../imports/tokens';
 import erc20Abi from './../../imports/abis/erc20.json';
 
@@ -27,7 +27,7 @@ const Dashboard = ({
       if (!connector || !chainId) return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const weth = new Contract(WETH[chainId], erc20Abi, provider);
-      const balance = await weth.balanceOf(PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId]);
+      const balance = await weth.balanceOf(UNWINDOOOR_ADDR[chainId]);
       setWethBalance(balance);
     };
     fetchWethBalance();

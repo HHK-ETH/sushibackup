@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
 import { NETWORKS } from '../../helpers/network';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import { WETH } from '../../imports/tokens';
+import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
 import Slippage from './slippage';
 
 const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
@@ -27,15 +29,10 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
   const execUnwindPairs = async () => {
     if (!chainId || !connector) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
-      provider
-    ).connect(provider.getSigner());
+    const maker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider).connect(provider.getSigner());
     let tokensA: any[] = [];
     let tokensB: any[] = [];
     pairs.forEach((pair: any, index: number) => {
-      console.log(outputs[index].keepToken0);
       if (outputs[index].keepToken0) {
         tokensA.push(pair.token0.id);
         tokensB.push(pair.token1.id);

@@ -8,7 +8,6 @@ import bentoBoxABI from '../imports/abis/bento.json';
 import boringHelperABI from '../imports/abis/boringhelper.json';
 import sushiFactoryABI from '../imports/abis/sushiFactory.json';
 import wethMaker from '../imports/abis/wethMaker.json';
-import minichef from '../imports/abis/minichef.json';
 import masterchef from '../imports/abis/masterchef.json';
 
 export interface IProduct {
@@ -108,18 +107,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     logo: sushiMakerLogo,
     description: 'Remove liquidity to serve the bar.',
     active: true,
-    networks: {
-      [CHAIN_IDS.ARBITRUM]: '0xa19b3b22f29E23e4c04678C94CFC3e8f202137d8',
-      [CHAIN_IDS.AVALANCHE]: '0x560C759A11cd026405F6f2e19c65Da1181995fA2',
-      [CHAIN_IDS.BSC]: '0x4736c58BfB626C96D344Be2fC04e420aE283E9E8',
-      [CHAIN_IDS.CELO]: '0xB6E90eBe44De40aEb0b987adC2D7d9dd0EC918d7',
-      [CHAIN_IDS.ETHEREUM]: '0x5ad6211CD3fdE39A9cECB5df6f380b8263d1e277',
-      [CHAIN_IDS.FANTOM]: '0x4736c58BfB626C96D344Be2fC04e420aE283E9E8',
-      [CHAIN_IDS.HARMONY]: '0x560C759A11cd026405F6f2e19c65Da1181995fA2',
-      [CHAIN_IDS.MOONRIVER]: '0xa19b3b22f29E23e4c04678C94CFC3e8f202137d8',
-      [CHAIN_IDS.POLYGON]: '0xf1c9881Be22EBF108B8927c4d197d126346b5036',
-      [CHAIN_IDS.XDAI]: '',
-    },
+    networks: {},
     ABI: wethMaker,
   },
   [PRODUCT_IDS.MASTERCHEF]: {
@@ -128,26 +116,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     logo: farmLogo,
     description: 'Stake/unstake SLPs and earn sushi rewards.',
     active: true,
-    networks: {
-      [CHAIN_IDS.ETHEREUM]: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
-    },
+    networks: {},
     ABI: masterchef,
-  },
-  [PRODUCT_IDS.MINICHEF]: {
-    name: '',
-    link: '',
-    logo: '',
-    description: '',
-    active: false,
-    networks: {
-      [CHAIN_IDS.ETHEREUM]: '0xef0881ec094552b2e128cf945ef17a6752b4ec5d', //mcv2
-      [CHAIN_IDS.ARBITRUM]: '0xf4d73326c13a4fc5fd7a064217e12780e9bd62c3',
-      [CHAIN_IDS.CELO]: '0x0769fd68dfb93167989c6f7254cd0d766fb2841f',
-      [CHAIN_IDS.HARMONY]: '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
-      [CHAIN_IDS.MOONRIVER]: '0x3db01570d97631f69bbb0ba39796865456cf89a5',
-      [CHAIN_IDS.POLYGON]: '0x0769fd68dfb93167989c6f7254cd0d766fb2841f',
-      [CHAIN_IDS.XDAI]: '0xddcbf776df3de60163066a5dddf2277cb445e0f3',
-    },
-    ABI: minichef,
   },
 };

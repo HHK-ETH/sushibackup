@@ -4,8 +4,9 @@ import { Contract, providers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { NETWORKS } from '../../helpers/network';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import { WETH } from '../../imports/tokens';
+import wethMakerABI from './../../imports/abis/wethMaker.json';
 
 const Withdraw = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -16,11 +17,7 @@ const Withdraw = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
   const execWithdraw = async () => {
     if (!chainId || !connector || !account) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId],
-      PRODUCTS[PRODUCT_IDS.UNWINDOOOR].ABI,
-      provider
-    ).connect(provider.getSigner());
+    const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
     const owner = await maker.owner();
     if (account.toLowerCase() !== owner.toLowerCase()) {
       alert('Only owner can withdraw funds.');
