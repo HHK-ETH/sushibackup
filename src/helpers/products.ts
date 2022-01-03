@@ -2,11 +2,14 @@ import { CHAIN_IDS } from './network';
 import kashiLogo from '../imports/images/products/kashi.png';
 import bentoBoxLogo from '../imports/images/products/bentoBox.png';
 import sushiMakerLogo from '../imports/images/products/sushiMaker.png';
+import farmLogo from '../imports/images/products/farm.jpeg';
 import kashiABI from '../imports/abis/kashi.json';
 import bentoBoxABI from '../imports/abis/bento.json';
 import boringHelperABI from '../imports/abis/boringhelper.json';
 import sushiFactoryABI from '../imports/abis/sushiFactory.json';
 import wethMaker from '../imports/abis/wethMaker.json';
+import minichef from '../imports/abis/minichef.json';
+import masterchef from '../imports/abis/masterchef.json';
 
 export interface IProduct {
   name: string;
@@ -24,6 +27,8 @@ export enum PRODUCT_IDS {
   BORING_HELPER = 2,
   SUSHI_MAKER = 3,
   UNWINDOOOR = 4,
+  MASTERCHEF = 5,
+  MINICHEF = 6,
 }
 
 export const PRODUCTS: { [id: number]: IProduct } = {
@@ -116,5 +121,33 @@ export const PRODUCTS: { [id: number]: IProduct } = {
       [CHAIN_IDS.XDAI]: '',
     },
     ABI: wethMaker,
+  },
+  [PRODUCT_IDS.MASTERCHEF]: {
+    name: 'Farm',
+    link: 'farm',
+    logo: farmLogo,
+    description: 'Stake/unstake SLPs and earn sushi rewards.',
+    active: true,
+    networks: {
+      [CHAIN_IDS.ETHEREUM]: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd',
+    },
+    ABI: masterchef,
+  },
+  [PRODUCT_IDS.MINICHEF]: {
+    name: '',
+    link: '',
+    logo: '',
+    description: '',
+    active: false,
+    networks: {
+      [CHAIN_IDS.ETHEREUM]: '0xef0881ec094552b2e128cf945ef17a6752b4ec5d', //mcv2
+      [CHAIN_IDS.ARBITRUM]: '0xf4d73326c13a4fc5fd7a064217e12780e9bd62c3',
+      [CHAIN_IDS.CELO]: '0x0769fd68dfb93167989c6f7254cd0d766fb2841f',
+      [CHAIN_IDS.HARMONY]: '0x67da5f2ffaddff067ab9d5f025f8810634d84287',
+      [CHAIN_IDS.MOONRIVER]: '0x3db01570d97631f69bbb0ba39796865456cf89a5',
+      [CHAIN_IDS.POLYGON]: '0x0769fd68dfb93167989c6f7254cd0d766fb2841f',
+      [CHAIN_IDS.XDAI]: '0xddcbf776df3de60163066a5dddf2277cb445e0f3',
+    },
+    ABI: minichef,
   },
 };
