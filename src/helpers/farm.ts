@@ -91,7 +91,6 @@ const queryFarmPositions = async (
       ? await queryEthereumPositions(address, web3provider)
       : await querySidechainPositions(address, chainId, web3provider);
   return positions.map((pos) => {
-    console.log(pos);
     return {
       pair: pos.pool.pair,
       name: pos.pool.name,
@@ -117,9 +116,8 @@ const queryEthereumPositions = async (address: string, web3provider: Web3Provide
         return false;
       })
       .map(async (pos: any) => {
-        pos.pool.name = (
-          await request(EXCHANGE_ENDPOINTS[1], LP_QUERY, { address: pos.pool.pair.toLowerCase() })
-        ).pair.name;
+        const isLp = (await request(EXCHANGE_ENDPOINTS[1], LP_QUERY, { address: pos.pool.pair.toLowerCase() })).pair;
+        pos.pool.name = isLp ? isLp.name : 'Unknow';
         pos.pendingSushi = await masterchefv1.pendingSushi(pos.pool.id, address);
         pos.contract = masterchefv1;
         return pos;
@@ -130,13 +128,12 @@ const queryEthereumPositions = async (address: string, web3provider: Web3Provide
         return false;
       })
       .map(async (pos: any) => {
-        pos.pool.name = (
-          await request(EXCHANGE_ENDPOINTS[1], LP_QUERY, { address: pos.pool.pair.toLowerCase() })
-        ).pair.name;
-        if (pos.pool.rewarder) {
+        const isLp = (await request(EXCHANGE_ENDPOINTS[1], LP_QUERY, { address: pos.pool.pair.toLowerCase() })).pair;
+        pos.pool.name = isLp ? isLp.name : 'Unknow';
+        if (pos.pool.rewarder.id !== '0x0000000000000000000000000000000000000000') {
           const rewarder = new Contract(pos.pool.rewarder.id, rewarderAbi, web3provider);
           pos.pendingToken = await rewarder.pendingToken(pos.pool.id, address);
-          const rewardToken = new Contract(pos.pool.rewarder.rewardToken, erc20Abi, web3provider);
+          const rewardToken = new Contract(await rewarder.rewardToken(), erc20Abi, web3provider);
           pos.rewardToken = await rewardToken.symbol();
         }
         pos.pendingSushi = await masterchefv2.pendingSushi(pos.pool.id, address);
@@ -161,14 +158,13 @@ const querySidechainPositions = async (
         return false;
       })
       .map(async (pos: any) => {
-        pos.pool.name = (
-          await request(EXCHANGE_ENDPOINTS[chainId], LP_QUERY, { address: pos.pool.pair.toLowerCase() })
-        ).pair.name;
-        if (pos.pool.rewarder) {
-          console.log(pos);
+        const isLp = (await request(EXCHANGE_ENDPOINTS[chainId], LP_QUERY, { address: pos.pool.pair.toLowerCase() }))
+          .pair;
+        pos.pool.name = isLp ? isLp.name : 'Unknow';
+        if (pos.pool.rewarder.id !== '0x0000000000000000000000000000000000000000') {
           const rewarder = new Contract(pos.pool.rewarder.id, rewarderAbi, web3provider);
           pos.pendingToken = await rewarder.pendingToken(pos.pool.id, address);
-          const rewardToken = new Contract(pos.pool.rewarder.rewardToken, erc20Abi, web3provider);
+          const rewardToken = new Contract(await rewarder.rewardToken(), erc20Abi, web3provider);
           pos.rewardToken = await rewardToken.symbol();
         }
         pos.pendingSushi = await minichef.pendingSushi(pos.pool.id, address);
