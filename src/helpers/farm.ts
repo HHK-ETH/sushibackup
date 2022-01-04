@@ -76,6 +76,14 @@ const MINICHEF_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.XDAI]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
 };
 
+const REWARD_TOKEN: { [chainId: number]: string } = {
+  [CHAIN_IDS.CELO]: 'CELO',
+  [CHAIN_IDS.HARMONY]: 'WONE',
+  [CHAIN_IDS.MOONRIVER]: 'WMOVR',
+  [CHAIN_IDS.POLYGON]: 'WMATIC',
+  [CHAIN_IDS.XDAI]: 'STAKE',
+};
+
 const MASTERCHEF_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sushiswap/master-chef';
 const MASTERCHEF_ADDR: string = '0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd';
 const MASTERCHEFV2_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sushiswap/master-chefv2';
@@ -164,8 +172,12 @@ const querySidechainPositions = async (
         if (pos.pool.rewarder.id !== '0x0000000000000000000000000000000000000000') {
           const rewarder = new Contract(pos.pool.rewarder.id, rewarderAbi, web3provider);
           pos.pendingToken = await rewarder.pendingToken(pos.pool.id, address);
-          const rewardToken = new Contract(await rewarder.rewardToken(), erc20Abi, web3provider);
-          pos.rewardToken = await rewardToken.symbol();
+          if (chainId === CHAIN_IDS.ARBITRUM) {
+            const rewardToken = new Contract(await rewarder.rewardToken(), erc20Abi, web3provider);
+            pos.rewardToken = await rewardToken.symbol();
+          } else {
+            pos.rewardToken = REWARD_TOKEN[chainId];
+          }
         }
         pos.pendingSushi = await minichef.pendingSushi(pos.pool.id, address);
         pos.contract = minichef;
