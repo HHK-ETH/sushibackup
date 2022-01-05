@@ -1,10 +1,11 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { providers } from 'ethers';
+import { Contract, providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { BENTOBOX_ENDPOINT, queryBentoboxPositions } from '../../helpers/bentobox';
+import { BENTOBOX_ADDR, BENTOBOX_ENDPOINT, queryBentoboxPositions } from '../../helpers/bentobox';
 import TxPendingModal from '../general/TxPendingModal';
+import bentoBoxABI from '../../imports/abis/bento.json';
 
 const Bentobox = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -12,6 +13,17 @@ const Bentobox = (): JSX.Element => {
   const [positions, setPositions]: [positions: any[], setPositions: Function] = useState([]);
   const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+
+  const withdraw = async (token: string, share: string) => {
+    if (!connector || !chainId || !account) return;
+    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
+    let bentobox = new Contract(BENTOBOX_ADDR[chainId], bentoBoxABI, web3Provider);
+    bentobox = bentobox.connect(web3Provider.getSigner());
+    const tx = await bentobox.withdraw(token, account, account, 0, share);
+    setTxPending(tx.hash);
+    await web3Provider.waitForTransaction(tx.hash, 2);
+    setTxPending('');
+  };
 
   useEffect(() => {
     const fetchFarms = async () => {
@@ -58,7 +70,7 @@ const Bentobox = (): JSX.Element => {
                 <div>
                   <button
                     className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => {}}
+                    onClick={() => withdraw(position.token.id, position.share)}
                   >
                     Withdraw
                   </button>
