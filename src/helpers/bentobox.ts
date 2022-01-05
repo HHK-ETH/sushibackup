@@ -50,4 +50,4 @@ const queryBentoboxPositions = async (chainId: number, address: string, web3prov
   );
 };
 
-export { BENTOBOX_ENDPOINT, queryBentoboxPositions };
+export { BENTOBOX_ENDPOINT, BENTOBOX_ADDR, queryBentoboxPositions };
