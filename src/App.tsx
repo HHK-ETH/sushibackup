@@ -7,6 +7,7 @@ import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
 import SushiMaker from './components/sushiMaker/SushiMaker';
 import Unwindoor from './components/unwindooor/Unwindooor';
 import Farm from './components/farm/Farm';
+import Bentobox from './components/bentobox/bentobox';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
@@ -31,6 +32,9 @@ function App(): JSX.Element {
           <Switch>
             <Route path={'/farm'}>
               <Farm />
+            </Route>
+            <Route path={'/bentobox'}>
+              <Bentobox />
             </Route>
             <Route path={'/sushimaker'}>
               <SushiMaker />

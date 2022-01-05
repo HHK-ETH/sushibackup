@@ -21,16 +21,33 @@ export interface IProduct {
 }
 
 export enum PRODUCT_IDS {
-  KASHI = 0,
+  MASTERCHEF = 0,
   BENTOBOX = 1,
-  BORING_HELPER = 2,
+  KASHI = 2,
   SUSHI_MAKER = 3,
   UNWINDOOOR = 4,
-  MASTERCHEF = 5,
-  MINICHEF = 6,
+  BORING_HELPER = 5,
 }
 
 export const PRODUCTS: { [id: number]: IProduct } = {
+  [PRODUCT_IDS.MASTERCHEF]: {
+    name: 'Farm',
+    link: 'farm',
+    logo: farmLogo,
+    description: 'Stake/unstake SLPs and earn sushi rewards.',
+    active: true,
+    networks: {},
+    ABI: masterchef,
+  },
+  [PRODUCT_IDS.BENTOBOX]: {
+    name: 'BentoBox',
+    link: 'bentobox',
+    logo: bentoBoxLogo,
+    description: 'Interest bearing vault.',
+    active: true,
+    networks: {},
+    ABI: bentoBoxABI,
+  },
   [PRODUCT_IDS.KASHI]: {
     name: 'Kashi',
     link: 'kashi',
@@ -45,21 +62,6 @@ export const PRODUCTS: { [id: number]: IProduct } = {
       [CHAIN_IDS.XDAI]: '0x7a6da9903d0a481f40b8336c1463487bc8c0407e',
     },
     ABI: kashiABI,
-  },
-  [PRODUCT_IDS.BENTOBOX]: {
-    name: 'BentoBox',
-    link: 'bentobox',
-    logo: bentoBoxLogo,
-    description: 'Interest bearing vault.',
-    active: false,
-    networks: {
-      [CHAIN_IDS.ETHEREUM]: '0xf5bce5077908a1b7370b9ae04adc565ebd643966',
-      [CHAIN_IDS.ARBITRUM]: '0x74c764D41B77DBbb4fe771daB1939B00b146894A',
-      [CHAIN_IDS.BSC]: '0xf5bce5077908a1b7370b9ae04adc565ebd643966',
-      [CHAIN_IDS.POLYGON]: '0x0319000133d3ada02600f0875d2cf03d442c3367',
-      [CHAIN_IDS.XDAI]: '0xE2d7F5dd869Fc7c126D21b13a9080e75a4bDb324',
-    },
-    ABI: bentoBoxABI,
   },
   [PRODUCT_IDS.BORING_HELPER]: {
     name: 'BoringHelper',
@@ -109,14 +111,5 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     active: true,
     networks: {},
     ABI: wethMaker,
-  },
-  [PRODUCT_IDS.MASTERCHEF]: {
-    name: 'Farm',
-    link: 'farm',
-    logo: farmLogo,
-    description: 'Stake/unstake SLPs and earn sushi rewards.',
-    active: true,
-    networks: {},
-    ABI: masterchef,
   },
 };
