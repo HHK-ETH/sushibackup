@@ -65,6 +65,7 @@ const MINICHEF_ENDPOINT: { [chainId: number]: string } = {
   [CHAIN_IDS.MOONRIVER]: 'https://api.thegraph.com/subgraphs/name/sushiswap/moonriver-minichef',
   [CHAIN_IDS.POLYGON]: 'https://api.thegraph.com/subgraphs/name/sushiswap/matic-minichef',
   [CHAIN_IDS.XDAI]: 'https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-minichef',
+  [CHAIN_IDS.FANTOM]: 'https://api.thegraph.com/subgraphs/name/sushiswap/fantom-minichef',
 };
 
 const MINICHEF_ADDR: { [chainId: number]: string } = {
@@ -74,6 +75,7 @@ const MINICHEF_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.MOONRIVER]: '0x3dB01570D97631f69bbb0ba39796865456Cf89A5',
   [CHAIN_IDS.POLYGON]: '0x0769fd68dFb93167989C6f7254cd0D766Fb2841F',
   [CHAIN_IDS.XDAI]: '0xdDCbf776dF3dE60163066A5ddDF2277cB445E0F3',
+  [CHAIN_IDS.FANTOM]: '0xf731202A3cf7EfA9368C2d7bD613926f7A144dB5',
 };
 
 const REWARD_TOKEN: { [chainId: number]: string } = {
@@ -82,6 +84,7 @@ const REWARD_TOKEN: { [chainId: number]: string } = {
   [CHAIN_IDS.MOONRIVER]: 'WMOVR',
   [CHAIN_IDS.POLYGON]: 'WMATIC',
   [CHAIN_IDS.XDAI]: 'STAKE',
+  [CHAIN_IDS.FANTOM]: 'FTM',
 };
 
 const MASTERCHEF_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sushiswap/master-chef';
