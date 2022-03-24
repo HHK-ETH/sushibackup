@@ -1,120 +1,28 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, Contract } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import { PRODUCTS, PRODUCT_IDS } from './products';
-import { getToken, WETH, WNATIVE } from '../imports/tokens';
-import { NETWORKS } from './network';
+import { CHAIN_IDS } from './network';
+import { UNWINDOOOR_ADDR } from './unwindooor';
 
-export interface IPairData {
-  name: string;
-  tokenA: string;
-  tokenB: string;
-  value: number;
-}
+const FEE_TO_LIST: { [chainId: number]: string[] } = {
+  [CHAIN_IDS.ETHEREUM]: [UNWINDOOOR_ADDR[CHAIN_IDS.ETHEREUM]],
+  [CHAIN_IDS.POLYGON]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.POLYGON],
+    '0x850a57630A2012B2494779fBc86bBc24F2a7baeF',
+    '0x2B23D9B02FffA1F5441Ef951B4B95c09faa57EBA',
+  ],
+  [CHAIN_IDS.ARBITRUM]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.ARBITRUM],
+    '0x978982772b8e4055B921bf9295c0d74eB36Bc54e',
+    '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5',
+  ],
+  [CHAIN_IDS.MOONRIVER]: [UNWINDOOOR_ADDR[CHAIN_IDS.MOONRIVER], '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5'],
+  [CHAIN_IDS.XDAI]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.XDAI],
+    '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5',
+    '0xc375411C6597F692Add6a7a3AD5b3C38626B0F26',
+  ],
+  [CHAIN_IDS.CELO]: [UNWINDOOOR_ADDR[CHAIN_IDS.CELO], '0x8b63fcBB752e425e3C4B12F7802BAd1A24c6d7F4'],
+  [CHAIN_IDS.HARMONY]: [UNWINDOOOR_ADDR[CHAIN_IDS.HARMONY], '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5'],
+  [CHAIN_IDS.AVALANCHE]: [UNWINDOOOR_ADDR[CHAIN_IDS.AVALANCHE]],
+  [CHAIN_IDS.FANTOM]: [UNWINDOOOR_ADDR[CHAIN_IDS.FANTOM], '0xF9E7d4c6d36ca311566f46c81E572102A2DC9F52'],
+};
 
-export async function getAllpairs(web3Provider: Web3Provider, chainId: number): Promise<IPairData[]> {
-  const sushiFactory: Contract = new Contract(
-    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId],
-    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].ABI,
-    web3Provider
-  );
-  const boringHelper: Contract = new Contract(
-    PRODUCTS[PRODUCT_IDS.BORING_HELPER].networks[chainId],
-    PRODUCTS[PRODUCT_IDS.BORING_HELPER].ABI,
-    web3Provider
-  );
-  const feeTo: string = await sushiFactory.feeTo();
-  const pairsLength: BigNumber = await sushiFactory.allPairsLength();
-  const pairInfos = await getPairInfos(boringHelper, sushiFactory.address, pairsLength);
-  const pairAddresses = pairInfos.map((pair: any) => pair.token);
-  const tokenAddresses: string[] = [];
-  pairInfos.forEach((pair: any) => {
-    const weth = WETH[chainId];
-    const wNative = WNATIVE[chainId];
-    if (weth.toLowerCase() === pair.token0.toLowerCase() || weth.toLowerCase() === pair.token1.toLowerCase()) {
-      return;
-    }
-    if (wNative.toLowerCase() === pair.token0.toLowerCase() || wNative.toLowerCase() === pair.token1.toLowerCase()) {
-      return;
-    }
-    if (tokenAddresses.indexOf(pair.token0) === -1) {
-      tokenAddresses.push(pair.token0);
-    }
-    if (tokenAddresses.indexOf(pair.token1) === -1) {
-      tokenAddresses.push(pair.token1);
-    }
-  });
-  tokenAddresses.push(WETH[chainId]);
-  tokenAddresses.push(WNATIVE[chainId]);
-  const prices = await getCoingeckoPrices(NETWORKS[chainId].coingeckoId, tokenAddresses);
-  const pairBalances = await getPairBalances(boringHelper, feeTo, pairAddresses);
-  return pairInfos.map((pair: any, index: number): IPairData => {
-    const pairBalance = pairBalances[index];
-    const value = getPairValue(pair, pairBalance, prices, chainId);
-    return {
-      name: `${getToken(pair.token0, chainId).symbol}/${getToken(pair.token1, chainId).symbol}`,
-      tokenA: pair.token0,
-      tokenB: pair.token1,
-      value,
-    };
-  });
-}
-
-export async function getPairInfos(boringHelper: Contract, sushiFactory: string, length: BigNumber): Promise<any[]> {
-  const pairs: any[] = [];
-  for (let i = 0; i < length.toNumber(); i += 250) {
-    const max = i + 250 > length.toNumber() ? length : i + 250;
-    pairs.push(...(await boringHelper.getPairs(sushiFactory, i, max)));
-  }
-  return pairs;
-}
-
-export async function getPairBalances(boringHelper: Contract, feeTo: string, pairAddresses: string[]): Promise<any[]> {
-  const pairs: any[] = [];
-  for (let i = 0; i < pairAddresses.length; i += 250) {
-    const tempAddr = pairAddresses.slice(i, i + 250);
-    pairs.push(...(await boringHelper.pollPairs(feeTo, tempAddr)));
-  }
-  return pairs;
-}
-
-export function getPairValue(pair: any, pairBalance: any, prices: any, chainId: number): number {
-  const totalSupply: number = parseFloat(formatUnits(pairBalance.totalSupply));
-  const balance: number = parseFloat(formatUnits(pairBalance.balance));
-  const share: number = !isNaN(balance / totalSupply) ? balance / totalSupply : 0;
-  if (prices[pair.token0.toLowerCase()] !== undefined) {
-    return (
-      parseFloat(formatUnits(pairBalance.reserve0, getToken(pair.token0, chainId).decimals)) *
-      prices[pair.token0.toLowerCase()] *
-      2 *
-      share
-    );
-  }
-  if (prices[pair.token1.toLowerCase()] !== undefined) {
-    return (
-      parseFloat(formatUnits(pairBalance.reserve1, getToken(pair.token1, chainId).decimals)) *
-      prices[pair.token1.toLowerCase()] *
-      2 *
-      share
-    );
-  }
-  return 0;
-}
-
-export async function getCoingeckoPrices(coingeckoChainId: string, addresses: string[]) {
-  const prices: { [address: string]: number } = {};
-  for (let i = 0; i < addresses.length; i += 100) {
-    const tempAddr = addresses.slice(i, i + 100);
-    const res = await fetch(
-      `https://api.coingecko.com/api/v3/simple/token_price/${coingeckoChainId}?contract_addresses=${tempAddr.join(
-        ','
-      )}&vs_currencies=usd`,
-      { method: 'GET' }
-    );
-    const temp = await res.json();
-    Object.keys(temp).forEach((address: string) => {
-      prices[address] = temp[address].usd;
-    });
-  }
-  return prices;
-}
+export { FEE_TO_LIST };
