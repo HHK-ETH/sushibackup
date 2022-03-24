@@ -7,7 +7,7 @@ import fantom from '../imports/images/networks/fantom.png';
 import harmony from '../imports/images/networks/harmony.png';
 import moonriver from '../imports/images/networks/moonriver.png';
 import polygon from '../imports/images/networks/polygon.png';
-import xdai from '../imports/images/networks/xdai.png';
+import gnosis from '../imports/images/networks/gnosis.jpeg';
 
 interface INetwork {
   id: number;
@@ -115,9 +115,9 @@ const NETWORKS: { [id: number]: INetwork } = {
   },
   [CHAIN_IDS.XDAI]: {
     id: 100,
-    name: 'XDAI',
-    logo: xdai,
-    rpc: 'https://rpc.xdaichain.com',
+    name: 'Gnosis chain',
+    logo: gnosis,
+    rpc: 'https://rpc.gnosischain.com/',
     coingeckoId: 'xdai',
     explorer: 'https://blockscout.com/xdai/mainnet/',
   },
