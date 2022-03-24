@@ -4,7 +4,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { getWethPrice } from '../../helpers/exchange';
 import { CHAIN_IDS, NETWORKS } from '../../helpers/network';
-import { FEE_TO_LIST } from '../../helpers/sushiMaker';
+import { FEE_TO_LIST, getAddressLabel } from '../../helpers/sushiMaker';
 import { queryPositions } from '../../helpers/unwindooor';
 import { WETH } from '../../imports/tokens';
 import erc20Abi from './../../imports/abis/erc20.json';
@@ -74,7 +74,7 @@ const SushiMaker = (): JSX.Element => {
             <div key={recipient.address} className="grid grid-cols-2 p-16 py-8 my-4 bg-indigo-900 rounded-xl">
               <div className="text-md">
                 <h2>Address: {recipient.address}</h2>
-                <h2>Name: Unknown</h2>
+                <h2>Label: {getAddressLabel(network, recipient.address)}</h2>
                 <h2>LPs value: {recipient.lpValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
                 <h2>WETH value: {recipient.wethValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
               </div>
@@ -87,6 +87,17 @@ const SushiMaker = (): JSX.Element => {
             </div>
           );
         })}
+        <p className="mt-16">
+          Address labeling using{' '}
+          <a
+            className="underline"
+            href="https://boringcrypto.github.io/DAOView/#/multisigs"
+            target="_blank"
+            rel="noreferrer"
+          >
+            BoringCrypto DAO VIEW
+          </a>
+        </p>
       </div>
     </div>
   );

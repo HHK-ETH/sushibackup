@@ -25,4 +25,52 @@ const FEE_TO_LIST: { [chainId: number]: string[] } = {
   [CHAIN_IDS.FANTOM]: [UNWINDOOOR_ADDR[CHAIN_IDS.FANTOM], '0xF9E7d4c6d36ca311566f46c81E572102A2DC9F52'],
 };
 
-export { FEE_TO_LIST };
+//https://github.com/boringcrypto/DAOView/blob/main/web3/data.ts
+const MULTISIGS: { [chainId: number]: string[] } = {
+  [CHAIN_IDS.ARBITRUM]: ['0x978982772b8e4055B921bf9295c0d74eB36Bc54e'],
+  [CHAIN_IDS.AVALANCHE]: ['0x09842Ce338647906B686aBB3B648A6457fbB25DA'],
+  [CHAIN_IDS.BSC]: [],
+  [CHAIN_IDS.CELO]: ['0x751b01Fa14fD9640a1DF9014e2D0f3a03A198b81', '0x8b63fcBB752e425e3C4B12F7802BAd1A24c6d7F4'],
+  [CHAIN_IDS.ETHEREUM]: ['0x19B3Eb3Af5D93b77a5619b047De0EED7115A19e7'],
+  [CHAIN_IDS.FANTOM]: ['0xF9E7d4c6d36ca311566f46c81E572102A2DC9F52'],
+  [CHAIN_IDS.HARMONY]: ['0x30af69A3f4a6f266961313Ce0943719dF4A8AA10'],
+  [CHAIN_IDS.MOONRIVER]: ['0x939f7E76cc515cc296dD3ce362D9a52e148A7D5f', '0x6669cc35031A84fAc1Efe30bB586B9ADdf223Fbc'],
+  [CHAIN_IDS.POLYGON]: ['0x850a57630A2012B2494779fBc86bBc24F2a7baeF', '0x2B23D9B02FffA1F5441Ef951B4B95c09faa57EBA'],
+  [CHAIN_IDS.XDAI]: ['0xc375411C6597F692Add6a7a3AD5b3C38626B0F26'],
+};
+
+const TEAM_ADDRESSES: { [address: string]: string } = {
+  '0x3027a0c4E35272c0707dE2651A0638c3dF1c37AC': 'Gasper',
+  '0x4bb4c1B0745ef7B4642fEECcd0740deC417ca0a0': 'Jiro',
+  '0xFBb3a85603C398Ff22435DD40873EC190134e1f6': 'Matt',
+  '0xb2701351a2c1c6E30BFA2699d25f85a5100e39D3': 'Ramin',
+  '0xb4A3f907ec1611F22543219AE9Bb33ec5E96e116': 'Omakase',
+  '0x6b83270726342E02a11E755e8CC35275712122eC': 'Lufy',
+  '0x426b3afFbbE924E01575d5b3cb9dc640625bBB49': 'Keno',
+  '0x5b8C253517b6Bd003369173109693B01cb6841B5': 'LevX',
+  '0x8f99B0b48b23908Da9f727B5083052d5099e6aea': 'Joe',
+  '0x285b7EEa81a5B66B62e7276a24c1e0F83F7409c1': 'Maki',
+  '0x8620D3edd67Ed411CCb314F3CFFF5a27A7C74A74': 'Sarang',
+  '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5': 'Matt Deployer (Ledger)',
+  '0xe94B5EEC1fA96CEecbD33EF5Baa8d00E4493F4f3': 'Treasury Multisig',
+  '0x9a8541Ddf3a932a9A922B607e9CF7301f1d47bD1': 'Timelock',
+};
+
+const getAddressLabel = (chainId: number, address: string): string => {
+  if (UNWINDOOOR_ADDR[chainId] === address) {
+    return 'Unwindoor';
+  }
+  if (
+    MULTISIGS[chainId].find((multisig) => {
+      return multisig === address;
+    })
+  ) {
+    return 'Multisig';
+  }
+  if (TEAM_ADDRESSES[address]) {
+    return TEAM_ADDRESSES[address];
+  }
+  return 'Unknown';
+};
+
+export { FEE_TO_LIST, getAddressLabel };
