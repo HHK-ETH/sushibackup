@@ -25,6 +25,7 @@ enum CHAIN_IDS {
   XDAI = 100,
   FANTOM = 250,
   MOONRIVER = 1285,
+  MOONBEAM = 1284,
   ARBITRUM = 42161,
   CELO = 42220,
   AVALANCHE = 43114,
@@ -95,6 +96,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://rpc.moonriver.moonbeam.network',
     coingeckoId: 'moonriver',
     explorer: 'https://moonscan.io/',
+  },
+  [CHAIN_IDS.MOONBEAM]: {
+    id: 1284,
+    name: 'Moonbeam',
+    logo: moonriver,
+    rpc: 'https://rpc.api.moonbeam.network',
+    coingeckoId: 'moonbeam',
+    explorer: 'https://moonbeam.moonscan.io',
   },
   [CHAIN_IDS.POLYGON]: {
     id: 137,
