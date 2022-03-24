@@ -13,16 +13,21 @@ const SushiMaker = (): JSX.Element => {
   const [network, setNetwork]: [network: number, setNetwork: Function] = useState(CHAIN_IDS.ETHEREUM);
   const [fees, setFees]: [fees: [{ address: string; lpValue: number; wethValue: number }], setFees: Function] =
     useState([{ address: '', lpValue: 0, wethValue: 0 }]);
+  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+  const [total, setTotal]: [total: number, setTotal: Function] = useState(0);
 
   useEffect(() => {
     const fetchValues = async () => {
+      setLoading(true);
       const provider = new JsonRpcProvider(NETWORKS[network].rpc);
+      let _total = 0;
       const feesArray = await Promise.all(
         FEE_TO_LIST[network].map(async (address) => {
           const lps = await queryPositions(address, network);
           const weth = new Contract(WETH[network], erc20Abi, provider);
           const wethBalance = formatUnits(await weth.balanceOf(address), 18);
           const wethPrice = await getWethPrice();
+          _total += lps.totalFees + parseFloat(wethBalance) * wethPrice;
           return {
             address: address,
             lpValue: lps.totalFees,
@@ -31,9 +36,15 @@ const SushiMaker = (): JSX.Element => {
         })
       );
       setFees(feesArray);
+      setTotal(_total);
+      setLoading(false);
     };
     fetchValues();
   }, [network]);
+
+  if (loading) {
+    return <div className="text-center text-white">Loading data...</div>;
+  }
 
   return (
     <div className="container p-16 mx-auto text-center text-white">
@@ -55,9 +66,12 @@ const SushiMaker = (): JSX.Element => {
         })}
       </div>
       <div>
+        <h1 className="text-2xl text-center">
+          Total fees available on this chain : {total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
+        </h1>
         {fees.map((recipient) => {
           return (
-            <div key={recipient.address} className="grid grid-cols-2 p-16 py-8 bg-indigo-900 rounded-xl">
+            <div key={recipient.address} className="grid grid-cols-2 p-16 py-8 my-4 bg-indigo-900 rounded-xl">
               <div className="text-md">
                 <h2>Address: {recipient.address}</h2>
                 <h2>Name: Unknown</h2>
