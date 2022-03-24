@@ -1,4 +1,13 @@
+import request, { gql } from 'graphql-request';
 import { CHAIN_IDS } from './network';
+
+const getWethPriceQuery = gql`
+  {
+    pair(id: "0x397ff1542f962076d0bfe58ea045ffa2d347aca0") {
+      token0Price
+    }
+  }
+`;
 
 const EXCHANGE_ENDPOINTS: { [chainId: number]: string } = {
   [CHAIN_IDS.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/sushiswap/arbitrum-exchange',
@@ -13,4 +22,9 @@ const EXCHANGE_ENDPOINTS: { [chainId: number]: string } = {
   [CHAIN_IDS.XDAI]: 'https://api.thegraph.com/subgraphs/name/sushiswap/xdai-exchange',
 };
 
-export { EXCHANGE_ENDPOINTS };
+const getWethPrice = async (): Promise<number> => {
+  const data = await request(EXCHANGE_ENDPOINTS[CHAIN_IDS.ETHEREUM], getWethPriceQuery);
+  return data.pair.token0Price;
+};
+
+export { EXCHANGE_ENDPOINTS, getWethPrice };
