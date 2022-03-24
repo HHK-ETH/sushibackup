@@ -86,7 +86,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
   },
   [PRODUCT_IDS.SUSHI_MAKER]: {
     name: 'xSUSHI fees',
-    link: 'sushimaker',
+    link: 'fees',
     logo: xsushi,
     description: 'See how much fees available for the SushiBar.',
     active: true,

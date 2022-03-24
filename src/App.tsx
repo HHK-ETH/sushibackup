@@ -36,7 +36,7 @@ function App(): JSX.Element {
             <Route path={'/bentobox'}>
               <Bentobox />
             </Route>
-            <Route path={'/sushimaker'}>
+            <Route path={'/fees'}>
               <SushiMaker />
             </Route>
             <Route path={'/unwindooor'}>
