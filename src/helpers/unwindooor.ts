@@ -62,6 +62,12 @@ const queryPositions = async (address: string, chainId: number): Promise<any> =>
     feeTo: address.toLowerCase(),
   });
   let totalFees = 0;
+  if (positions.user === null) {
+    return {
+      positions: { user: { lp1: [], lp2: [] } },
+      totalFees: 0,
+    };
+  }
   [...positions.user.lp1, ...positions.user.lp2].forEach((position: any) => {
     const pair = position.pair;
     const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
