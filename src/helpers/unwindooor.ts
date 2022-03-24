@@ -70,8 +70,10 @@ const queryPositions = async (address: string, chainId: number): Promise<any> =>
   }
   [...positions.user.lp1, ...positions.user.lp2].forEach((position: any) => {
     const pair = position.pair;
-    const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
-    totalFees += value;
+    if (pair.totalSupply > 0) {
+      const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
+      totalFees += value;
+    }
   });
   return {
     positions: positions,
