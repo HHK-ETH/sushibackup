@@ -4,6 +4,7 @@ import { BigNumber, Contract, providers } from 'ethers';
 import { formatUnits, getAddress } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
+import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 import { NETWORKS } from '../../helpers/network';
 import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
@@ -63,18 +64,14 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
       const tempPriceImpacts = await Promise.all(
         unwindData.map(async (data, index) => {
           const wethMaker = new WethMaker({
-            wethMakerAddress: chainId
-              ? PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[chainId]
-              : PRODUCTS[PRODUCT_IDS.UNWINDOOOR].networks[1],
+            wethMakerAddress: chainId ? UNWINDOOOR_ADDR[chainId] : UNWINDOOOR_ADDR[1],
             preferTokens: [getAddress(data.prefToken)],
             provider: provider,
             maxPriceImpact: BigNumber.from(60),
             priceSlippage: BigNumber.from(slippage * 10),
             wethAddress: chainId ? WETH[chainId] : WETH[1],
             sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-            factoryAddress: chainId
-              ? PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]
-              : PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[1],
+            factoryAddress: chainId ? FACTORY_ADDRESSES[chainId] : FACTORY_ADDRESSES[1],
           });
           const { amount, minimumOut, keepToken0 } = await wethMaker.unwindPair(
             pairs[index].id,
