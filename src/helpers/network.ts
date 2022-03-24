@@ -69,7 +69,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     id: 1,
     name: 'Ethereum',
     logo: ethereum,
-    rpc: 'https://api.mycryptoapi.com/eth',
+    rpc: 'https://cloudflare-eth.com',
     coingeckoId: 'ethereum',
     explorer: 'https://etherscan.io/',
   },
