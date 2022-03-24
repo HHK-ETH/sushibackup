@@ -7,7 +7,7 @@ import fantom from '../imports/images/networks/fantom.png';
 import harmony from '../imports/images/networks/harmony.png';
 import moonriver from '../imports/images/networks/moonriver.png';
 import polygon from '../imports/images/networks/polygon.png';
-import xdai from '../imports/images/networks/xdai.png';
+import gnosis from '../imports/images/networks/gnosis.jpeg';
 
 interface INetwork {
   id: number;
@@ -25,6 +25,7 @@ enum CHAIN_IDS {
   XDAI = 100,
   FANTOM = 250,
   MOONRIVER = 1285,
+  MOONBEAM = 1284,
   ARBITRUM = 42161,
   CELO = 42220,
   AVALANCHE = 43114,
@@ -68,7 +69,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     id: 1,
     name: 'Ethereum',
     logo: ethereum,
-    rpc: 'https://api.mycryptoapi.com/eth',
+    rpc: 'https://cloudflare-eth.com',
     coingeckoId: 'ethereum',
     explorer: 'https://etherscan.io/',
   },
@@ -96,6 +97,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     coingeckoId: 'moonriver',
     explorer: 'https://moonscan.io/',
   },
+  [CHAIN_IDS.MOONBEAM]: {
+    id: 1284,
+    name: 'Moonbeam',
+    logo: moonriver,
+    rpc: 'https://rpc.api.moonbeam.network',
+    coingeckoId: 'moonbeam',
+    explorer: 'https://moonbeam.moonscan.io',
+  },
   [CHAIN_IDS.POLYGON]: {
     id: 137,
     name: 'Polygon',
@@ -106,9 +115,9 @@ const NETWORKS: { [id: number]: INetwork } = {
   },
   [CHAIN_IDS.XDAI]: {
     id: 100,
-    name: 'XDAI',
-    logo: xdai,
-    rpc: 'https://rpc.xdaichain.com',
+    name: 'Gnosis chain',
+    logo: gnosis,
+    rpc: 'https://rpc.gnosischain.com/',
     coingeckoId: 'xdai',
     explorer: 'https://blockscout.com/xdai/mainnet/',
   },

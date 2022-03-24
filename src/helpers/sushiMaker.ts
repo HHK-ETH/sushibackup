@@ -1,120 +1,76 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { BigNumber, Contract } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
-import { PRODUCTS, PRODUCT_IDS } from './products';
-import { getToken, WETH, WNATIVE } from '../imports/tokens';
-import { NETWORKS } from './network';
+import { CHAIN_IDS } from './network';
+import { UNWINDOOOR_ADDR } from './unwindooor';
 
-export interface IPairData {
-  name: string;
-  tokenA: string;
-  tokenB: string;
-  value: number;
-}
+const FEE_TO_LIST: { [chainId: number]: string[] } = {
+  [CHAIN_IDS.ETHEREUM]: [UNWINDOOOR_ADDR[CHAIN_IDS.ETHEREUM]],
+  [CHAIN_IDS.POLYGON]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.POLYGON],
+    '0x850a57630A2012B2494779fBc86bBc24F2a7baeF',
+    '0x2B23D9B02FffA1F5441Ef951B4B95c09faa57EBA',
+  ],
+  [CHAIN_IDS.ARBITRUM]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.ARBITRUM],
+    '0x978982772b8e4055B921bf9295c0d74eB36Bc54e',
+    '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5',
+  ],
+  [CHAIN_IDS.MOONRIVER]: [UNWINDOOOR_ADDR[CHAIN_IDS.MOONRIVER], '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5'],
+  [CHAIN_IDS.XDAI]: [
+    UNWINDOOOR_ADDR[CHAIN_IDS.XDAI],
+    '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5',
+    '0xc375411C6597F692Add6a7a3AD5b3C38626B0F26',
+  ],
+  [CHAIN_IDS.CELO]: [UNWINDOOOR_ADDR[CHAIN_IDS.CELO], '0x8b63fcBB752e425e3C4B12F7802BAd1A24c6d7F4'],
+  [CHAIN_IDS.HARMONY]: [UNWINDOOOR_ADDR[CHAIN_IDS.HARMONY], '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5'],
+  [CHAIN_IDS.AVALANCHE]: [UNWINDOOOR_ADDR[CHAIN_IDS.AVALANCHE]],
+  [CHAIN_IDS.FANTOM]: [UNWINDOOOR_ADDR[CHAIN_IDS.FANTOM], '0xF9E7d4c6d36ca311566f46c81E572102A2DC9F52'],
+};
 
-export async function getAllpairs(web3Provider: Web3Provider, chainId: number): Promise<IPairData[]> {
-  const sushiFactory: Contract = new Contract(
-    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId],
-    PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].ABI,
-    web3Provider
-  );
-  const boringHelper: Contract = new Contract(
-    PRODUCTS[PRODUCT_IDS.BORING_HELPER].networks[chainId],
-    PRODUCTS[PRODUCT_IDS.BORING_HELPER].ABI,
-    web3Provider
-  );
-  const feeTo: string = await sushiFactory.feeTo();
-  const pairsLength: BigNumber = await sushiFactory.allPairsLength();
-  const pairInfos = await getPairInfos(boringHelper, sushiFactory.address, pairsLength);
-  const pairAddresses = pairInfos.map((pair: any) => pair.token);
-  const tokenAddresses: string[] = [];
-  pairInfos.forEach((pair: any) => {
-    const weth = WETH[chainId];
-    const wNative = WNATIVE[chainId];
-    if (weth.toLowerCase() === pair.token0.toLowerCase() || weth.toLowerCase() === pair.token1.toLowerCase()) {
-      return;
-    }
-    if (wNative.toLowerCase() === pair.token0.toLowerCase() || wNative.toLowerCase() === pair.token1.toLowerCase()) {
-      return;
-    }
-    if (tokenAddresses.indexOf(pair.token0) === -1) {
-      tokenAddresses.push(pair.token0);
-    }
-    if (tokenAddresses.indexOf(pair.token1) === -1) {
-      tokenAddresses.push(pair.token1);
-    }
-  });
-  tokenAddresses.push(WETH[chainId]);
-  tokenAddresses.push(WNATIVE[chainId]);
-  const prices = await getCoingeckoPrices(NETWORKS[chainId].coingeckoId, tokenAddresses);
-  const pairBalances = await getPairBalances(boringHelper, feeTo, pairAddresses);
-  return pairInfos.map((pair: any, index: number): IPairData => {
-    const pairBalance = pairBalances[index];
-    const value = getPairValue(pair, pairBalance, prices, chainId);
-    return {
-      name: `${getToken(pair.token0, chainId).symbol}/${getToken(pair.token1, chainId).symbol}`,
-      tokenA: pair.token0,
-      tokenB: pair.token1,
-      value,
-    };
-  });
-}
+//https://github.com/boringcrypto/DAOView/blob/main/web3/data.ts
+const MULTISIGS: { [chainId: number]: string[] } = {
+  [CHAIN_IDS.ARBITRUM]: ['0x978982772b8e4055B921bf9295c0d74eB36Bc54e'],
+  [CHAIN_IDS.AVALANCHE]: ['0x09842Ce338647906B686aBB3B648A6457fbB25DA'],
+  [CHAIN_IDS.BSC]: [],
+  [CHAIN_IDS.CELO]: ['0x751b01Fa14fD9640a1DF9014e2D0f3a03A198b81', '0x8b63fcBB752e425e3C4B12F7802BAd1A24c6d7F4'],
+  [CHAIN_IDS.ETHEREUM]: ['0x19B3Eb3Af5D93b77a5619b047De0EED7115A19e7'],
+  [CHAIN_IDS.FANTOM]: ['0xF9E7d4c6d36ca311566f46c81E572102A2DC9F52'],
+  [CHAIN_IDS.HARMONY]: ['0x30af69A3f4a6f266961313Ce0943719dF4A8AA10'],
+  [CHAIN_IDS.MOONRIVER]: ['0x939f7E76cc515cc296dD3ce362D9a52e148A7D5f', '0x6669cc35031A84fAc1Efe30bB586B9ADdf223Fbc'],
+  [CHAIN_IDS.POLYGON]: ['0x850a57630A2012B2494779fBc86bBc24F2a7baeF', '0x2B23D9B02FffA1F5441Ef951B4B95c09faa57EBA'],
+  [CHAIN_IDS.XDAI]: ['0xc375411C6597F692Add6a7a3AD5b3C38626B0F26'],
+};
 
-export async function getPairInfos(boringHelper: Contract, sushiFactory: string, length: BigNumber): Promise<any[]> {
-  const pairs: any[] = [];
-  for (let i = 0; i < length.toNumber(); i += 250) {
-    const max = i + 250 > length.toNumber() ? length : i + 250;
-    pairs.push(...(await boringHelper.getPairs(sushiFactory, i, max)));
+const TEAM_ADDRESSES: { [address: string]: string } = {
+  '0x3027a0c4E35272c0707dE2651A0638c3dF1c37AC': 'Gasper',
+  '0x4bb4c1B0745ef7B4642fEECcd0740deC417ca0a0': 'Jiro',
+  '0xFBb3a85603C398Ff22435DD40873EC190134e1f6': 'Matt',
+  '0xb2701351a2c1c6E30BFA2699d25f85a5100e39D3': 'Ramin',
+  '0xb4A3f907ec1611F22543219AE9Bb33ec5E96e116': 'Omakase',
+  '0x6b83270726342E02a11E755e8CC35275712122eC': 'Lufy',
+  '0x426b3afFbbE924E01575d5b3cb9dc640625bBB49': 'Keno',
+  '0x5b8C253517b6Bd003369173109693B01cb6841B5': 'LevX',
+  '0x8f99B0b48b23908Da9f727B5083052d5099e6aea': 'Joe',
+  '0x285b7EEa81a5B66B62e7276a24c1e0F83F7409c1': 'Maki',
+  '0x8620D3edd67Ed411CCb314F3CFFF5a27A7C74A74': 'Sarang',
+  '0xCc159BCb6a466DA442D254Ad934125f05DAB66b5': 'Matt Deployer (Ledger)',
+  '0xe94B5EEC1fA96CEecbD33EF5Baa8d00E4493F4f3': 'Treasury Multisig',
+  '0x9a8541Ddf3a932a9A922B607e9CF7301f1d47bD1': 'Timelock',
+};
+
+const getAddressLabel = (chainId: number, address: string): string => {
+  if (UNWINDOOOR_ADDR[chainId] === address) {
+    return 'Unwindoor';
   }
-  return pairs;
-}
+  if (
+    MULTISIGS[chainId].find((multisig) => {
+      return multisig === address;
+    })
+  ) {
+    return 'Multisig';
+  }
+  if (TEAM_ADDRESSES[address]) {
+    return TEAM_ADDRESSES[address];
+  }
+  return 'Unknown';
+};
 
-export async function getPairBalances(boringHelper: Contract, feeTo: string, pairAddresses: string[]): Promise<any[]> {
-  const pairs: any[] = [];
-  for (let i = 0; i < pairAddresses.length; i += 250) {
-    const tempAddr = pairAddresses.slice(i, i + 250);
-    pairs.push(...(await boringHelper.pollPairs(feeTo, tempAddr)));
-  }
-  return pairs;
-}
-
-export function getPairValue(pair: any, pairBalance: any, prices: any, chainId: number): number {
-  const totalSupply: number = parseFloat(formatUnits(pairBalance.totalSupply));
-  const balance: number = parseFloat(formatUnits(pairBalance.balance));
-  const share: number = !isNaN(balance / totalSupply) ? balance / totalSupply : 0;
-  if (prices[pair.token0.toLowerCase()] !== undefined) {
-    return (
-      parseFloat(formatUnits(pairBalance.reserve0, getToken(pair.token0, chainId).decimals)) *
-      prices[pair.token0.toLowerCase()] *
-      2 *
-      share
-    );
-  }
-  if (prices[pair.token1.toLowerCase()] !== undefined) {
-    return (
-      parseFloat(formatUnits(pairBalance.reserve1, getToken(pair.token1, chainId).decimals)) *
-      prices[pair.token1.toLowerCase()] *
-      2 *
-      share
-    );
-  }
-  return 0;
-}
-
-export async function getCoingeckoPrices(coingeckoChainId: string, addresses: string[]) {
-  const prices: { [address: string]: number } = {};
-  for (let i = 0; i < addresses.length; i += 100) {
-    const tempAddr = addresses.slice(i, i + 100);
-    const res = await fetch(
-      `https://api.coingecko.com/api/v3/simple/token_price/${coingeckoChainId}?contract_addresses=${tempAddr.join(
-        ','
-      )}&vs_currencies=usd`,
-      { method: 'GET' }
-    );
-    const temp = await res.json();
-    Object.keys(temp).forEach((address: string) => {
-      prices[address] = temp[address].usd;
-    });
-  }
-  return prices;
-}
+export { FEE_TO_LIST, getAddressLabel };

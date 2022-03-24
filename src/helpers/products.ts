@@ -2,6 +2,7 @@ import { CHAIN_IDS } from './network';
 import kashiLogo from '../imports/images/products/kashi.png';
 import bentoBoxLogo from '../imports/images/products/bentoBox.png';
 import sushiMakerLogo from '../imports/images/products/sushiMaker.png';
+import xsushi from '../imports/images/products/xsushi.png';
 import farmLogo from '../imports/images/products/farm.jpeg';
 import kashiABI from '../imports/abis/kashi.json';
 import bentoBoxABI from '../imports/abis/bento.json';
@@ -84,9 +85,9 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     ABI: boringHelperABI,
   },
   [PRODUCT_IDS.SUSHI_MAKER]: {
-    name: 'SushiMaker',
+    name: 'xSUSHI fees',
     link: 'sushimaker',
-    logo: sushiMakerLogo,
+    logo: xsushi,
     description: 'See how much fees available for the SushiBar.',
     active: true,
     networks: {

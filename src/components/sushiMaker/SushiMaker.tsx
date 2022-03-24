@@ -1,64 +1,104 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { providers } from 'ethers';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { Contract } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
-import { getAllpairs, IPairData } from './../../helpers/sushiMaker';
+import { getWethPrice } from '../../helpers/exchange';
+import { CHAIN_IDS, NETWORKS } from '../../helpers/network';
+import { FEE_TO_LIST, getAddressLabel } from '../../helpers/sushiMaker';
+import { queryPositions } from '../../helpers/unwindooor';
+import { WETH } from '../../imports/tokens';
+import erc20Abi from './../../imports/abis/erc20.json';
 
 const SushiMaker = (): JSX.Element => {
-  const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector } = context;
-  const [loading, setLoading]: [boolean, Function] = useState(false);
-  const [pairs, setPairs]: [IPairData[], Function] = useState([]);
-  const [totalFees, setTotalFees]: [number, Function] = useState(0);
+  const [network, setNetwork]: [network: number, setNetwork: Function] = useState(CHAIN_IDS.ETHEREUM);
+  const [fees, setFees]: [fees: [{ address: string; lpValue: number; wethValue: number }], setFees: Function] =
+    useState([{ address: '', lpValue: 0, wethValue: 0 }]);
+  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+  const [total, setTotal]: [total: number, setTotal: Function] = useState(0);
 
   useEffect(() => {
-    async function fetchPairs() {
-      if (!connector || !chainId) return;
+    const fetchValues = async () => {
       setLoading(true);
-      const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const tempAllPairs = (await getAllpairs(web3Provider, chainId)).sort((pairA, pairB) => {
-        if (pairA.value > pairB.value) return -1;
-        return +1;
-      });
-      let tempTotalFees = 0;
-      tempAllPairs.forEach((pair) => {
-        tempTotalFees += pair.value;
-      });
-      setPairs(tempAllPairs);
-      setTotalFees(tempTotalFees);
+      const provider = new JsonRpcProvider(NETWORKS[network].rpc);
+      let _total = 0;
+      const feesArray = await Promise.all(
+        FEE_TO_LIST[network].map(async (address) => {
+          const lps = await queryPositions(address, network);
+          const weth = new Contract(WETH[network], erc20Abi, provider);
+          const wethBalance = formatUnits(await weth.balanceOf(address), 18);
+          const wethPrice = await getWethPrice();
+          _total += lps.totalFees + parseFloat(wethBalance) * wethPrice;
+          return {
+            address: address,
+            lpValue: lps.totalFees,
+            wethValue: parseFloat(wethBalance) * wethPrice,
+          };
+        })
+      );
+      setFees(feesArray);
+      setTotal(_total);
       setLoading(false);
-    }
-    fetchPairs();
-  }, [active, chainId, connector]);
+    };
+    fetchValues();
+  }, [network]);
 
-  if (!active) {
-    return <div className="text-xl text-center text-white">Please connect your wallet.</div>;
-  }
-  if (chainId && !PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]) {
-    return <div className={'mt-24 text-xl text-center text-white'}>SushiMaker is not available on this network.</div>;
+  if (loading) {
+    return <div className="text-center text-white">Loading data...</div>;
   }
 
   return (
     <div className="container p-16 mx-auto text-center text-white">
-      <h1 className="text-xl">Total fees available: {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h1>
-      {loading && <div className={'text-white'}>loading data...</div>}
-      <div className="grid grid-cols-6 py-8 bg-indigo-900 rounded-t-xl">
-        <div className="">Pair</div>
-        <div className="col-span-2">Token A</div>
-        <div className="col-span-2">Token B</div>
-        <div className="">Value</div>
+      <div className="mb-16">
+        <h1 className="text-2xl text-center">Select a chain :</h1>
+        {Object.keys(FEE_TO_LIST).map((chainId: any) => {
+          let bgColor = chainId === network.toString() ? 'bg-pink-600' : 'bg-pink-500';
+          return (
+            <button
+              className={'px-6 m-4 text-lg font-medium text-white rounded hover:bg-pink-600 ' + bgColor}
+              key={chainId}
+              onClick={() => {
+                setNetwork(chainId);
+              }}
+            >
+              {NETWORKS[chainId].name}
+            </button>
+          );
+        })}
       </div>
-      {pairs.map((pair, i) => {
-        return (
-          <div key={i} className="grid grid-cols-6 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75">
-            <div className="">{pair.name}</div>
-            <div className="col-span-2">{pair.tokenA}</div>
-            <div className="col-span-2">{pair.tokenB}</div>
-            <div className="">{pair.value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
-          </div>
-        );
-      })}
+      <div>
+        <h1 className="text-2xl text-center">
+          Total fees available on this chain : {total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
+        </h1>
+        {fees.map((recipient) => {
+          return (
+            <div key={recipient.address} className="grid grid-cols-2 p-16 py-8 my-4 bg-indigo-900 rounded-xl">
+              <div className="text-md">
+                <h2>Address: {recipient.address}</h2>
+                <h2>Label: {getAddressLabel(network, recipient.address)}</h2>
+                <h2>LPs value: {recipient.lpValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
+                <h2>WETH value: {recipient.wethValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
+              </div>
+              <div>
+                <h2 className="my-8 text-xl">
+                  Total value:{' '}
+                  {(recipient.lpValue + recipient.wethValue).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
+                </h2>
+              </div>
+            </div>
+          );
+        })}
+        <p className="mt-16">
+          Address labeling using{' '}
+          <a
+            className="underline"
+            href="https://boringcrypto.github.io/DAOView/#/multisigs"
+            target="_blank"
+            rel="noreferrer"
+          >
+            BoringCrypto DAO VIEW
+          </a>
+        </p>
+      </div>
     </div>
   );
 };

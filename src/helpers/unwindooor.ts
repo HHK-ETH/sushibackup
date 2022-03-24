@@ -50,18 +50,30 @@ const UNWINDOOOR_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.HARMONY]: '0x560C759A11cd026405F6f2e19c65Da1181995fA2',
   [CHAIN_IDS.MOONRIVER]: '0xa19b3b22f29E23e4c04678C94CFC3e8f202137d8',
   [CHAIN_IDS.POLYGON]: '0xf1c9881Be22EBF108B8927c4d197d126346b5036',
-  [CHAIN_IDS.XDAI]: '',
+  [CHAIN_IDS.XDAI]: '0x1026cbed7b7E851426b959BC69dcC1bf5876512d',
 };
 
 const queryUnwindooorPositions = async (chainId: number): Promise<any> => {
+  return await queryPositions(UNWINDOOOR_ADDR[chainId].toLowerCase(), chainId);
+};
+
+const queryPositions = async (address: string, chainId: number): Promise<any> => {
   const positions = await request(EXCHANGE_ENDPOINTS[chainId], QUERY, {
-    feeTo: UNWINDOOOR_ADDR[chainId].toLowerCase(),
+    feeTo: address.toLowerCase(),
   });
   let totalFees = 0;
+  if (positions.user === null) {
+    return {
+      positions: { user: { lp1: [], lp2: [] } },
+      totalFees: 0,
+    };
+  }
   [...positions.user.lp1, ...positions.user.lp2].forEach((position: any) => {
     const pair = position.pair;
-    const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
-    totalFees += value;
+    if (pair.totalSupply > 0) {
+      const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
+      totalFees += value;
+    }
   });
   return {
     positions: positions,
@@ -69,4 +81,4 @@ const queryUnwindooorPositions = async (chainId: number): Promise<any> => {
   };
 };
 
-export { UNWINDOOOR_ADDR, queryUnwindooorPositions };
+export { UNWINDOOOR_ADDR, queryUnwindooorPositions, queryPositions };
