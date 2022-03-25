@@ -2,7 +2,7 @@ import bentoBoxLogo from '../imports/images/products/bentoBox.png';
 import sushiMakerLogo from '../imports/images/products/sushiMaker.png';
 import xsushi from '../imports/images/products/xsushi.png';
 import farmLogo from '../imports/images/products/farm.jpeg';
-import trident from '../imports/images/products/trident.jpeg';
+import tridentLogo from '../imports/images/products/trident.jpeg';
 import tridentABI from '../imports/abis/trident.json';
 import bentoBoxABI from '../imports/abis/bento.json';
 import sushiFactoryABI from '../imports/abis/sushiFactory.json';
@@ -63,9 +63,9 @@ export const PRODUCTS: { [id: number]: IProduct } = {
   [PRODUCT_IDS.TRIDENT]: {
     name: 'Trident',
     link: 'trident',
-    logo: trident,
+    logo: tridentLogo,
     description: 'Remove liquidity from trident.',
     active: true,
-    ABI: trident,
+    ABI: tridentABI,
   },
 };

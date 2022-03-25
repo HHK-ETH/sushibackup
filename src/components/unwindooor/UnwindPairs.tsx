@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
 import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 import { NETWORKS } from '../../helpers/network';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import { WETH } from '../../imports/tokens';
 import sushiMakerAbi from './../../imports/abis/sushiMaker.json';

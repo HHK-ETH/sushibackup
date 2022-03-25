@@ -9,7 +9,6 @@ import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {

@@ -10,7 +10,6 @@ import wethMakerABI from './../../imports/abis/wethMaker.json';
 import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
 import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
