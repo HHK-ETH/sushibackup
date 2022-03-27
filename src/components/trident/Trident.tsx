@@ -21,7 +21,11 @@ const Trident = (): JSX.Element => {
         return;
       }
       setLoading(true);
-      setPositions(await queryTridentPositions(chainId, account));
+      setPositions(
+        (await queryTridentPositions(chainId, account)).filter((position: any) => {
+          return position.balance > 0;
+        })
+      );
       setLoading(false);
     };
     fetchPositions();
