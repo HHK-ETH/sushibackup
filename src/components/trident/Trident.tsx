@@ -3,16 +3,20 @@ import { useWeb3React } from '@web3-react/core';
 import { useEffect, useState } from 'react';
 import { queryTridentPositions, SUBGRAPH_ENDPOINTS } from '../../helpers/trident';
 import TxPendingModal from '../general/TxPendingModal';
+import Remove from './Remove';
 
 const Trident = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector, account } = context;
+  const { active, chainId, account } = context;
   const [positions, setPositions] = useState([]);
   const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [targetPos, settargetPos] = useState({});
 
   useEffect(() => {
     const fetchPositions = async () => {
+      if (txPending !== '') return;
       if (!account || !chainId || !SUBGRAPH_ENDPOINTS[chainId]) {
         return;
       }
@@ -21,7 +25,7 @@ const Trident = (): JSX.Element => {
       setLoading(false);
     };
     fetchPositions();
-  }, [connector, account, chainId, active]);
+  }, [account, chainId, active, txPending]);
 
   if (!active || !chainId || !SUBGRAPH_ENDPOINTS[chainId]) {
     return <div className="text-center text-white">Please connect your wallet and switch de a valid network.</div>;
@@ -34,6 +38,7 @@ const Trident = (): JSX.Element => {
   return (
     <>
       <TxPendingModal txPending={txPending} />
+      <Remove open={open} setOpen={setOpen} setTxPending={setTxPending} position={targetPos} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} Trident position(s).</h1>
         <div className="grid grid-cols-7 mt-2 text-xl bg-indigo-900 rounded-t-xl">
@@ -57,7 +62,10 @@ const Trident = (): JSX.Element => {
                 <div>
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => {}}
+                    onClick={() => {
+                      settargetPos(position);
+                      setOpen(true);
+                    }}
                   >
                     Remove
                   </button>

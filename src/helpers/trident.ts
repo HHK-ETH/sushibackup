@@ -1,7 +1,7 @@
 import request, { gql } from 'graphql-request';
 import { CHAIN_IDS } from './network';
 
-const ROUTER_ADDRESSES: { [chainId: number]: string } = {
+const TRIDENT_ROUTER_ADDRESSES: { [chainId: number]: string } = {
   [CHAIN_IDS.POLYGON]: '0xc5017BE80b4446988e8686168396289a9A62668E',
 };
 
@@ -20,7 +20,12 @@ const TRIDENT_POSITIONS_QUERY = gql`
             id
             name
             symbol
+            decimals
           }
+          reserve
+        }
+        kpi {
+          liquidity
         }
       }
       balance
@@ -35,4 +40,4 @@ const queryTridentPositions = async (chainId: number, user: string): Promise<any
   return positions.liquidityPositions;
 };
 
-export { SUBGRAPH_ENDPOINTS, queryTridentPositions };
+export { SUBGRAPH_ENDPOINTS, TRIDENT_ROUTER_ADDRESSES, queryTridentPositions };
