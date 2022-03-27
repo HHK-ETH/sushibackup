@@ -10,7 +10,7 @@ import wethMakerABI from './../../imports/abis/wethMaker.json';
 import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
+import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -52,9 +52,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
         priceSlippage: BigNumber.from(slippage * 10),
         wethAddress: chainId ? WETH[chainId] : WETH[1],
         sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-        factoryAddress: chainId
-          ? PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[chainId]
-          : PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[1],
+        factoryAddress: chainId ? FACTORY_ADDRESSES[chainId] : FACTORY_ADDRESSES[1],
       });
       const wethMakerContract = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider);
       const tempOutputs = await Promise.all(

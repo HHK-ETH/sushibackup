@@ -9,7 +9,7 @@ import { NETWORKS } from '../../helpers/network';
 import Slippage from './slippage';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
 import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
-import { PRODUCTS, PRODUCT_IDS } from '../../helpers/products';
+import { FACTORY_ADDRESSES } from '../../helpers/exchange';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -44,7 +44,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
         priceSlippage: BigNumber.from(slippage * 10),
         wethAddress: WETH[1],
         sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-        factoryAddress: PRODUCTS[PRODUCT_IDS.SUSHI_MAKER].networks[1],
+        factoryAddress: FACTORY_ADDRESSES[1],
       });
       const { amountIn, minimumOut } = await wethMaker.sellToken(WETH[1], BigNumber.from(share));
       const { reserve0, reserve1 } = await wethMaker._getMarketData(

@@ -8,6 +8,7 @@ import SushiMaker from './components/sushiMaker/SushiMaker';
 import Unwindoor from './components/unwindooor/Unwindooor';
 import Farm from './components/farm/Farm';
 import Bentobox from './components/bentobox/bentobox';
+import Trident from './components/trident/Trident';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
@@ -41,6 +42,9 @@ function App(): JSX.Element {
             </Route>
             <Route path={'/unwindooor'}>
               <Unwindoor />
+            </Route>
+            <Route path={'/trident'}>
+              <Trident />
             </Route>
             <Route path={'/'}>
               <Home />
