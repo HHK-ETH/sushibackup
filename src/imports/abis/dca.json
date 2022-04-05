@@ -1,0 +1,76 @@
+[
+  { "inputs": [], "name": "OwnerOnly", "type": "error" },
+  { "inputs": [], "name": "ToClose", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "ExecuteDCA",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "buyToken",
+    "outputs": [{ "internalType": "address", "name": "_buyToken", "type": "address" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dcaData",
+    "outputs": [
+      { "internalType": "contract IAggregatorInterface", "name": "_priceFeed", "type": "address" },
+      { "internalType": "uint64", "name": "_epochDuration", "type": "uint64" },
+      { "internalType": "uint256", "name": "_buyAmount", "type": "uint256" }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "address", "name": "pool", "type": "address" },
+          { "internalType": "bytes", "name": "data", "type": "bytes" }
+        ],
+        "internalType": "struct ITrident.Path[]",
+        "name": "path",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "executeDCA",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lastBuy",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [{ "internalType": "address", "name": "_owner", "type": "address" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sellToken",
+    "outputs": [{ "internalType": "address", "name": "_sellToken", "type": "address" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "_share", "type": "uint256" }],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]
