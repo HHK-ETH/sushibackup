@@ -11,6 +11,12 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "uint256", "name": "share", "type": "uint256" }],
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "buyToken",
     "outputs": [{ "internalType": "address", "name": "_buyToken", "type": "address" }],
@@ -21,8 +27,10 @@
     "inputs": [],
     "name": "dcaData",
     "outputs": [
-      { "internalType": "contract IAggregatorInterface", "name": "_priceFeed", "type": "address" },
+      { "internalType": "contract IAggregatorInterface", "name": "_sellTokenPriceFeed", "type": "address" },
+      { "internalType": "contract IAggregatorInterface", "name": "_buyTokenPriceFeed", "type": "address" },
       { "internalType": "uint64", "name": "_epochDuration", "type": "uint64" },
+      { "internalType": "uint8", "name": "_decimalsDiff", "type": "uint8" },
       { "internalType": "uint256", "name": "_buyAmount", "type": "uint256" }
     ],
     "stateMutability": "pure",

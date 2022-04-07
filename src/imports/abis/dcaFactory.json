@@ -29,8 +29,10 @@
       { "internalType": "address", "name": "owner", "type": "address" },
       { "internalType": "address", "name": "sellToken", "type": "address" },
       { "internalType": "address", "name": "buyToken", "type": "address" },
-      { "internalType": "address", "name": "priceFeed", "type": "address" },
+      { "internalType": "address", "name": "sellTokenPriceFeed", "type": "address" },
+      { "internalType": "address", "name": "buyTokenPriceFeed", "type": "address" },
       { "internalType": "uint64", "name": "epochDuration", "type": "uint64" },
+      { "internalType": "uint8", "name": "decimalsDiff", "type": "uint8" },
       { "internalType": "uint256", "name": "amount", "type": "uint256" }
     ],
     "name": "createDCA",
