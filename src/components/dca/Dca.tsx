@@ -22,7 +22,7 @@ const Dca = (): JSX.Element => {
   return (
     <>
       <TxPendingModal txPending={txPending} />
-      <CreateVault open={open} setOpen={setOpen} />
+      <CreateVault open={open} setOpen={setOpen} setTxPending={setTxPending} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {0} vaults.</h1>
         <button
