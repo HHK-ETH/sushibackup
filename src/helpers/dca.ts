@@ -1,7 +1,7 @@
 import { CHAIN_IDS } from './network';
 
 const DCA_FACTORY: { [chainId: number]: string } = {
-  [CHAIN_IDS.POLYGON]: '0x22cE2cac44E09e75751BdB2f3818bC043807b786',
+  [CHAIN_IDS.POLYGON]: '0x17DA2C3D6863eF41D7A5e862fCE164e2563CF51E',
 };
 
 //Any token could be used but we display only most used ones to make it simpler.
