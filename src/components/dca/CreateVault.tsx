@@ -67,7 +67,7 @@ const CreateVault = ({
           >
             {DCA_TOKENS[CHAIN_IDS.POLYGON].map((token) => {
               return (
-                <option key={token.address} value={token.address}>
+                <option key={token.address + '0'} value={token.address}>
                   {token.symbol}
                 </option>
               );
@@ -102,7 +102,7 @@ const CreateVault = ({
           >
             {DCA_TOKENS[CHAIN_IDS.POLYGON].map((token) => {
               return (
-                <option key={token.address} value={token.address}>
+                <option key={token.address + '1'} value={token.address}>
                   {token.symbol}
                 </option>
               );
