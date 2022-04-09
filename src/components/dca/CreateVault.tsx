@@ -22,7 +22,7 @@ const CreateVault = ({
   const [dcaData, setDcaData] = useState({
     buyToken: DCA_TOKENS[CHAIN_IDS.POLYGON][0],
     sellToken: DCA_TOKENS[CHAIN_IDS.POLYGON][0],
-    frequency: 0,
+    frequency: 1,
     amount: 0,
   });
 
@@ -42,7 +42,7 @@ const CreateVault = ({
       dcaData.buyToken.decimals - dcaData.sellToken.decimals,
       amount
     );
-    setTxPending(NETWORKS[CHAIN_IDS.POLYGON].explorer + tx.hash);
+    setTxPending(NETWORKS[CHAIN_IDS.POLYGON].explorer + 'tx/' + tx.hash);
     setOpen(false);
     await web3Provider.waitForTransaction(tx.hash, 2);
     setTxPending('');
