@@ -1,7 +1,44 @@
+import request, { gql } from 'graphql-request';
 import { CHAIN_IDS } from './network';
 
 const DCA_FACTORY: { [chainId: number]: string } = {
   [CHAIN_IDS.POLYGON]: '0x17DA2C3D6863eF41D7A5e862fCE164e2563CF51E',
+};
+
+const SUBGRAPH_ENDPOINTS: { [chainId: number]: string } = {
+  [CHAIN_IDS.POLYGON]: 'https://api.thegraph.com/subgraphs/name/hhk-eth/dca',
+};
+
+const QUERY = gql`
+  query vaults($owner: ID!) {
+    vaults(first: 100, where: { owner: $owner }) {
+      id
+      buyToken {
+        id
+        symbol
+        decimals
+      }
+      sellToken {
+        id
+        symbol
+        decimals
+      }
+      totalBuy
+      totalSell
+      amount
+      balance
+      creationTimestamp
+      nextExecutableTimestamp
+      epochDuration
+    }
+  }
+`;
+
+const queryVaults = async (chaindId: number, account: string): Promise<any[]> => {
+  const res = await request(SUBGRAPH_ENDPOINTS[chaindId], QUERY, {
+    owner: account,
+  });
+  return res.vaults;
 };
 
 //Any token could be used but we display only most used ones to make it simpler.
@@ -39,7 +76,7 @@ const DCA_TOKENS: { [chainId: number]: { symbol: string; address: string; priceF
     },
     {
       symbol: 'WMATIC',
-      address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
       priceFeed: '0xF9680D99D6C9589e2a93a78A04A279e509205945',
       decimals: 18,
     },
@@ -52,4 +89,4 @@ const DCA_TOKENS: { [chainId: number]: { symbol: string; address: string; priceF
   ],
 };
 
-export { DCA_FACTORY, DCA_TOKENS };
+export { DCA_FACTORY, DCA_TOKENS, queryVaults };
