@@ -75,7 +75,7 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     link: 'dca',
     logo: dcaLogo,
     description: 'Create and manage DCA vaults.',
-    active: true,
+    active: false,
     ABI: '',
   },
 };
