@@ -1,0 +1,50 @@
+[
+  {
+    "inputs": [
+      { "internalType": "contract DCA", "name": "_implementation", "type": "address" },
+      { "internalType": "address", "name": "_bentobox", "type": "address" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "CreateFail", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "contract DCA", "name": "newVault", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "ok", "type": "uint256" }
+    ],
+    "name": "CreateDCA",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "bentobox",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "owner", "type": "address" },
+      { "internalType": "address", "name": "sellToken", "type": "address" },
+      { "internalType": "address", "name": "buyToken", "type": "address" },
+      { "internalType": "address", "name": "sellTokenPriceFeed", "type": "address" },
+      { "internalType": "address", "name": "buyTokenPriceFeed", "type": "address" },
+      { "internalType": "uint64", "name": "epochDuration", "type": "uint64" },
+      { "internalType": "uint8", "name": "decimalsDiff", "type": "uint8" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "createDCA",
+    "outputs": [{ "internalType": "contract DCA", "name": "newVault", "type": "address" }],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "implementation",
+    "outputs": [{ "internalType": "contract DCA", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

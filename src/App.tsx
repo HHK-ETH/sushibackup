@@ -9,6 +9,7 @@ import Unwindoor from './components/unwindooor/Unwindooor';
 import Farm from './components/farm/Farm';
 import Bentobox from './components/bentobox/bentobox';
 import Trident from './components/trident/Trident';
+import Dca from './components/dca/Dca';
 
 function getLibrary(provider: any) {
   const library = new Web3Provider(provider);
@@ -45,6 +46,9 @@ function App(): JSX.Element {
             </Route>
             <Route path={'/trident'}>
               <Trident />
+            </Route>
+            <Route path={'/dca'}>
+              <Dca />
             </Route>
             <Route path={'/'}>
               <Home />

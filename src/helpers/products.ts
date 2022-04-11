@@ -3,6 +3,7 @@ import sushiMakerLogo from '../imports/images/products/sushiMaker.png';
 import xsushi from '../imports/images/products/xsushi.png';
 import farmLogo from '../imports/images/products/farm.jpeg';
 import tridentLogo from '../imports/images/products/trident.jpeg';
+import dcaLogo from '../imports/images/products/dca.png';
 import tridentABI from '../imports/abis/trident.json';
 import bentoBoxABI from '../imports/abis/bento.json';
 import sushiFactoryABI from '../imports/abis/sushiFactory.json';
@@ -25,6 +26,7 @@ export enum PRODUCT_IDS {
   FEES = 3,
   UNWINDOOOR = 4,
   TRIDENT = 5,
+  DCA = 6,
 }
 
 export const PRODUCTS: { [id: number]: IProduct } = {
@@ -67,5 +69,13 @@ export const PRODUCTS: { [id: number]: IProduct } = {
     description: 'Remove liquidity from trident.',
     active: true,
     ABI: tridentABI,
+  },
+  [PRODUCT_IDS.DCA]: {
+    name: 'DCA',
+    link: 'dca',
+    logo: dcaLogo,
+    description: 'Create and manage DCA vaults.',
+    active: false,
+    ABI: '',
   },
 };
