@@ -43,7 +43,7 @@ const Dca = (): JSX.Element => {
       <TxPendingModal txPending={txPending} />
       <CreateVault open={open} setOpen={setOpen} setTxPending={setTxPending} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} setPending={setTxPending} />
-      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} />
+      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
         <button
