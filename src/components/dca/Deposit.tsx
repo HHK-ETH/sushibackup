@@ -1,19 +1,31 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { BENTOBOX_ADDR } from '../../helpers/bentobox';
 import Modal from '../general/Modal';
 import erc20abi from './../../imports/abis/erc20.json';
 import bentoAbi from './../../imports/abis/bento.json';
+import { NETWORKS } from '../../helpers/network';
 
-const Deposit = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; vault: any }): JSX.Element => {
+const Deposit = ({
+  open,
+  setOpen,
+  vault,
+  setPending,
+}: {
+  open: boolean;
+  setOpen: Function;
+  vault: any;
+  setPending: Function;
+}): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { chainId, connector, account } = context;
+  const { chainId, connector, account, deactivate, activate } = context;
   const [fromWallet, setFromWallet] = useState(true);
   const [amount, setAmount] = useState(0);
   const [balance, setBalance] = useState(BigNumber.from(0));
+  const [allowance, setAllowance] = useState(BigNumber.from(0));
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -25,6 +37,7 @@ const Deposit = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; v
       const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       if (fromWallet) {
         const erc20 = new Contract(vault.sellToken.id, erc20abi, web3Provider);
+        setAllowance(await erc20.allowance(account, BENTOBOX_ADDR[chainId]));
         setBalance(await erc20.balanceOf(account));
       } else {
         const bento = new Contract(BENTOBOX_ADDR[chainId], bentoAbi, web3Provider);
@@ -36,19 +49,39 @@ const Deposit = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; v
     fetchBalance();
   }, [account, chainId, connector, fromWallet, vault]);
 
+  const approve = async () => {
+    if (!connector || !account || !chainId || vault === null) {
+      return;
+    }
+    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
+    const erc20 = new Contract(vault.sellToken.id, erc20abi, web3Provider.getSigner());
+    const tx = await erc20.approve(BENTOBOX_ADDR[chainId], parseUnits(amount.toString(), vault.sellToken.decimals));
+    setPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
+    await web3Provider.waitForTransaction(tx.hash, 2);
+    setPending('');
+    setAllowance(await erc20.allowance(account, BENTOBOX_ADDR[chainId]));
+  };
+
   const deposit = async () => {
     if (!connector || !account || !chainId || vault === null) {
       return;
     }
     const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const bento = new Contract(BENTOBOX_ADDR[chainId], bentoAbi, web3Provider);
+    const bento = new Contract(BENTOBOX_ADDR[chainId], bentoAbi, web3Provider.getSigner());
+    const parsedAmount = parseUnits(amount.toString(), vault.sellToken.decimals);
+    const shares = await bento.toShare(vault.sellToken.id, parsedAmount, false);
     let tx;
     if (fromWallet) {
-      //todo add approve
-      tx = await bento.deposit();
+      tx = await bento.deposit(vault.sellToken.id, account, vault.id, parsedAmount, 0);
     } else {
-      tx = await bento.transfer();
+      tx = await bento.transfer(vault.sellToken.id, account, vault.id, shares);
     }
+    setPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
+    await web3Provider.waitForTransaction(tx.hash, 5);
+    setPending('');
+    deactivate(); //dirty update will refacto
+    activate(connector);
+    setOpen(false);
   };
 
   if (vault === null) return <></>;
@@ -111,12 +144,21 @@ const Deposit = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; v
               from <span className="font-semibold text-pink-500">{fromWallet ? 'wallet' : 'Bentobox'} </span>
               to the vault.
             </p>
-            <button
-              className={'px-8 py-1 m-2 text-xl text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-              onClick={() => {}}
-            >
-              Deposit
-            </button>
+            {(allowance.lt(parseUnits(amount.toString(), vault.sellToken.decimals)) && fromWallet && (
+              <button
+                className={'px-8 py-1 m-2 text-xl text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                onClick={() => approve()}
+              >
+                Approve
+              </button>
+            )) || (
+              <button
+                className={'px-8 py-1 m-2 text-xl text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                onClick={() => deposit()}
+              >
+                Deposit
+              </button>
+            )}
           </>
         )}
         {parseFloat(formatUnits(balance, vault.sellToken.decimals)) < amount && (
