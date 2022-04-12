@@ -34,7 +34,7 @@ const Dashboard = ({
   }, [active, chainId, connector]);
 
   return (
-    <div className="p-16 py-8 bg-indigo-900 rounded-xl">
+    <div className="p-16 py-8 mb-4 bg-indigo-900 rounded-xl">
       <div className="grid grid-cols-4 gap-8 mb-4">
         <h1 className="text-xl text-left">Total WETH available: {parseFloat(formatUnits(wethBalance)).toFixed(2)}</h1>
         <button

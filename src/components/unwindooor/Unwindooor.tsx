@@ -21,6 +21,7 @@ const Unwindooor = (): JSX.Element => {
     totalFees: 0,
     positions: [],
   });
+  const [pairTab, setPairTab] = useState(true);
 
   useEffect(() => {
     const fetchPositions = async () => {
@@ -49,9 +50,29 @@ const Unwindooor = (): JSX.Element => {
           setTxPending={setTxPending}
         />
         <Tab.Group>
-          <Tab.List>
-            <Tab>Pairs</Tab>
-            <Tab>Tab 2</Tab>
+          <Tab.List className={'grid grid-cols-2'}>
+            <button onClick={() => setPairTab(true)}>
+              <Tab
+                className={
+                  pairTab
+                    ? 'w-full py-2 rounded-tl-xl bg-indigo-600'
+                    : 'w-full py-2 rounded-tl-xl bg-indigo-700 hover:bg-indigo-500'
+                }
+              >
+                Pairs
+              </Tab>
+            </button>
+            <button onClick={() => setPairTab(false)}>
+              <Tab
+                className={
+                  !pairTab
+                    ? 'w-full py-2 rounded-tr-xl bg-indigo-600'
+                    : 'w-full py-2 rounded-tr-xl bg-indigo-700 hover:bg-indigo-500'
+                }
+              >
+                Tokens
+              </Tab>
+            </button>
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>

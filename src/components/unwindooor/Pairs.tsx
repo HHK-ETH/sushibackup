@@ -1,7 +1,7 @@
 const Pairs = (props: { positions: any[]; selectedPairs: any[]; setSelectedPairs: Function }): JSX.Element => {
   return (
     <>
-      <div className="grid grid-cols-7 py-8 mt-4 bg-indigo-900 rounded-t-xl">
+      <div className="grid grid-cols-7 py-6 bg-indigo-800">
         <div className="">Pair</div>
         <div className="col-span-2">Token 0</div>
         <div className="col-span-2">Token 1</div>
