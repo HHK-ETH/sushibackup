@@ -19,7 +19,7 @@ const Unwindooor = (): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [data, setData]: [data: any, setData: Function] = useState({
     totalFees: 0,
-    positions: { user: { lp1: [], lp2: [] } },
+    positions: [],
   });
 
   useEffect(() => {
@@ -55,7 +55,7 @@ const Unwindooor = (): JSX.Element => {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <Pairs selectedPairs={selectedPairs} setSelectedPairs={setSelectedPairs} data={data} />
+              <Pairs selectedPairs={selectedPairs} setSelectedPairs={setSelectedPairs} positions={data.positions} />
             </Tab.Panel>
             <Tab.Panel>
               <Tokens />

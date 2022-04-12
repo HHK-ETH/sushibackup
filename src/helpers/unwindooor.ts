@@ -58,17 +58,28 @@ const queryUnwindooorPositions = async (chainId: number): Promise<any> => {
 };
 
 const queryPositions = async (address: string, chainId: number): Promise<any> => {
-  const positions = await request(EXCHANGE_ENDPOINTS[chainId], QUERY, {
+  let res = await request(EXCHANGE_ENDPOINTS[chainId], QUERY, {
     feeTo: address.toLowerCase(),
   });
   let totalFees = 0;
-  if (positions.user === null) {
+  if (res.user === null) {
     return {
-      positions: { user: { lp1: [], lp2: [] } },
+      positions: [],
       totalFees: 0,
     };
   }
-  [...positions.user.lp1, ...positions.user.lp2].forEach((position: any) => {
+  const positions: any[] = [...res.user.lp1, ...res.user.lp2].sort((positionA: any, positionB: any) => {
+    const pairA = positionA.pair;
+    const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;
+    const pairB = positionB.pair;
+    const valueB = (positionB.liquidityTokenBalance / pairB.totalSupply) * pairB.reserveUSD;
+    if (valueA > valueB) return -1;
+    return +1;
+  });
+  if (positions.length > 250) {
+    positions.splice(250);
+  }
+  positions.forEach((position: any) => {
     const pair = position.pair;
     if (pair.totalSupply > 0) {
       const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;

@@ -1,4 +1,4 @@
-const Pairs = (props: { data: any; selectedPairs: any[]; setSelectedPairs: Function }): JSX.Element => {
+const Pairs = (props: { positions: any[]; selectedPairs: any[]; setSelectedPairs: Function }): JSX.Element => {
   return (
     <>
       <div className="grid grid-cols-7 py-8 mt-4 bg-indigo-900 rounded-t-xl">
@@ -8,51 +8,39 @@ const Pairs = (props: { data: any; selectedPairs: any[]; setSelectedPairs: Funct
         <div className="">Value</div>
         <div className="">Select</div>
       </div>
-      {[...props.data.positions.user.lp1, ...props.data.positions.user.lp2]
-        .sort((positionA: any, positionB: any) => {
-          const pairA = positionA.pair;
-          const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;
-          const pairB = positionB.pair;
-          const valueB = (positionB.liquidityTokenBalance / pairB.totalSupply) * pairB.reserveUSD;
-          if (valueA > valueB) return -1;
-          return +1;
-        })
-        .map((position: any, i: number) => {
-          const pair = position.pair;
-          const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
-          const amount0 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve0;
-          const amount1 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve1;
-          return (
-            <div
-              key={i}
-              className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
-            >
-              <div className="">{pair.name}</div>
-              <div className="col-span-2">{amount0.toFixed(2) + ' ' + pair.token0.symbol}</div>
-              <div className="col-span-2">{amount1.toFixed(2) + ' ' + pair.token1.symbol}</div>
-              <div className="">{value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
-              <div>
-                <input
-                  type={'checkbox'}
-                  onChange={(e) => {
-                    const tempPairs = [...props.selectedPairs];
-                    if (e.target.checked) {
-                      tempPairs.push(pair);
-                      props.setSelectedPairs(tempPairs);
-                    } else {
-                      props.setSelectedPairs(
-                        tempPairs.filter((p: any) => {
-                          return p.id === pair.id ? false : true;
-                        })
-                      );
-                    }
-                  }}
-                  checked={props.selectedPairs.indexOf(pair) !== -1}
-                />
-              </div>
+      {props.positions.map((position: any, i: number) => {
+        const pair = position.pair;
+        const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
+        const amount0 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve0;
+        const amount1 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve1;
+        return (
+          <div key={i} className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75">
+            <div className="">{pair.name}</div>
+            <div className="col-span-2">{amount0.toFixed(2) + ' ' + pair.token0.symbol}</div>
+            <div className="col-span-2">{amount1.toFixed(2) + ' ' + pair.token1.symbol}</div>
+            <div className="">{value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
+            <div>
+              <input
+                type={'checkbox'}
+                onChange={(e) => {
+                  const tempPairs = [...props.selectedPairs];
+                  if (e.target.checked) {
+                    tempPairs.push(pair);
+                    props.setSelectedPairs(tempPairs);
+                  } else {
+                    props.setSelectedPairs(
+                      tempPairs.filter((p: any) => {
+                        return p.id === pair.id ? false : true;
+                      })
+                    );
+                  }
+                }}
+                checked={props.selectedPairs.indexOf(pair) !== -1}
+              />
             </div>
-          );
-        })}
+          </div>
+        );
+      })}
       ;
     </>
   );
