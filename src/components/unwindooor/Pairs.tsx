@@ -9,7 +9,7 @@ const Pairs = (props: { positions: any[]; selectedPairs: any[]; setSelectedPairs
         <div className="">Select</div>
       </div>
       {props.positions.map((position: any, i: number) => {
-        const pair = position.pair;
+        const pair = { ...position.pair, balance: position.liquidityTokenBalance };
         const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
         const amount0 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve0;
         const amount1 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve1;
@@ -35,7 +35,11 @@ const Pairs = (props: { positions: any[]; selectedPairs: any[]; setSelectedPairs
                     );
                   }
                 }}
-                checked={props.selectedPairs.indexOf(pair) !== -1}
+                checked={
+                  props.selectedPairs.find((_pair) => {
+                    return pair.id === _pair.id;
+                  }) !== undefined
+                }
               />
             </div>
           </div>

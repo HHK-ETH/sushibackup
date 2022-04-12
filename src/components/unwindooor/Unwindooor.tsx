@@ -8,14 +8,15 @@ import Pairs from './Pairs';
 import Tokens from './Tokens';
 import { TxPending } from '../../context';
 import Modal from '../general/Modal';
-import UnwindPairs from './UnwindPairs';
-import BuyWeth from './buyWeth';
-import BuySushi from './buySushi';
-import Withdraw from './withdraw';
+import UnwindPairs from './modal/UnwindPairs';
+import BuyWeth from './modal/buyWeth';
+import BuySushi from './modal/buySushi';
+import Withdraw from './modal/withdraw';
 import { BigNumber, Contract, providers } from 'ethers';
 import { WETH } from '../../imports/tokens';
 import erc20Abi from '../../imports/abis/erc20.json';
 import { formatUnits } from 'ethers/lib/utils';
+import BurnPairs from './modal/BurnPairs';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -56,6 +57,7 @@ const Unwindooor = (): JSX.Element => {
     <>
       <Modal open={open} setOpen={setOpen}>
         {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+        {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
         {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} />}
         {modalContent === 'buySushi' && (
           <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
