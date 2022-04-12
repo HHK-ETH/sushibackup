@@ -4,12 +4,12 @@ import { BigNumber, Contract, providers } from 'ethers';
 import { formatUnits, getAddress } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { WethMaker } from 'unwindooor-sdk';
-import { FACTORY_ADDRESSES } from '../../helpers/exchange';
-import { NETWORKS } from '../../helpers/network';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { WETH } from '../../imports/tokens';
-import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
-import Slippage from './slippage';
+import { FACTORY_ADDRESSES } from '../../../helpers/exchange';
+import { NETWORKS } from '../../../helpers/network';
+import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import { WETH } from '../../../imports/tokens';
+import sushiMakerAbi from '../../../imports/abis/sushiMaker.json';
+import Slippage from '../utils/slippage';
 
 const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
   const [slippage, setSlippage]: [slippage: number, setSlippage: Function] = useState(0.1);

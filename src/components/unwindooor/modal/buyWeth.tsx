@@ -2,15 +2,15 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { WETH } from '../../imports/tokens';
+import { WETH } from '../../../imports/tokens';
 import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
-import erc20Abi from './../../imports/abis/erc20.json';
-import wethMakerABI from './../../imports/abis/wethMaker.json';
-import { NETWORKS } from '../../helpers/network';
-import Slippage from './slippage';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { FACTORY_ADDRESSES } from '../../helpers/exchange';
+import erc20Abi from '../../../imports/abis/erc20.json';
+import wethMakerABI from '../../../imports/abis/wethMaker.json';
+import { NETWORKS } from '../../../helpers/network';
+import Slippage from '../utils/slippage';
+import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import { FACTORY_ADDRESSES } from '../../../helpers/exchange';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();

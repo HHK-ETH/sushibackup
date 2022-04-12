@@ -3,10 +3,10 @@ import { useWeb3React } from '@web3-react/core';
 import { Contract, providers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
-import { NETWORKS } from '../../helpers/network';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { WETH } from '../../imports/tokens';
-import wethMakerABI from './../../imports/abis/wethMaker.json';
+import { NETWORKS } from '../../../helpers/network';
+import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import { WETH } from '../../../imports/tokens';
+import wethMakerABI from '../../../imports/abis/wethMaker.json';
 
 const Withdraw = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
