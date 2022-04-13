@@ -60,7 +60,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const tempPriceImpacts = await Promise.all(
         unwindData.map(async (data, index) => {
-          const res = await calculateUnwindOutput(chainId, provider, data, pairs[index], slippage);
+          const res: any = await calculateUnwindOutput(chainId, provider, data, pairs[index], slippage);
           if (res.minimumOut.eq(0)) {
             setError(
               'Price impact to high(>6%) for pair: ' +
