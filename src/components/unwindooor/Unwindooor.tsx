@@ -17,10 +17,11 @@ import { WETH } from '../../imports/tokens';
 import erc20Abi from '../../imports/abis/erc20.json';
 import { formatUnits } from 'ethers/lib/utils';
 import BurnPairs from './modal/BurnPairs';
+import sushiMakerAbi from '../../imports/abis/sushiMaker.json';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector } = context;
+  const { active, chainId, connector, account } = context;
   const { setTxPending } = useContext(TxPending);
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [modalContent, setModalContent]: [string, Function] = useState('');
@@ -32,6 +33,7 @@ const Unwindooor = (): JSX.Element => {
     positions: [],
   });
   const [pairTab, setPairTab] = useState(true);
+  const [isTrusted, setIsTrusted] = useState(false);
 
   useEffect(() => {
     const fetchPositions = async () => {
@@ -42,10 +44,13 @@ const Unwindooor = (): JSX.Element => {
       const weth = new Contract(WETH[chainId], erc20Abi, provider);
       const balance = await weth.balanceOf(UNWINDOOOR_ADDR[chainId]);
       setWethBalance(balance);
+      const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
+      const owner = await sushiMaker.owner();
+      setIsTrusted(owner === account ? true : await sushiMaker.trusted(account));
       setLoading(false);
     };
     fetchPositions();
-  }, [active, chainId, connector]);
+  }, [active, chainId, connector, account]);
 
   if (chainId && !UNWINDOOOR_ADDR[chainId]) {
     return <div className={'mt-24 text-xl text-center text-white'}>Unwindooor is not available on this network.</div>;
@@ -55,18 +60,25 @@ const Unwindooor = (): JSX.Element => {
 
   return (
     <>
-      <Modal open={open} setOpen={setOpen}>
-        {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-        {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-        {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} />}
-        {modalContent === 'buySushi' && (
-          <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
-        )}
-        {modalContent === 'withdraw' && (
-          <Withdraw setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
-        )}
-      </Modal>
+      {isTrusted && (
+        <Modal open={open} setOpen={setOpen}>
+          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} />}
+          {modalContent === 'buySushi' && (
+            <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
+          )}
+          {modalContent === 'withdraw' && (
+            <Withdraw setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
+          )}
+        </Modal>
+      )}
       <div className="container p-16 mx-auto text-center text-white">
+        {!isTrusted && (
+          <div className="py-4 mb-4 text-xl font-semibold bg-indigo-900 rounded-xl">
+            This page is read-only, only owner and trusted addresses can interact with this contract.
+          </div>
+        )}
         <Dashboard
           totalFees={data.totalFees}
           wethBalance={wethBalance}
