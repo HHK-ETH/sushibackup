@@ -2,15 +2,11 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { WETH } from '../../../imports/tokens';
-import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
-import erc20Abi from '../../../imports/abis/erc20.json';
 import wethMakerABI from '../../../imports/abis/wethMaker.json';
 import { NETWORKS } from '../../../helpers/network';
 import Slippage from '../utils/slippage';
-import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
-import { FACTORY_ADDRESSES } from '../../../helpers/exchange';
+import { calculateBuyWethOutput, UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
 
 const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -18,6 +14,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
   const [slippage, setSlippage] = useState(0.1);
   const [swapList, setSwapList] = useState([{ token: '', share: BigNumber.from(100) }]);
   const [outputs, setOutputs]: [outputs: any, setOutputs: Function] = useState([]);
+  const [error, setError] = useState('');
 
   const execBuyWeth = async () => {
     if (!chainId || !connector) return;
@@ -42,45 +39,19 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
 
   useEffect(() => {
     const fetchOutputs = async () => {
-      if (!connector || !chainId) return;
+      if (!connector || !chainId || swapList[0].token === '') return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const wethMaker = new WethMaker({
-        wethMakerAddress: UNWINDOOOR_ADDR[chainId],
-        preferTokens: [],
-        provider: provider,
-        maxPriceImpact: BigNumber.from(60),
-        priceSlippage: BigNumber.from(slippage * 10),
-        wethAddress: chainId ? WETH[chainId] : WETH[1],
-        sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-        factoryAddress: chainId ? FACTORY_ADDRESSES[chainId] : FACTORY_ADDRESSES[1],
-      });
-      const wethMakerContract = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider);
-      const tempOutputs = await Promise.all(
-        swapList.map(async (swap: any) => {
-          if (swap.token === '') return null;
-          const { amountIn, minimumOut } = await wethMaker.sellToken(swap.token, swap.share);
-          const bridge = await wethMakerContract.bridges(swap.token);
-          const outputToken = new Contract(
-            bridge === '0x0000000000000000000000000000000000000000' ? WETH[chainId] : bridge,
-            erc20Abi,
-            provider
-          );
-          const pairAddress = await wethMaker._getPair(swap.token);
-          const { token0, reserve0, reserve1 } = await wethMaker._getMarketData(pairAddress, swap.token);
-          const sellingToken0 = swap.token.toUpperCase() === token0.toUpperCase();
-          const reserveIn = sellingToken0 ? reserve0 : reserve1;
-          const reserveOut = sellingToken0 ? reserve1 : reserve0;
-          const noPriceImpactAmountOut = reserveOut.mul(amountIn).div(reserveIn);
-          return {
-            amountIn: amountIn,
-            minimumOut: minimumOut,
-            noPriceImpactAmountOut: noPriceImpactAmountOut,
-            decimals: await outputToken.decimals(),
-            symbol: await outputToken.symbol(),
-          };
+      const res = await calculateBuyWethOutput(chainId, provider, slippage, swapList);
+      if (
+        res.find((e) => {
+          return e.minimumOut.eq(0);
         })
-      );
-      setOutputs(tempOutputs);
+      ) {
+        setError('Price impact to high or Unknown token.');
+      } else {
+        setError('');
+      }
+      setOutputs(res);
     };
     fetchOutputs();
   }, [active, chainId, connector, swapList, slippage]);
@@ -97,7 +68,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
           ? parseFloat(formatUnits(output.noPriceImpactAmountOut, output.decimals))
           : 0;
         return (
-          <div key={index} className="p-2 mt-4 text-lg border-2 border-indigo-700 rounded-lg">
+          <div key={index} className="p-2 mt-4 border-2 border-indigo-700 rounded-lg text-md">
             <div className="grid grid-cols-5 mb-4">
               <h3>From:</h3>
               <input
@@ -114,7 +85,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
             <div className="grid grid-cols-6 mb-4">
               <h3>Share:</h3>
               <input
-                className="w-16 font-medium text-center text-white bg-indigo-700 rounded-full text-md"
+                className="w-16 font-medium text-center text-white bg-indigo-700 rounded-full"
                 type={'number'}
                 value={swap.share.toNumber()}
                 onChange={(e) => {
@@ -172,6 +143,7 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       >
         Execute
       </button>
+      <div className="mt-4 font-semibold">{error}</div>
     </div>
   );
 };
