@@ -49,8 +49,8 @@ const Tokens = ({
 
   return (
     <>
-      <div className="grid grid-cols-5 py-6 bg-indigo-800">
-        <div className="">Token</div>
+      <div className="grid grid-cols-7 py-6 bg-indigo-800">
+        <div className="col-span-3">Token</div>
         <div className="">Bridge</div>
         <div className="">Balance</div>
         <div className="">Value</div>
@@ -60,9 +60,11 @@ const Tokens = ({
         return (
           <div
             key={token.address}
-            className="grid grid-cols-5 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
+            className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
           >
-            <div className="">{token.symbol}</div>
+            <div className="col-span-3">
+              {token.symbol} - {token.address}
+            </div>
             <div className="">{bridges[i]}</div>
             <div className="">{parseFloat(token.balance).toFixed(4)}</div>
             <div className="">

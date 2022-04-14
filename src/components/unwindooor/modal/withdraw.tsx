@@ -8,21 +8,29 @@ import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
 import { WETH } from '../../../imports/tokens';
 import wethMakerABI from '../../../imports/abis/wethMaker.json';
 
-const Withdraw = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
+const Withdraw = ({
+  setTxPending,
+  wethBalance,
+  isOwner,
+}: {
+  setTxPending: Function;
+  wethBalance: number;
+  isOwner: boolean;
+}): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector, account } = context;
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState('');
 
+  if (!isOwner)
+    return (
+      <div className="text-center text-white">Only owner can withdraw WETH. Please connect with the right account.</div>
+    );
+
   const execWithdraw = async () => {
     if (!chainId || !connector || !account) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
     const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
-    const owner = await maker.owner();
-    if (account.toLowerCase() !== owner.toLowerCase()) {
-      alert('Only owner can withdraw funds.');
-      return;
-    }
     const tx = await maker.withdraw(WETH[chainId], recipient, parseUnits(amount.toString(), 'ether'));
     setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
     await provider.waitForTransaction(tx.hash, 1);

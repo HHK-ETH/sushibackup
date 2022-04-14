@@ -18,6 +18,7 @@ import erc20Abi from '../../imports/abis/erc20.json';
 import { formatUnits } from 'ethers/lib/utils';
 import BurnPairs from './modal/BurnPairs';
 import sushiMakerAbi from '../../imports/abis/sushiMaker.json';
+import SetBridge from './modal/Setbridge';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -38,6 +39,7 @@ const Unwindooor = (): JSX.Element => {
   });
   const [pairTab, setPairTab] = useState(true);
   const [isTrusted, setIsTrusted] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [selectedTokens, setSelectedTokens]: [selectedTokens: any[], setSelectedTokens: Function] = useState([]);
 
   useEffect(() => {
@@ -52,6 +54,7 @@ const Unwindooor = (): JSX.Element => {
       setWethBalance(balance);
       const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
       const owner = await sushiMaker.owner();
+      setIsOwner(owner === account);
       setIsTrusted(owner === account ? true : await sushiMaker.trusted(account));
       setLoading(false);
     };
@@ -75,8 +78,13 @@ const Unwindooor = (): JSX.Element => {
             <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
           )}
           {modalContent === 'withdraw' && (
-            <Withdraw setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
+            <Withdraw
+              setTxPending={setTxPending}
+              wethBalance={parseFloat(formatUnits(wethBalance))}
+              isOwner={isOwner}
+            />
           )}
+          {modalContent === 'setBridge' && <SetBridge setTxPending={setTxPending} isOwner={isOwner} />}
         </Modal>
       )}
       <div className="container p-16 mx-auto text-center text-white">
