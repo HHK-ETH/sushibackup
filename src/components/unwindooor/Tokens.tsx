@@ -56,47 +56,51 @@ const Tokens = ({
         <div className="">Value</div>
         <div className="">Select to swap</div>
       </div>
-      {tokens.map((token, i) => {
-        return (
-          <div
-            key={token.address}
-            className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
-          >
-            <div className="col-span-3">
-              {token.symbol} - {token.address}
+      {tokens
+        .filter((token) => {
+          return token.symbol !== 'WETH';
+        })
+        .map((token, i) => {
+          return (
+            <div
+              key={token.address}
+              className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
+            >
+              <div className="col-span-3">
+                {token.symbol} - {token.address}
+              </div>
+              <div className="">{bridges[i]}</div>
+              <div className="">{parseFloat(token.balance).toFixed(4)}</div>
+              <div className="">
+                {parseFloat(token.balanceUSD)
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+                $
+              </div>
+              <div className="">
+                <input
+                  type={'checkbox'}
+                  onChange={(e) => {
+                    const selected = [...selectedTokens];
+                    if (e.target.checked) {
+                      selected.push(token);
+                      setSelectedTokens(selected);
+                    } else {
+                      setSelectedTokens(
+                        selected.filter((_token: any) => {
+                          return token.address !== _token.address;
+                        })
+                      );
+                    }
+                  }}
+                  checked={selectedTokens.find((_token: any) => {
+                    return token.address === _token.address;
+                  })}
+                />
+              </div>
             </div>
-            <div className="">{bridges[i]}</div>
-            <div className="">{parseFloat(token.balance).toFixed(4)}</div>
-            <div className="">
-              {parseFloat(token.balanceUSD)
-                .toFixed(2)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
-              $
-            </div>
-            <div className="">
-              <input
-                type={'checkbox'}
-                onChange={(e) => {
-                  const selected = [...selectedTokens];
-                  if (e.target.checked) {
-                    selected.push(token);
-                    setSelectedTokens(selected);
-                  } else {
-                    setSelectedTokens(
-                      selected.filter((_token: any) => {
-                        return token.address !== _token.address;
-                      })
-                    );
-                  }
-                }}
-                checked={selectedTokens.find((_token: any) => {
-                  return token.address === _token.address;
-                })}
-              />
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </>
   );
 };
