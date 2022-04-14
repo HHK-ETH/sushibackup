@@ -14,7 +14,7 @@ interface INetwork {
   name: string;
   logo: string;
   rpc: string;
-  coingeckoId: string;
+  zapperId: string;
   explorer: string;
 }
 
@@ -38,7 +38,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Arbitrum',
     logo: arbitrum,
     rpc: 'https://arb1.arbitrum.io/rpc',
-    coingeckoId: 'arbitrum-one',
+    zapperId: 'arbitrum',
     explorer: 'https://arbiscan.io/',
   },
   [CHAIN_IDS.AVALANCHE]: {
@@ -46,7 +46,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Avalanche',
     logo: avalanche,
     rpc: 'https://api.avax.network/ext/bc/C/rpc',
-    coingeckoId: 'avalanche',
+    zapperId: 'avalanche',
     explorer: 'https://snowtrace.com/',
   },
   [CHAIN_IDS.BSC]: {
@@ -54,7 +54,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'BSC',
     logo: bsc,
     rpc: 'https://bsc-dataseed1.binance.org',
-    coingeckoId: 'binance-smart-chain',
+    zapperId: 'binance-smart-chain',
     explorer: 'https://bscscan.com/',
   },
   [CHAIN_IDS.CELO]: {
@@ -62,7 +62,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Celo',
     logo: celo,
     rpc: 'https://forno.celo.org',
-    coingeckoId: 'celo',
+    zapperId: 'celo',
     explorer: 'https://explorer.celo.org/',
   },
   [CHAIN_IDS.ETHEREUM]: {
@@ -70,7 +70,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Ethereum',
     logo: ethereum,
     rpc: 'https://cloudflare-eth.com',
-    coingeckoId: 'ethereum',
+    zapperId: 'ethereum',
     explorer: 'https://etherscan.io/',
   },
   [CHAIN_IDS.FANTOM]: {
@@ -78,7 +78,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Fantom',
     logo: fantom,
     rpc: 'https://rpc.ftm.tools',
-    coingeckoId: 'fantom',
+    zapperId: 'fantom',
     explorer: 'https://ftmscan.com/',
   },
   [CHAIN_IDS.HARMONY]: {
@@ -86,7 +86,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Harmony',
     logo: harmony,
     rpc: 'https://api.harmony.one',
-    coingeckoId: 'harmony-shard-0',
+    zapperId: 'harmony',
     explorer: 'https://explorer.harmony.one/',
   },
   [CHAIN_IDS.MOONRIVER]: {
@@ -94,7 +94,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Moonriver',
     logo: moonriver,
     rpc: 'https://rpc.moonriver.moonbeam.network',
-    coingeckoId: 'moonriver',
+    zapperId: 'moonriver',
     explorer: 'https://moonscan.io/',
   },
   [CHAIN_IDS.MOONBEAM]: {
@@ -102,7 +102,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Moonbeam',
     logo: moonriver,
     rpc: 'https://rpc.api.moonbeam.network',
-    coingeckoId: 'moonbeam',
+    zapperId: 'moonbeam',
     explorer: 'https://moonbeam.moonscan.io',
   },
   [CHAIN_IDS.POLYGON]: {
@@ -110,7 +110,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Polygon',
     logo: polygon,
     rpc: 'https://polygon-rpc.com/',
-    coingeckoId: 'polygon-pos',
+    zapperId: 'polygon',
     explorer: 'https://polygonscan.com/',
   },
   [CHAIN_IDS.XDAI]: {
@@ -118,7 +118,7 @@ const NETWORKS: { [id: number]: INetwork } = {
     name: 'Gnosis chain',
     logo: gnosis,
     rpc: 'https://rpc.gnosischain.com/',
-    coingeckoId: 'xdai',
+    zapperId: 'gnosis',
     explorer: 'https://blockscout.com/xdai/mainnet/',
   },
 };
