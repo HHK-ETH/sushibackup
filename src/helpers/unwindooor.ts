@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request';
-import { CHAIN_IDS } from './network';
+import { CHAIN_IDS, NETWORKS } from './network';
 import { EXCHANGE_ENDPOINTS, FACTORY_ADDRESSES } from './exchange';
 import { WethMaker } from 'unwindooor-sdk';
 import { getAddress } from 'ethers/lib/utils';
@@ -57,6 +57,24 @@ const UNWINDOOOR_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.MOONRIVER]: '0xa19b3b22f29E23e4c04678C94CFC3e8f202137d8',
   [CHAIN_IDS.POLYGON]: '0xf1c9881Be22EBF108B8927c4d197d126346b5036',
   [CHAIN_IDS.XDAI]: '0x1026cbed7b7E851426b959BC69dcC1bf5876512d',
+};
+
+const queryUnwindooorTokens = async (chainId: number): Promise<{ total: number; tokens: any[] }> => {
+  const address = UNWINDOOOR_ADDR[chainId];
+  const networkName = NETWORKS[chainId].zapperId;
+  let res = await fetch(
+    `https://api.zapper.fi/v1/apps/tokens/balances?api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241&addresses%5B%5D=${address}&network=${networkName}`
+  );
+  if (!res.ok) {
+    return { total: 0, tokens: [] };
+  }
+  res = await res.json();
+  return {
+    total: Object.values(res)[0].meta[0].value,
+    tokens: Object.values(res)[0].products[0].assets.sort((tokenA: any, tokenB: any) => {
+      return tokenA.balanceUSD < tokenB.balanceUSD;
+    }),
+  };
 };
 
 const queryUnwindooorPositions = async (chainId: number): Promise<any> => {
@@ -203,4 +221,5 @@ export {
   calculateUnwindOutput,
   calculateBuyWethOutput,
   calculateBuySushiOutput,
+  queryUnwindooorTokens,
 };

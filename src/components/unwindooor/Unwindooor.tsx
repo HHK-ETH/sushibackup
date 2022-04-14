@@ -2,7 +2,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useContext, useEffect, useState } from 'react';
 import Dashboard from './dashboard';
-import { UNWINDOOOR_ADDR, queryUnwindooorPositions } from './../../helpers/unwindooor';
+import { UNWINDOOOR_ADDR, queryUnwindooorPositions, queryUnwindooorTokens } from './../../helpers/unwindooor';
 import { Tab } from '@headlessui/react';
 import Pairs from './Pairs';
 import Tokens from './Tokens';
@@ -28,9 +28,13 @@ const Unwindooor = (): JSX.Element => {
   const [open, setOpen]: [boolean, Function] = useState(false);
   const [wethBalance, setWethBalance] = useState(BigNumber.from(0));
   const [loading, setLoading] = useState(false);
-  const [data, setData]: [data: any, setData: Function] = useState({
+  const [positions, setPositions]: [positions: any, setPositions: Function] = useState({
     totalFees: 0,
     positions: [],
+  });
+  const [tokens, setTokens]: [tokens: { total: number; tokens: any[] }, setTokens: Function] = useState({
+    total: 0,
+    tokens: [],
   });
   const [pairTab, setPairTab] = useState(true);
   const [isTrusted, setIsTrusted] = useState(false);
@@ -39,7 +43,8 @@ const Unwindooor = (): JSX.Element => {
     const fetchPositions = async () => {
       if (!active || !chainId || !UNWINDOOOR_ADDR[chainId] || !connector) return;
       setLoading(true);
-      setData(await queryUnwindooorPositions(chainId));
+      setPositions(await queryUnwindooorPositions(chainId));
+      setTokens(await queryUnwindooorTokens(chainId));
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const weth = new Contract(WETH[chainId], erc20Abi, provider);
       const balance = await weth.balanceOf(UNWINDOOOR_ADDR[chainId]);
@@ -80,7 +85,7 @@ const Unwindooor = (): JSX.Element => {
           </div>
         )}
         <Dashboard
-          totalFees={data.totalFees}
+          totalFees={positions.totalFees + tokens.total}
           wethBalance={wethBalance}
           setModalContent={setModalContent}
           setOpen={setOpen}
@@ -112,10 +117,14 @@ const Unwindooor = (): JSX.Element => {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <Pairs selectedPairs={selectedPairs} setSelectedPairs={setSelectedPairs} positions={data.positions} />
+              <Pairs
+                selectedPairs={selectedPairs}
+                setSelectedPairs={setSelectedPairs}
+                positions={positions.positions}
+              />
             </Tab.Panel>
             <Tab.Panel>
-              <Tokens />
+              <Tokens tokens={tokens.tokens} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
