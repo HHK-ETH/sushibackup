@@ -23,11 +23,11 @@ const Dashboard = ({
         <button
           className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
           onClick={() => {
-            setModalContent('buyWeth');
+            setModalContent('setBridge');
             setOpen(true);
           }}
         >
-          Buy WETH
+          Set bridge
         </button>
         <button
           className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"

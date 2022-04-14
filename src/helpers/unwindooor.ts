@@ -62,16 +62,16 @@ const UNWINDOOOR_ADDR: { [chainId: number]: string } = {
 const queryUnwindooorTokens = async (chainId: number): Promise<{ total: number; tokens: any[] }> => {
   const address = UNWINDOOOR_ADDR[chainId];
   const networkName = NETWORKS[chainId].zapperId;
-  let res = await fetch(
+  const res = await fetch(
     `https://api.zapper.fi/v1/apps/tokens/balances?api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241&addresses%5B%5D=${address}&network=${networkName}`
   );
   if (!res.ok) {
     return { total: 0, tokens: [] };
   }
-  res = await res.json();
+  const json: any = await res.json();
   return {
-    total: Object.values(res)[0].meta[0].value,
-    tokens: Object.values(res)[0].products[0].assets.sort((tokenA: any, tokenB: any) => {
+    total: json.balances[Object.keys(json.balances)[0]].meta[0].value,
+    tokens: json.balances[Object.keys(json.balances)[0]].products[0].assets.sort((tokenA: any, tokenB: any) => {
       return tokenA.balanceUSD < tokenB.balanceUSD;
     }),
   };
@@ -159,22 +159,28 @@ const calculateUnwindOutput = async (
   }
 };
 
-const calculateBuyWethOutput = async (chainId: number, provider: any, slippage: number, swapList: any[]) => {
+const calculateBuyWethOutput = async (
+  chainId: number,
+  provider: any,
+  slippage: number,
+  selectedTokens: any[],
+  shares: BigNumber[]
+) => {
   const wethMaker = initWethmaker(chainId, slippage, provider, []);
   const wethMakerContract = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider);
   const tempOutputs = await Promise.all(
-    swapList.map(async (swap: any) => {
+    selectedTokens.map(async (token: any, i: number) => {
       try {
-        const bridge = await wethMakerContract.bridges(swap.token);
+        const bridge = await wethMakerContract.bridges(token.address);
         const outputToken = new Contract(
           bridge === '0x0000000000000000000000000000000000000000' ? WETH[chainId] : bridge,
           erc20Abi,
           provider
         );
-        const { amountIn, minimumOut } = await wethMaker.sellToken(swap.token, swap.share);
-        const pairAddress = await wethMaker._getPair(swap.token);
-        const { token0, reserve0, reserve1 } = await wethMaker._getMarketData(pairAddress, swap.token);
-        const sellingToken0 = swap.token.toUpperCase() === token0.toUpperCase();
+        const { amountIn, minimumOut } = await wethMaker.sellToken(token.address, shares[i]);
+        const pairAddress = await wethMaker._getPair(token.address);
+        const { token0, reserve0, reserve1 } = await wethMaker._getMarketData(pairAddress, token.address);
+        const sellingToken0 = token.address.toUpperCase() === token0.toUpperCase();
         const reserveIn = sellingToken0 ? reserve0 : reserve1;
         const reserveOut = sellingToken0 ? reserve1 : reserve0;
         const noPriceImpactAmountOut = reserveOut.mul(amountIn).div(reserveIn);

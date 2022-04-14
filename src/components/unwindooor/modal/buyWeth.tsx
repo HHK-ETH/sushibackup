@@ -8,11 +8,15 @@ import { NETWORKS } from '../../../helpers/network';
 import Slippage from '../utils/slippage';
 import { calculateBuyWethOutput, UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
 
-const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
+const BuyWeth = ({ setTxPending, selectedTokens }: { setTxPending: Function; selectedTokens: any[] }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector } = context;
   const [slippage, setSlippage] = useState(0.1);
-  const [swapList, setSwapList] = useState([{ token: '', share: BigNumber.from(100) }]);
+  const [shares, setShares] = useState(
+    selectedTokens.map((token) => {
+      return BigNumber.from(100);
+    })
+  );
   const [outputs, setOutputs]: [outputs: any, setOutputs: Function] = useState([]);
   const [error, setError] = useState('');
 
@@ -20,8 +24,8 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
     if (!chainId || !connector) return;
     const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
     const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
-    const tokens = swapList.map((swap) => {
-      return swap.token;
+    const tokens = selectedTokens.map((token) => {
+      return token.address;
     });
     const amounts = outputs.map((output: any) => {
       return output.amountIn;
@@ -39,9 +43,9 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
 
   useEffect(() => {
     const fetchOutputs = async () => {
-      if (!connector || !chainId || swapList[0].token === '') return;
+      if (!connector || !chainId) return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const res = await calculateBuyWethOutput(chainId, provider, slippage, swapList);
+      const res = await calculateBuyWethOutput(chainId, provider, slippage, selectedTokens, shares);
       if (
         res.find((e) => {
           return e.minimumOut.eq(0);
@@ -54,14 +58,14 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
       setOutputs(res);
     };
     fetchOutputs();
-  }, [active, chainId, connector, swapList, slippage]);
+  }, [active, chainId, connector, selectedTokens, slippage, shares]);
 
   if (!active) return <div className="text-center text-white">Please connect your wallet.</div>;
 
   return (
     <div className="text-center text-white">
       <Slippage setSlippage={setSlippage} slippage={slippage} />
-      {swapList.map((swap, index) => {
+      {selectedTokens.map((token, index) => {
         const output = outputs[index];
         const minimumOut = output ? parseFloat(formatUnits(output.minimumOut, output.decimals)) : 0;
         const noPriceImpactAmountOut = output
@@ -69,33 +73,24 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
           : 0;
         return (
           <div key={index} className="p-2 mt-4 border-2 border-indigo-700 rounded-lg text-md">
-            <div className="grid grid-cols-5 mb-4">
+            <div className="grid grid-cols-6 mb-4">
               <h3>From:</h3>
-              <input
-                className="col-span-4 text-center bg-indigo-700 rounded-lg"
-                type={'text'}
-                placeholder="Enter token address"
-                onChange={(e) => {
-                  const tempSwapList = [...swapList];
-                  tempSwapList[index].token = e.target.value;
-                  setSwapList(tempSwapList);
-                }}
-              />
+              <h3 className="col-span-5">{token.symbol}</h3>
             </div>
             <div className="grid grid-cols-6 mb-4">
               <h3>Share:</h3>
               <input
                 className="w-16 font-medium text-center text-white bg-indigo-700 rounded-full"
                 type={'number'}
-                value={swap.share.toNumber()}
+                value={shares[index].toNumber()}
                 onChange={(e) => {
-                  const tempSwapList = [...swapList];
+                  const _shares = [...shares];
                   let share = parseInt(e.target.value, 10);
                   if (isNaN(share)) share = 100;
                   if (share > 100) share = 100;
                   if (share < 1) share = 1;
-                  tempSwapList[index].share = BigNumber.from(share);
-                  setSwapList(tempSwapList);
+                  _shares[index] = BigNumber.from(share);
+                  setShares(_shares);
                 }}
               />
               <h3>Receive:</h3>
@@ -112,31 +107,6 @@ const BuyWeth = ({ setTxPending }: { setTxPending: Function }): JSX.Element => {
           </div>
         );
       })}
-      <div>
-        <button
-          className={'px-6 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600 m-4'}
-          onClick={() => {
-            const tempSwapList = [...swapList];
-            tempSwapList.pop();
-            setSwapList(tempSwapList);
-          }}
-        >
-          -
-        </button>
-        <button
-          className={'px-6 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600 m-4'}
-          onClick={() => {
-            const tempSwapList = [...swapList];
-            tempSwapList.push({
-              token: '',
-              share: BigNumber.from(100),
-            });
-            setSwapList(tempSwapList);
-          }}
-        >
-          +
-        </button>
-      </div>
       <button
         className={'px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600'}
         onClick={() => execBuyWeth()}

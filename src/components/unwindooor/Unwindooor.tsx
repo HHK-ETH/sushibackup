@@ -38,6 +38,7 @@ const Unwindooor = (): JSX.Element => {
   });
   const [pairTab, setPairTab] = useState(true);
   const [isTrusted, setIsTrusted] = useState(false);
+  const [selectedTokens, setSelectedTokens]: [selectedTokens: any[], setSelectedTokens: Function] = useState([]);
 
   useEffect(() => {
     const fetchPositions = async () => {
@@ -69,7 +70,7 @@ const Unwindooor = (): JSX.Element => {
         <Modal open={open} setOpen={setOpen}>
           {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
           {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} />}
+          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} selectedTokens={selectedTokens} />}
           {modalContent === 'buySushi' && (
             <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
           )}
@@ -92,7 +93,12 @@ const Unwindooor = (): JSX.Element => {
         />
         <Tab.Group>
           <Tab.List className={'grid grid-cols-2'}>
-            <button onClick={() => setPairTab(true)}>
+            <button
+              onClick={() => {
+                setPairTab(true);
+                setSelectedTokens([]);
+              }}
+            >
               <Tab
                 className={
                   pairTab
@@ -103,7 +109,12 @@ const Unwindooor = (): JSX.Element => {
                 Pairs
               </Tab>
             </button>
-            <button onClick={() => setPairTab(false)}>
+            <button
+              onClick={() => {
+                setPairTab(false);
+                setSelectedPairs([]);
+              }}
+            >
               <Tab
                 className={
                   !pairTab
@@ -124,32 +135,46 @@ const Unwindooor = (): JSX.Element => {
               />
             </Tab.Panel>
             <Tab.Panel>
-              <Tokens tokens={tokens.tokens} />
+              <Tokens tokens={tokens.tokens} setSelectedTokens={setSelectedTokens} selectedTokens={selectedTokens} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
-        {selectedPairs.length > 0 && (
-          <div className="absolute right-6 bottom-6">
+
+        <div className="absolute right-6 bottom-6">
+          {selectedPairs.length > 0 && (
+            <>
+              <button
+                className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+                onClick={() => {
+                  setModalContent('unwind');
+                  setOpen(true);
+                }}
+              >
+                Unwind!
+              </button>
+              <button
+                className="px-20 ml-2 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+                onClick={() => {
+                  setModalContent('burn');
+                  setOpen(true);
+                }}
+              >
+                Burn!
+              </button>{' '}
+            </>
+          )}
+          {selectedTokens.length > 0 && (
             <button
               className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
               onClick={() => {
-                setModalContent('unwind');
+                setModalContent('buyWeth');
                 setOpen(true);
               }}
             >
-              Unwind!
+              Buy WETH!
             </button>
-            <button
-              className="px-20 ml-2 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
-              onClick={() => {
-                setModalContent('burn');
-                setOpen(true);
-              }}
-            >
-              Burn!
-            </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
