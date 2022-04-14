@@ -1,33 +1,65 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useEffect, useState } from 'react';
-import UnwindModal from './modal';
-import TxPendingModal from '../general/TxPendingModal';
+import { useContext, useEffect, useState } from 'react';
 import Dashboard from './dashboard';
-import { UNWINDOOOR_ADDR, queryUnwindooorPositions } from './../../helpers/unwindooor';
+import { UNWINDOOOR_ADDR, queryUnwindooorPositions, queryUnwindooorTokens } from './../../helpers/unwindooor';
+import { Tab } from '@headlessui/react';
+import Pairs from './Pairs';
+import Tokens from './Tokens';
+import { TxPending } from '../../context';
+import Modal from '../general/Modal';
+import UnwindPairs from './modal/UnwindPairs';
+import BuyWeth from './modal/buyWeth';
+import BuySushi from './modal/buySushi';
+import Withdraw from './modal/withdraw';
+import { BigNumber, Contract, providers } from 'ethers';
+import { WETH } from '../../imports/tokens';
+import erc20Abi from '../../imports/abis/erc20.json';
+import { formatUnits } from 'ethers/lib/utils';
+import BurnPairs from './modal/BurnPairs';
+import sushiMakerAbi from '../../imports/abis/sushiMaker.json';
+import SetBridge from './modal/Setbridge';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId } = context;
+  const { active, chainId, connector, account } = context;
+  const { setTxPending } = useContext(TxPending);
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
-  const [openModal, setOpenModal]: [string, Function] = useState('');
-  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
-  const [params, setParams] = useState({});
+  const [modalContent, setModalContent]: [string, Function] = useState('');
+  const [open, setOpen]: [boolean, Function] = useState(false);
+  const [wethBalance, setWethBalance] = useState(BigNumber.from(0));
   const [loading, setLoading] = useState(false);
-  const [data, setData]: [data: any, setData: Function] = useState({
+  const [positions, setPositions]: [positions: any, setPositions: Function] = useState({
     totalFees: 0,
-    positions: { user: { lp1: [], lp2: [] } },
+    positions: [],
   });
+  const [tokens, setTokens]: [tokens: { total: number; tokens: any[] }, setTokens: Function] = useState({
+    total: 0,
+    tokens: [],
+  });
+  const [pairTab, setPairTab] = useState(true);
+  const [isTrusted, setIsTrusted] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [selectedTokens, setSelectedTokens]: [selectedTokens: any[], setSelectedTokens: Function] = useState([]);
 
   useEffect(() => {
     const fetchPositions = async () => {
-      if (!active || !chainId || !UNWINDOOOR_ADDR[chainId]) return;
+      if (!active || !chainId || !UNWINDOOOR_ADDR[chainId] || !connector) return;
       setLoading(true);
-      setData(await queryUnwindooorPositions(chainId));
+      setPositions(await queryUnwindooorPositions(chainId));
+      setTokens(await queryUnwindooorTokens(chainId));
+      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
+      const weth = new Contract(WETH[chainId], erc20Abi, provider);
+      const balance = await weth.balanceOf(UNWINDOOOR_ADDR[chainId]);
+      setWethBalance(balance);
+      const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
+      const owner = await sushiMaker.owner();
+      setIsOwner(owner === account);
+      setIsTrusted(owner === account ? true : await sushiMaker.trusted(account));
       setLoading(false);
     };
     fetchPositions();
-  }, [active, chainId]);
+  }, [active, chainId, connector, account]);
 
   if (chainId && !UNWINDOOOR_ADDR[chainId]) {
     return <div className={'mt-24 text-xl text-center text-white'}>Unwindooor is not available on this network.</div>;
@@ -37,82 +69,120 @@ const Unwindooor = (): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={txPending} />
-      <UnwindModal openModal={openModal} setOpenModal={setOpenModal} params={params} />
+      {isTrusted && (
+        <Modal open={open} setOpen={setOpen}>
+          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} selectedTokens={selectedTokens} />}
+          {modalContent === 'buySushi' && (
+            <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
+          )}
+          {modalContent === 'withdraw' && (
+            <Withdraw
+              setTxPending={setTxPending}
+              wethBalance={parseFloat(formatUnits(wethBalance))}
+              isOwner={isOwner}
+            />
+          )}
+          {modalContent === 'setBridge' && <SetBridge setTxPending={setTxPending} isOwner={isOwner} />}
+        </Modal>
+      )}
       <div className="container p-16 mx-auto text-center text-white">
-        <Dashboard
-          totalFees={data.totalFees}
-          setOpenModal={setOpenModal}
-          setParams={setParams}
-          setTxPending={setTxPending}
-        />
-        {loading && <div className={'text-white'}>loading data...</div>}
-        {selectedPairs.length > 0 && (
-          <button
-            className="absolute px-16 text-lg font-medium text-white bg-pink-500 rounded bottom-6 right-6 hover:bg-pink-600"
-            onClick={() => {
-              setParams({
-                pairs: selectedPairs,
-                setTxPending: setTxPending,
-              });
-              setOpenModal('unwind');
-            }}
-          >
-            Unwind!
-          </button>
+        {!isTrusted && (
+          <div className="py-4 mb-4 text-xl font-semibold bg-indigo-900 rounded-xl">
+            This page is read-only, only owner and trusted addresses can interact with this contract.
+          </div>
         )}
-        <div className="grid grid-cols-7 py-8 mt-4 bg-indigo-900 rounded-t-xl">
-          <div className="">Pair</div>
-          <div className="col-span-2">Token 0</div>
-          <div className="col-span-2">Token 1</div>
-          <div className="">Value</div>
-          <div className="">Select</div>
-        </div>
-        {[...data.positions.user.lp1, ...data.positions.user.lp2]
-          .sort((positionA: any, positionB: any) => {
-            const pairA = positionA.pair;
-            const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;
-            const pairB = positionB.pair;
-            const valueB = (positionB.liquidityTokenBalance / pairB.totalSupply) * pairB.reserveUSD;
-            if (valueA > valueB) return -1;
-            return +1;
-          })
-          .map((position: any, i: number) => {
-            const pair = position.pair;
-            const value = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserveUSD;
-            const amount0 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve0;
-            const amount1 = (position.liquidityTokenBalance / pair.totalSupply) * pair.reserve1;
-            return (
-              <div
-                key={i}
-                className="grid grid-cols-7 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
+        <Dashboard
+          totalFees={positions.totalFees + tokens.total}
+          wethBalance={wethBalance}
+          setModalContent={setModalContent}
+          setOpen={setOpen}
+        />
+        <Tab.Group>
+          <Tab.List className={'grid grid-cols-2'}>
+            <button
+              onClick={() => {
+                setPairTab(true);
+                setSelectedTokens([]);
+              }}
+            >
+              <Tab
+                className={
+                  pairTab
+                    ? 'w-full py-2 rounded-tl-xl bg-indigo-600'
+                    : 'w-full py-2 rounded-tl-xl bg-indigo-700 hover:bg-indigo-500'
+                }
               >
-                <div className="">{pair.name}</div>
-                <div className="col-span-2">{amount0.toFixed(2) + ' ' + pair.token0.symbol}</div>
-                <div className="col-span-2">{amount1.toFixed(2) + ' ' + pair.token1.symbol}</div>
-                <div className="">{value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</div>
-                <div>
-                  <input
-                    type={'checkbox'}
-                    onChange={(e) => {
-                      const tempPairs = [...selectedPairs];
-                      if (e.target.checked) {
-                        tempPairs.push(pair);
-                        setSelectedPairs(tempPairs);
-                      } else {
-                        setSelectedPairs(
-                          tempPairs.filter((p: any) => {
-                            return p.id === pair.id ? false : true;
-                          })
-                        );
-                      }
-                    }}
-                    checked={selectedPairs.indexOf(pair) !== -1}
-                  />
-                </div>
-              </div>
-            );
-          })}
+                Pairs
+              </Tab>
+            </button>
+            <button
+              onClick={() => {
+                setPairTab(false);
+                setSelectedPairs([]);
+              }}
+            >
+              <Tab
+                className={
+                  !pairTab
+                    ? 'w-full py-2 rounded-tr-xl bg-indigo-600'
+                    : 'w-full py-2 rounded-tr-xl bg-indigo-700 hover:bg-indigo-500'
+                }
+              >
+                Tokens
+              </Tab>
+            </button>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <Pairs
+                selectedPairs={selectedPairs}
+                setSelectedPairs={setSelectedPairs}
+                positions={positions.positions}
+              />
+            </Tab.Panel>
+            <Tab.Panel>
+              <Tokens tokens={tokens.tokens} setSelectedTokens={setSelectedTokens} selectedTokens={selectedTokens} />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+
+        <div className="absolute right-6 bottom-6">
+          {selectedPairs.length > 0 && (
+            <>
+              <button
+                className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+                onClick={() => {
+                  setModalContent('unwind');
+                  setOpen(true);
+                }}
+              >
+                Unwind!
+              </button>
+              <button
+                className="px-20 ml-2 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+                onClick={() => {
+                  setModalContent('burn');
+                  setOpen(true);
+                }}
+              >
+                Burn!
+              </button>{' '}
+            </>
+          )}
+          {selectedTokens.length > 0 && (
+            <button
+              className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+              onClick={() => {
+                setModalContent('buyWeth');
+                setOpen(true);
+              }}
+            >
+              Buy WETH!
+            </button>
+          )}
+        </div>
       </div>
     </>
   );

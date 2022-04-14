@@ -2,16 +2,16 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Contract, providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { TxPending } from '../../context';
 import { NETWORKS } from '../../helpers/network';
-import TxPendingModal from '../general/TxPendingModal';
 import { IFarmPosition, MINICHEF_ADDR, queryFarmPositions } from './../../helpers/farm';
 
 const Farm = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector, account } = context;
+  const { txPending, setTxPending } = useContext(TxPending);
   const [positions, setPositions]: [positions: IFarmPosition[], setPositions: Function] = useState([]);
-  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
 
   const unstake = async (harvest: boolean, contract: Contract, pid: string, amount: string) => {
@@ -72,7 +72,6 @@ const Farm = (): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={txPending} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} positions farming.</h1>
         <div className="grid grid-cols-5 mt-2 text-xl bg-indigo-900 rounded-t-xl">

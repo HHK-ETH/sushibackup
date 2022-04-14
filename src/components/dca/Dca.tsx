@@ -1,9 +1,9 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { TxPending } from '../../context';
 import { DCA_FACTORY, queryVaults } from '../../helpers/dca';
-import TxPendingModal from '../general/TxPendingModal';
 import CreateVault from './CreateVault';
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
@@ -11,7 +11,7 @@ import Withdraw from './Withdraw';
 const Dca = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, account } = context;
-  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
+  const { setTxPending } = useContext(TxPending);
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
   const [openDeposit, setOpenDeposit]: [open: boolean, setOpen: Function] = useState(false);
@@ -40,7 +40,6 @@ const Dca = (): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={txPending} />
       <CreateVault open={open} setOpen={setOpen} setTxPending={setTxPending} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} setPending={setTxPending} />
       <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />

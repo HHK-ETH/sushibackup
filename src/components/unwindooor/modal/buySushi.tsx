@@ -2,14 +2,11 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumber, Contract, providers } from 'ethers';
 import { useEffect, useState } from 'react';
-import { WETH } from '../../imports/tokens';
-import { WethMaker } from 'unwindooor-sdk';
 import { formatUnits } from 'ethers/lib/utils';
-import { NETWORKS } from '../../helpers/network';
-import Slippage from './slippage';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
-import { FACTORY_ADDRESSES } from '../../helpers/exchange';
+import { NETWORKS } from '../../../helpers/network';
+import Slippage from '../utils/slippage';
+import { calculateBuySushiOutput, UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import sushiMakerAbi from '../../../imports/abis/sushiMaker.json';
 
 const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -21,6 +18,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
     noPriceImpactAmountOut: BigNumber.from(0),
   });
   const [share, setShare] = useState(100);
+  const [error, setError] = useState('');
 
   const execBuySushi = async () => {
     if (!chainId || !connector) return;
@@ -36,27 +34,13 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
     const fetchMinimumOut = async () => {
       if (!connector || !chainId) return;
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const wethMaker = new WethMaker({
-        wethMakerAddress: UNWINDOOOR_ADDR[chainId],
-        preferTokens: [],
-        provider: provider,
-        maxPriceImpact: BigNumber.from(60),
-        priceSlippage: BigNumber.from(slippage * 10),
-        wethAddress: WETH[1],
-        sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-        factoryAddress: FACTORY_ADDRESSES[1],
-      });
-      const { amountIn, minimumOut } = await wethMaker.sellToken(WETH[1], BigNumber.from(share));
-      const { reserve0, reserve1 } = await wethMaker._getMarketData(
-        '0x795065dcc9f64b5614c407a6efdc400da6221fb0',
-        WETH[1]
-      );
-      const noPriceImpactAmountOut = reserve0.mul(amountIn).div(reserve1);
-      setSwapData({
-        amountIn: amountIn,
-        minimumOut: minimumOut,
-        noPriceImpactAmountOut: noPriceImpactAmountOut,
-      });
+      const res = await calculateBuySushiOutput(chainId, provider, slippage, share);
+      if (res.minimumOut.eq(0)) {
+        setError('Price impact to high. Try reducing the amount of WETH to use.');
+      } else {
+        setError('');
+      }
+      setSwapData(res);
     };
     fetchMinimumOut();
   }, [active, connector, slippage, share, chainId]);
@@ -104,6 +88,7 @@ const BuySushi = ({ setTxPending, wethBalance }: { setTxPending: Function; wethB
       >
         Execute
       </button>
+      <div className="mt-4 font-semibold">{error}</div>
     </div>
   );
 };

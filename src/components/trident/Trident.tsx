@@ -1,15 +1,15 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { TxPending } from '../../context';
 import { queryTridentPositions, SUBGRAPH_ENDPOINTS } from '../../helpers/trident';
-import TxPendingModal from '../general/TxPendingModal';
 import Remove from './Remove';
 
 const Trident = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, account } = context;
+  const { txPending, setTxPending } = useContext(TxPending);
   const [positions, setPositions] = useState([]);
-  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
   const [open, setOpen] = useState(false);
   const [targetPos, settargetPos] = useState({});
@@ -41,7 +41,6 @@ const Trident = (): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={txPending} />
       <Remove open={open} setOpen={setOpen} setTxPending={setTxPending} position={targetPos} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} Trident position(s).</h1>

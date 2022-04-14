@@ -1,15 +1,12 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, Contract, providers } from 'ethers';
-import { formatUnits, getAddress } from 'ethers/lib/utils';
+import { Contract, providers } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
-import { WethMaker } from 'unwindooor-sdk';
-import { FACTORY_ADDRESSES } from '../../helpers/exchange';
-import { NETWORKS } from '../../helpers/network';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { WETH } from '../../imports/tokens';
-import sushiMakerAbi from './../../imports/abis/sushiMaker.json';
-import Slippage from './slippage';
+import { NETWORKS } from '../../../helpers/network';
+import { calculateUnwindOutput, UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import sushiMakerAbi from '../../../imports/abis/sushiMaker.json';
+import Slippage from '../utils/slippage';
 
 const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
   const [slippage, setSlippage]: [slippage: number, setSlippage: Function] = useState(0.1);
@@ -25,6 +22,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
     })
   );
   const [outputs, setOutputs]: [priceImpacts: any[], setPriceImpacts: Function] = useState([]);
+  const [error, setError] = useState('');
 
   const execUnwindPairs = async () => {
     if (!chainId || !connector) return;
@@ -62,25 +60,17 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
       const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
       const tempPriceImpacts = await Promise.all(
         unwindData.map(async (data, index) => {
-          const wethMaker = new WethMaker({
-            wethMakerAddress: chainId ? UNWINDOOOR_ADDR[chainId] : UNWINDOOOR_ADDR[1],
-            preferTokens: [getAddress(data.prefToken)],
-            provider: provider,
-            maxPriceImpact: BigNumber.from(60),
-            priceSlippage: BigNumber.from(slippage * 10),
-            wethAddress: chainId ? WETH[chainId] : WETH[1],
-            sushiAddress: '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2',
-            factoryAddress: chainId ? FACTORY_ADDRESSES[chainId] : FACTORY_ADDRESSES[1],
-          });
-          const { amount, minimumOut, keepToken0 } = await wethMaker.unwindPair(
-            pairs[index].id,
-            BigNumber.from(data.share)
-          );
-          const { reserve0, reserve1, totalSupply } = await wethMaker._getUnwindData(pairs[index].id);
-          const noPiAmountOut = keepToken0
-            ? amount.mul(reserve0).div(totalSupply).mul(2)
-            : amount.mul(reserve1).div(totalSupply).mul(2);
-          return { amount: amount, minimumOut: minimumOut, noPiAmountOut: noPiAmountOut, keepToken0: keepToken0 };
+          const res: any = await calculateUnwindOutput(chainId, provider, data, pairs[index], slippage);
+          if (res.minimumOut.eq(0)) {
+            setError(
+              'Price impact to high(>6%) for pair: ' +
+                pairs[index].token0.symbol +
+                '-' +
+                pairs[index].token1.symbol +
+                '. Try burning the pair instead.'
+            );
+          }
+          return res;
         })
       );
       setOutputs(tempPriceImpacts);
@@ -170,6 +160,7 @@ const UnwindPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Func
         >
           Execute
         </button>
+        <div className="mt-4 font-semibold">{error}</div>
       </div>
     </>
   );

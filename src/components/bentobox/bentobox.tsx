@@ -2,16 +2,16 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Contract, providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { TxPending } from '../../context';
 import { BENTOBOX_ADDR, BENTOBOX_ENDPOINT, queryBentoboxPositions } from '../../helpers/bentobox';
-import TxPendingModal from '../general/TxPendingModal';
 import bentoBoxABI from '../../imports/abis/bento.json';
 
 const Bentobox = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector, account } = context;
+  const { txPending, setTxPending } = useContext(TxPending);
   const [positions, setPositions]: [positions: any[], setPositions: Function] = useState([]);
-  const [txPending, setTxPending]: [txPending: string, setTxPending: Function] = useState('');
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
 
   const withdraw = async (token: string, share: string) => {
@@ -48,7 +48,6 @@ const Bentobox = (): JSX.Element => {
 
   return (
     <>
-      <TxPendingModal txPending={txPending} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} positions in BentoBox.</h1>
         <div className="grid grid-cols-3 mt-2 text-xl bg-indigo-900 rounded-t-xl">
