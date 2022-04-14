@@ -52,7 +52,7 @@ const Dashboard = ({
       </div>
       <div className="">
         <h1 className="text-xl text-left">
-          Total fees available to unwind: {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
+          Total fees available (pairs + tokens): {totalFees.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
         </h1>
       </div>
     </div>
