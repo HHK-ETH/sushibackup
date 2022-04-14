@@ -1,16 +1,37 @@
-const Tokens = (): JSX.Element => {
+const Tokens = ({ tokens }: { tokens: any[] }): JSX.Element => {
+  console.log(tokens);
   return (
     <>
-      <button onClick={() => query()}>Query</button>
+      <div className="grid grid-cols-5 py-6 bg-indigo-800">
+        <div className="">Token</div>
+        <div className="">Bridge</div>
+        <div className="">Balance</div>
+        <div className="">Value</div>
+        <div className="">Select to swap</div>
+      </div>
+      {tokens.map((token) => {
+        return (
+          <div
+            key={token.address}
+            className="grid grid-cols-5 py-4 bg-indigo-900 cursor-pointer bg-opacity-60 hover:bg-opacity-75"
+          >
+            <div className="">{token.symbol}</div>
+            <div className="">WETH</div>
+            <div className="">{parseFloat(token.balance).toFixed(4)}</div>
+            <div className="">
+              {parseFloat(token.balanceUSD)
+                .toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+              $
+            </div>
+            <div className="">
+              <input type={'checkbox'} onChange={(e) => {}} checked={false} />
+            </div>
+          </div>
+        );
+      })}
     </>
   );
-};
-
-const query = async () => {
-  const res = await fetch(
-    'https://api.zapper.fi/v1/apps/tokens/balances?api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241&addresses%5B%5D=0x5434289767bb094dadbb8d1e5d58b47ca5729063&network=polygon'
-  );
-  console.log(await res.json());
 };
 
 export default Tokens;
