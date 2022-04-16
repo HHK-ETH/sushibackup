@@ -1,64 +1,23 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, Contract, providers } from 'ethers';
-import { useEffect, useState } from 'react';
+import { BigNumber } from 'ethers';
+import { useState } from 'react';
 import { formatUnits } from 'ethers/lib/utils';
-import wethMakerABI from '../../../imports/abis/wethMaker.json';
-import { NETWORKS } from '../../../helpers/network';
 import Slippage from '../utils/slippage';
-import { calculateBuyWethOutput, UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
+import useBuyWeth from '../../../hooks/useBuyWeth';
+import useFetchWethMinimumOut from '../../../hooks/useFetchWethMinimumOut';
 
 const BuyWeth = ({ setTxPending, selectedTokens }: { setTxPending: Function; selectedTokens: any[] }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector } = context;
+  const { active } = context;
   const [slippage, setSlippage] = useState(0.1);
   const [shares, setShares] = useState(
     selectedTokens.map((token) => {
       return BigNumber.from(100);
     })
   );
-  const [outputs, setOutputs]: [outputs: any, setOutputs: Function] = useState([]);
-  const [error, setError] = useState('');
-
-  const execBuyWeth = async () => {
-    if (!chainId || !connector) return;
-    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
-    const tokens = selectedTokens.map((token) => {
-      return token.address;
-    });
-    const amounts = outputs.map((output: any) => {
-      return output.amountIn;
-    });
-    const minimumOuts = outputs.map((output: any) => {
-      return output.minimumOut;
-    });
-
-    const gasQuantity = await maker.estimateGas.buyWeth(tokens, amounts, minimumOuts);
-    const tx = await maker.buyWeth(tokens, amounts, minimumOuts, { gasLimit: gasQuantity.mul(130).div(100) }); //increase gas limit by 30% to reduce out of gas errors
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 1);
-    setTxPending('');
-  };
-
-  useEffect(() => {
-    const fetchOutputs = async () => {
-      if (!connector || !chainId) return;
-      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const res = await calculateBuyWethOutput(chainId, provider, slippage, selectedTokens, shares);
-      if (
-        res.find((e) => {
-          return e.minimumOut.eq(0);
-        })
-      ) {
-        setError('Price impact to high or Unknown token.');
-      } else {
-        setError('');
-      }
-      setOutputs(res);
-    };
-    fetchOutputs();
-  }, [active, chainId, connector, selectedTokens, slippage, shares]);
+  const { outputs, loading, error } = useFetchWethMinimumOut(slippage, selectedTokens, shares);
+  const buyWeth = useBuyWeth(selectedTokens, outputs);
 
   if (!active) return <div className="text-center text-white">Please connect your wallet.</div>;
 
@@ -95,7 +54,9 @@ const BuyWeth = ({ setTxPending, selectedTokens }: { setTxPending: Function; sel
               />
               <h3>Receive:</h3>
               <h3 className="col-span-3">
-                {output
+                {loading
+                  ? 'loading...'
+                  : output
                   ? minimumOut.toFixed(4) +
                     ' (' +
                     ((minimumOut / noPriceImpactAmountOut - 1) * 100).toFixed(2) +
@@ -109,7 +70,7 @@ const BuyWeth = ({ setTxPending, selectedTokens }: { setTxPending: Function; sel
       })}
       <button
         className={'px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600'}
-        onClick={() => execBuyWeth()}
+        onClick={() => buyWeth()}
       >
         Execute
       </button>

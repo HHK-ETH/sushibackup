@@ -1,60 +1,21 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
 import { useState } from 'react';
+import useBurnPairs from '../../../hooks/useBurnPairs';
 import Slippage from '../utils/slippage';
-import sushiMakerAbi from '../../../imports/abis/sushiMaker.json';
-import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
-import { NETWORKS } from '../../../helpers/network';
-import { parseUnits } from 'ethers/lib/utils';
 
-const BurnPairs = ({ pairs, setTxPending }: { pairs: any[]; setTxPending: Function }): JSX.Element => {
+const BurnPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {
   const [slippage, setSlippage]: [slippage: number, setSlippage: Function] = useState(0.1);
   const context = useWeb3React<Web3Provider>();
-  const { active, connector, chainId } = context;
+  const { connector } = context;
   const [shares, setShares] = useState(
     pairs.map((pair) => {
       return 100;
     })
   );
+  const burnPairs = useBurnPairs({ pairs, shares, slippage });
 
-  const burnPairs = async () => {
-    if (!connector || !chainId) {
-      return;
-    }
-    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
-    let lpTokens = [],
-      amounts = [],
-      minimumOut0 = [],
-      minimumOut1 = [];
-    for (let i in pairs) {
-      lpTokens.push(pairs[i].id);
-      const share = shares[i] / 100;
-      const amount = parseUnits((parseFloat(pairs[i].balance) * share).toFixed(18));
-      amounts.push(amount);
-      const ratio = (parseFloat(pairs[i].balance) * share) / parseFloat(pairs[i].totalSupply);
-      const amount0 = parseUnits(
-        (ratio * parseFloat(pairs[i].reserve0) * (1 - slippage / 100)).toFixed(6),
-        pairs[i].token0.decimals
-      );
-      const amount1 = parseUnits(
-        (ratio * parseFloat(pairs[i].reserve1) * (1 - slippage / 100)).toFixed(6),
-        pairs[i].token1.decimals
-      );
-      minimumOut0.push(amount0);
-      minimumOut1.push(amount1);
-    }
-    const gasQuantity = await sushiMaker.estimateGas.burnPairs(lpTokens, amounts, minimumOut0, minimumOut1);
-    const tx = await sushiMaker.burnPairs(lpTokens, amounts, minimumOut0, minimumOut1, {
-      gasLimit: gasQuantity.mul(130).div(100), //add 30% to reduce out of gas errors
-    });
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 3);
-    setTxPending('');
-  };
-
-  if (!active) {
+  if (!connector) {
     return <div className="text-white">Please connect your wallet first.</div>;
   }
 

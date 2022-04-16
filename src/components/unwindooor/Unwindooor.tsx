@@ -72,11 +72,9 @@ const Unwindooor = (): JSX.Element => {
       {isTrusted && (
         <Modal open={open} setOpen={setOpen}>
           {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} />}
           {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} selectedTokens={selectedTokens} />}
-          {modalContent === 'buySushi' && (
-            <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
-          )}
+          {modalContent === 'buySushi' && <BuySushi wethBalance={parseFloat(formatUnits(wethBalance))} />}
           {modalContent === 'withdraw' && (
             <Withdraw
               setTxPending={setTxPending}
