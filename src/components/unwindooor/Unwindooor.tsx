@@ -1,12 +1,11 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dashboard from './dashboard';
 import { UNWINDOOOR_ADDR, queryUnwindooorPositions, queryUnwindooorTokens } from './../../helpers/unwindooor';
 import { Tab } from '@headlessui/react';
 import Pairs from './Pairs';
 import Tokens from './Tokens';
-import { TxPending } from '../../context';
 import Modal from '../general/Modal';
 import UnwindPairs from './modal/UnwindPairs';
 import BuyWeth from './modal/buyWeth';
@@ -23,7 +22,6 @@ import SetBridge from './modal/Setbridge';
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector, account } = context;
-  const { setTxPending } = useContext(TxPending);
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [modalContent, setModalContent]: [string, Function] = useState('');
   const [open, setOpen]: [boolean, Function] = useState(false);
@@ -71,18 +69,14 @@ const Unwindooor = (): JSX.Element => {
     <>
       {isTrusted && (
         <Modal open={open} setOpen={setOpen}>
-          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
+          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} />}
           {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} />}
-          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} selectedTokens={selectedTokens} />}
+          {modalContent === 'buyWeth' && <BuyWeth selectedTokens={selectedTokens} />}
           {modalContent === 'buySushi' && <BuySushi wethBalance={parseFloat(formatUnits(wethBalance))} />}
           {modalContent === 'withdraw' && (
-            <Withdraw
-              setTxPending={setTxPending}
-              wethBalance={parseFloat(formatUnits(wethBalance))}
-              isOwner={isOwner}
-            />
+            <Withdraw wethBalance={parseFloat(formatUnits(wethBalance))} isOwner={isOwner} />
           )}
-          {modalContent === 'setBridge' && <SetBridge setTxPending={setTxPending} isOwner={isOwner} />}
+          {modalContent === 'setBridge' && <SetBridge isOwner={isOwner} />}
         </Modal>
       )}
       <div className="container p-16 mx-auto text-center text-white">

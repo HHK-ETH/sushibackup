@@ -7,7 +7,7 @@ import Slippage from '../utils/slippage';
 import useBuyWeth from '../../../hooks/useBuyWeth';
 import useFetchWethMinimumOut from '../../../hooks/useFetchWethMinimumOut';
 
-const BuyWeth = ({ setTxPending, selectedTokens }: { setTxPending: Function; selectedTokens: any[] }): JSX.Element => {
+const BuyWeth = ({ selectedTokens }: { selectedTokens: any[] }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active } = context;
   const [slippage, setSlippage] = useState(0.1);

@@ -1,33 +1,17 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
 import { useState } from 'react';
-import { NETWORKS } from '../../../helpers/network';
-import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
-import wethMakerABI from '../../../imports/abis/wethMaker.json';
+import useSetBridge from '../../../hooks/useSetBridge';
 
-const SetBridge = ({ setTxPending, isOwner }: { setTxPending: Function; isOwner: boolean }): JSX.Element => {
-  const context = useWeb3React<Web3Provider>();
-  const { chainId, connector } = context;
+const SetBridge = ({ isOwner }: { isOwner: boolean }): JSX.Element => {
   const [token, setToken] = useState({
     input: '',
     bridge: '',
   });
+  const setBridge = useSetBridge(token);
 
   if (!isOwner)
     return (
       <div className="text-center text-white">Only owner can set bridge. Please connect with the right account.</div>
     );
-
-  const executeSetBridge = async () => {
-    if (!chainId || !connector) return;
-    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
-    const tx = await maker.setBridge(token.input, token.bridge);
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 1);
-    setTxPending('');
-  };
 
   return (
     <div className="text-center text-white text-md">
@@ -60,7 +44,7 @@ const SetBridge = ({ setTxPending, isOwner }: { setTxPending: Function; isOwner:
       </div>
       <button
         className={'px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600'}
-        onClick={() => executeSetBridge()}
+        onClick={() => setBridge()}
       >
         Execute
       </button>

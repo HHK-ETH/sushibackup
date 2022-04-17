@@ -1,14 +1,12 @@
 import { Contract } from 'ethers';
-import { useContext } from 'react';
-import { TxPending } from '../context';
-import { NETWORKS } from '../helpers/network';
 import { UNWINDOOOR_ADDR } from '../helpers/unwindooor';
 import { WETHMAKER_ABI } from '../imports/abis';
+import useTxPending from './useTxPending';
 import useWeb3 from './useWeb3';
 
-export default function useBuyWeth(selectedTokens: any[], outputs: any[]) {
+export default function useBuyWeth(selectedTokens: any[], outputs: any[]): () => Promise<void> {
   const { provider, chainId } = useWeb3();
-  const { setTxPending } = useContext(TxPending);
+  const setTxPending = useTxPending();
 
   async function buyWeth() {
     if (!chainId || !provider) return;
@@ -25,9 +23,7 @@ export default function useBuyWeth(selectedTokens: any[], outputs: any[]) {
 
     const gasQuantity = await maker.estimateGas.buyWeth(tokens, amounts, minimumOuts);
     const tx = await maker.buyWeth(tokens, amounts, minimumOuts, { gasLimit: gasQuantity.mul(130).div(100) }); //increase gas limit by 30% to reduce out of gas errors
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 1);
-    setTxPending('');
+    await setTxPending(tx.hash, 3);
   }
 
   return buyWeth;

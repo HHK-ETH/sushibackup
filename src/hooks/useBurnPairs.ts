@@ -1,10 +1,8 @@
 import { Contract } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { useContext } from 'react';
-import { TxPending } from '../context';
-import { NETWORKS } from '../helpers/network';
 import { UNWINDOOOR_ADDR } from '../helpers/unwindooor';
 import { SUSHIMAKER_ABI } from '../imports/abis';
+import useTxPending from './useTxPending';
 import useWeb3 from './useWeb3';
 
 type BurnPairsParams = { pairs: any[]; shares: number[]; slippage: number };
@@ -37,7 +35,7 @@ function formatBurnParams(params: BurnPairsParams) {
 
 export default function useBurnPairs(params: BurnPairsParams): () => Promise<void> {
   const { provider, chainId } = useWeb3();
-  const { setTxPending } = useContext(TxPending);
+  const setTxPending = useTxPending();
   const { lpTokens, amounts, minimumOut0, minimumOut1 } = formatBurnParams(params);
 
   async function burnPairs() {
@@ -49,9 +47,7 @@ export default function useBurnPairs(params: BurnPairsParams): () => Promise<voi
     const tx = await sushiMaker.burnPairs(lpTokens, amounts, minimumOut0, minimumOut1, {
       gasLimit: gasQuantity.mul(130).div(100), //add 30% to reduce out of gas errors
     });
-    setTxPending(NETWORKS[provider._network.chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 5);
-    setTxPending('');
+    await setTxPending(tx.hash, 3);
   }
 
   return burnPairs;
