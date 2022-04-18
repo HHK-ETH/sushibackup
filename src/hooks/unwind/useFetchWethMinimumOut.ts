@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { calculateBuyWethOutput } from '../helpers/unwindooor';
-import useWeb3 from './useWeb3';
+import { calculateBuyWethOutput } from '../../helpers/unwindooor';
+import useWeb3 from './../useWeb3';
 
 export default function useFetchWethMinimumOut(slippage: number, selectedTokens: any[], shares: BigNumber[]) {
   const { provider, chainId } = useWeb3();

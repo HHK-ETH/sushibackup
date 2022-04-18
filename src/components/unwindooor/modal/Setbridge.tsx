@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useSetBridge from '../../../hooks/useSetBridge';
+import useSetBridge from '../../../hooks/unwind/useSetBridge';
 
 const SetBridge = ({ isOwner }: { isOwner: boolean }): JSX.Element => {
   const [token, setToken] = useState({

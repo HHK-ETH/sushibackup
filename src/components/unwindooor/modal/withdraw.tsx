@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useState } from 'react';
-import useUnwindWithdraw from '../../../hooks/useUnwindWithdraw';
+import useUnwindWithdraw from '../../../hooks/unwind/useUnwindWithdraw';
 
 const Withdraw = ({ wethBalance, isOwner }: { wethBalance: number; isOwner: boolean }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();

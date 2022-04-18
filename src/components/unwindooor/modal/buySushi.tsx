@@ -3,8 +3,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useState } from 'react';
 import { formatUnits } from 'ethers/lib/utils';
 import Slippage from '../utils/slippage';
-import useBuySushi from '../../../hooks/useBuySushi';
-import useFecthMinimumOut from '../../../hooks/useFetchMinimumOut';
+import useBuySushi from '../../../hooks/unwind/useBuySushi';
+import useFecthMinimumOut from '../../../hooks/unwind/useFetchMinimumOut';
 
 const BuySushi = ({ wethBalance }: { wethBalance: number }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();

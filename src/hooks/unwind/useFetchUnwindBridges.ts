@@ -1,9 +1,9 @@
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
-import { UNWINDOOOR_ADDR } from '../helpers/unwindooor';
-import { SUSHIMAKER_ABI } from '../imports/abis';
-import { getToken } from '../imports/tokens';
-import useWeb3 from './useWeb3';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
+import { SUSHIMAKER_ABI } from '../../imports/abis';
+import { getToken } from '../../imports/tokens';
+import useWeb3 from './../useWeb3';
 
 export default function useFetchUnwindbridges(tokens: any[]): { bridges: string[]; loading: boolean } {
   const { chainId, provider } = useWeb3();

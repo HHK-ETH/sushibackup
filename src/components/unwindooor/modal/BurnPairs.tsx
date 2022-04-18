@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useState } from 'react';
-import useBurnPairs from '../../../hooks/useBurnPairs';
+import useBurnPairs from '../../../hooks/unwind/useBurnPairs';
 import Slippage from '../utils/slippage';
 
 const BurnPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {

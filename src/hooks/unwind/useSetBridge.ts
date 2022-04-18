@@ -1,8 +1,8 @@
 import { Contract } from 'ethers';
-import { UNWINDOOOR_ADDR } from '../helpers/unwindooor';
-import { WETHMAKER_ABI } from '../imports/abis';
-import useTxPending from './useTxPending';
-import useWeb3 from './useWeb3';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
+import { WETHMAKER_ABI } from '../../imports/abis';
+import useTxPending from './../useTxPending';
+import useWeb3 from './../useWeb3';
 
 export default function useSetBridge(token: { input: string; bridge: string }): () => Promise<void> {
   const { chainId, provider } = useWeb3();

@@ -4,8 +4,8 @@ import { BigNumber } from 'ethers';
 import { useState } from 'react';
 import { formatUnits } from 'ethers/lib/utils';
 import Slippage from '../utils/slippage';
-import useBuyWeth from '../../../hooks/useBuyWeth';
-import useFetchWethMinimumOut from '../../../hooks/useFetchWethMinimumOut';
+import useBuyWeth from '../../../hooks/unwind/useBuyWeth';
+import useFetchWethMinimumOut from '../../../hooks/unwind/useFetchWethMinimumOut';
 
 const BuyWeth = ({ selectedTokens }: { selectedTokens: any[] }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();

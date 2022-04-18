@@ -2,8 +2,8 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
-import useFetchUnwindOut from '../../../hooks/useFetchUnwindOut';
-import useUnwindPairs from '../../../hooks/useUnwindPairs';
+import useFetchUnwindOut from '../../../hooks/unwind/useFetchUnwindOut';
+import useUnwindPairs from '../../../hooks/unwind/useUnwindPairs';
 import Slippage from '../utils/slippage';
 
 const UnwindPairs = ({ pairs }: { pairs: any[] }): JSX.Element => {

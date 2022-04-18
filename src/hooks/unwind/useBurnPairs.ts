@@ -1,9 +1,9 @@
 import { Contract } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import { UNWINDOOOR_ADDR } from '../helpers/unwindooor';
-import { SUSHIMAKER_ABI } from '../imports/abis';
-import useTxPending from './useTxPending';
-import useWeb3 from './useWeb3';
+import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
+import { SUSHIMAKER_ABI } from '../../imports/abis';
+import useTxPending from '../useTxPending';
+import useWeb3 from '../useWeb3';
 
 type BurnPairsParams = { pairs: any[]; shares: number[]; slippage: number };
 

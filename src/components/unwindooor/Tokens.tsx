@@ -1,4 +1,4 @@
-import useFetchUnwindbridges from '../../hooks/useFetchUnwindBridges';
+import useFetchUnwindbridges from '../../hooks/unwind/useFetchUnwindBridges';
 
 const Tokens = ({
   tokens,

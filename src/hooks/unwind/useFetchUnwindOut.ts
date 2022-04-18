@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { calculateUnwindOutput } from '../helpers/unwindooor';
-import useWeb3 from './useWeb3';
+import { calculateUnwindOutput } from '../../helpers/unwindooor';
+import useWeb3 from './../useWeb3';
 
 type FetchUnwindOutParams = {
   unwindData: any[];

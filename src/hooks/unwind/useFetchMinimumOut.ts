@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState } from 'react';
-import { calculateBuySushiOutput } from '../helpers/unwindooor';
-import useWeb3 from './useWeb3';
+import { calculateBuySushiOutput } from '../../helpers/unwindooor';
+import useWeb3 from './../useWeb3';
 
 type SwapData = {
   amountIn: BigNumber;

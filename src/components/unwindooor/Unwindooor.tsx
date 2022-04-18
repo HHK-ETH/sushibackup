@@ -14,7 +14,7 @@ import Withdraw from './modal/withdraw';
 import { formatUnits } from 'ethers/lib/utils';
 import BurnPairs from './modal/BurnPairs';
 import SetBridge from './modal/Setbridge';
-import useFetchUnwindData from '../../hooks/useFetchUnwindData';
+import useFetchUnwindData from '../../hooks/unwind/useFetchUnwindData';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
