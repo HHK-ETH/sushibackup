@@ -1,10 +1,4 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
-import { useEffect, useState } from 'react';
-import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import sushiMakerAbi from '../../imports/abis/sushiMaker.json';
-import { getToken } from '../../imports/tokens';
+import useFetchUnwindbridges from '../../hooks/useFetchUnwindBridges';
 
 const Tokens = ({
   tokens,
@@ -15,37 +9,7 @@ const Tokens = ({
   selectedTokens: any[];
   setSelectedTokens: Function;
 }): JSX.Element => {
-  const context = useWeb3React<Web3Provider>();
-  const { chainId, connector } = context;
-  const [bridges, setBridges] = useState(
-    tokens.map((token) => {
-      return 'WETH';
-    })
-  );
-
-  useEffect(() => {
-    const fetchBridges = async () => {
-      if (!chainId || !connector) {
-        return;
-      }
-      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
-      setBridges(
-        await Promise.all(
-          tokens.map(async (token) => {
-            const bridge = await sushiMaker.bridges(token.address);
-            if (bridge.toLowerCase() === '0x0000000000000000000000000000000000000000') {
-              return 'WETH';
-            } else {
-              const token = getToken(bridge, chainId);
-              return token.symbol === 'UT' ? bridge : token.symbol;
-            }
-          })
-        )
-      );
-    };
-    fetchBridges();
-  }, [chainId, connector, tokens]);
+  const { bridges, loading } = useFetchUnwindbridges(tokens);
 
   return (
     <>
@@ -69,7 +33,7 @@ const Tokens = ({
               <div className="col-span-3">
                 {token.symbol} - {token.address}
               </div>
-              <div className="">{bridges[i]}</div>
+              <div className="">{loading ? 'loading...' : bridges[i]}</div>
               <div className="">{parseFloat(token.balance).toFixed(4)}</div>
               <div className="">
                 {parseFloat(token.balanceUSD)
