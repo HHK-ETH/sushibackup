@@ -7,22 +7,12 @@ import { BENTOBOX_ADDR } from '../../helpers/bentobox';
 import Modal from '../general/Modal';
 import erc20abi from './../../imports/abis/erc20.json';
 import bentoAbi from './../../imports/abis/bento.json';
-import { NETWORKS } from '../../helpers/network';
 import useApprove from '../../hooks/useApprove';
+import useDepositDca from '../../hooks/dca/useDepositDca';
 
-const Deposit = ({
-  open,
-  setOpen,
-  vault,
-  setPending,
-}: {
-  open: boolean;
-  setOpen: Function;
-  vault: any;
-  setPending: Function;
-}): JSX.Element => {
+const Deposit = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; vault: any }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { chainId, connector, account, deactivate, activate } = context;
+  const { chainId, connector, account } = context;
   const [fromWallet, setFromWallet] = useState(true);
   const [amount, setAmount] = useState(0);
   const [balance, setBalance] = useState(BigNumber.from(0));
@@ -55,28 +45,7 @@ const Deposit = ({
     BENTOBOX_ADDR[chainId ? chainId : 1],
     parseUnits(amount.toString(), vault.sellToken.decimals)
   );
-
-  const deposit = async () => {
-    if (!connector || !account || !chainId || vault === null) {
-      return;
-    }
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const bento = new Contract(BENTOBOX_ADDR[chainId], bentoAbi, web3Provider.getSigner());
-    const parsedAmount = parseUnits(amount.toString(), vault.sellToken.decimals);
-    const shares = await bento.toShare(vault.sellToken.id, parsedAmount, false);
-    let tx;
-    if (fromWallet) {
-      tx = await bento.deposit(vault.sellToken.id, account, vault.id, parsedAmount, 0);
-    } else {
-      tx = await bento.transfer(vault.sellToken.id, account, vault.id, shares);
-    }
-    setPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await web3Provider.waitForTransaction(tx.hash, 5);
-    setPending('');
-    deactivate(); //dirty update will refacto
-    activate(connector);
-    setOpen(false);
-  };
+  const deposit = useDepositDca({ account, vault, fromWallet, amount });
 
   if (vault === null) return <></>;
   return (

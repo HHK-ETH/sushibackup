@@ -41,7 +41,7 @@ const Dca = (): JSX.Element => {
   return (
     <>
       <CreateVault open={open} setOpen={setOpen} />
-      <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} setPending={setTxPending} />
+      <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} />
       <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
