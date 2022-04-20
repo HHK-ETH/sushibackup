@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import useFetchVaults from '../../hooks/dca/useFetchVaults';
+import Modal from '../general/Modal';
 import CreateVault from './CreateVault';
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
@@ -11,8 +12,7 @@ const Dca = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, account } = context;
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
-  const [openDeposit, setOpenDeposit]: [open: boolean, setOpen: Function] = useState(false);
-  const [openWithdraw, setOpenWithdraw]: [open: boolean, setOpen: Function] = useState(false);
+  const [modalContent, setModalContent]: [content: string, setOpen: Function] = useState('');
   const [selectedVault, setSelectedVault]: [selectedVault: any, setselectedVault: Function] = useState(null);
   const { vaults, loading } = useFetchVaults(account);
 
@@ -25,14 +25,19 @@ const Dca = (): JSX.Element => {
 
   return (
     <>
-      <CreateVault open={open} setOpen={setOpen} />
-      <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} />
-      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} />
+      <Modal open={open} setOpen={setOpen}>
+        {modalContent === 'create' && <CreateVault />}
+        {modalContent === 'deposit' && <Deposit vault={selectedVault} />}
+        {modalContent === 'withdraw' && <Withdraw vault={selectedVault} />}
+      </Modal>
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
         <button
           className={'px-8 py-2 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setModalContent('create');
+            setOpen(true);
+          }}
         >
           Create a new vault
         </button>
@@ -74,7 +79,8 @@ const Dca = (): JSX.Element => {
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
-                      setOpenDeposit(true);
+                      setModalContent('deposit');
+                      setOpen(true);
                     }}
                   >
                     Deposit
@@ -83,7 +89,8 @@ const Dca = (): JSX.Element => {
                     className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
-                      setOpenWithdraw(true);
+                      setModalContent('withdraw');
+                      setOpen(true);
                     }}
                   >
                     Withdraw
