@@ -1,35 +1,20 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
-import { useContext, useEffect, useState } from 'react';
-import { TxPending } from '../../context';
-import { DCA_FACTORY, queryVaults } from '../../helpers/dca';
+import { useState } from 'react';
+import useFetchVaults from '../../hooks/dca/useFetchVaults';
 import CreateVault from './CreateVault';
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
 
 const Dca = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, account } = context;
-  const { setTxPending } = useContext(TxPending);
-  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+  const { active, account } = context;
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
   const [openDeposit, setOpenDeposit]: [open: boolean, setOpen: Function] = useState(false);
   const [openWithdraw, setOpenWithdraw]: [open: boolean, setOpen: Function] = useState(false);
-  const [vaults, setVaults]: [vaults: any[], setVaults: Function] = useState([]);
   const [selectedVault, setSelectedVault]: [selectedVault: any, setselectedVault: Function] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!chainId || !account || !DCA_FACTORY[chainId]) {
-        return;
-      }
-      setLoading(true);
-      setVaults(await queryVaults(chainId, account));
-      setLoading(false);
-    };
-    fetchData();
-  }, [chainId, account, active]);
+  const { vaults, loading } = useFetchVaults(account);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
@@ -42,7 +27,7 @@ const Dca = (): JSX.Element => {
     <>
       <CreateVault open={open} setOpen={setOpen} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} />
-      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />
+      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} />
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
         <button

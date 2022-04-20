@@ -3,17 +3,7 @@ import { useState } from 'react';
 import Modal from '../general/Modal';
 import useWithdrawDca from '../../hooks/dca/useWithdrawDca';
 
-const Withdraw = ({
-  open,
-  setOpen,
-  vault,
-  setPending,
-}: {
-  open: boolean;
-  setOpen: Function;
-  vault: any;
-  setPending: Function;
-}): JSX.Element => {
+const Withdraw = ({ open, setOpen, vault }: { open: boolean; setOpen: Function; vault: any }): JSX.Element => {
   const [amount, setAmount] = useState(0);
   const withdraw = useWithdrawDca(amount, vault);
 
