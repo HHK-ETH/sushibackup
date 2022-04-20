@@ -8,6 +8,7 @@ import Modal from '../general/Modal';
 import erc20abi from './../../imports/abis/erc20.json';
 import bentoAbi from './../../imports/abis/bento.json';
 import { NETWORKS } from '../../helpers/network';
+import useApprove from '../../hooks/useApprove';
 
 const Deposit = ({
   open,
@@ -49,18 +50,11 @@ const Deposit = ({
     fetchBalance();
   }, [account, chainId, connector, fromWallet, vault]);
 
-  const approve = async () => {
-    if (!connector || !account || !chainId || vault === null) {
-      return;
-    }
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const erc20 = new Contract(vault.sellToken.id, erc20abi, web3Provider.getSigner());
-    const tx = await erc20.approve(BENTOBOX_ADDR[chainId], parseUnits(amount.toString(), vault.sellToken.decimals));
-    setPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await web3Provider.waitForTransaction(tx.hash, 2);
-    setPending('');
-    setAllowance(await erc20.allowance(account, BENTOBOX_ADDR[chainId]));
-  };
+  const approve = useApprove(
+    vault.sellToken.id,
+    BENTOBOX_ADDR[chainId ? chainId : 1],
+    parseUnits(amount.toString(), vault.sellToken.decimals)
+  );
 
   const deposit = async () => {
     if (!connector || !account || !chainId || vault === null) {
