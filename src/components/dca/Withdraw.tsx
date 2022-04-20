@@ -1,13 +1,7 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
-import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { formatUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
-import { BENTOBOX_ADDR } from '../../helpers/bentobox';
-import { NETWORKS } from '../../helpers/network';
 import Modal from '../general/Modal';
-import bentoAbi from '../../imports/abis/bento.json';
-import dcaAbi from '../../imports/abis/dca.json';
+import useWithdrawDca from '../../hooks/dca/useWithdrawDca';
 
 const Withdraw = ({
   open,
@@ -20,27 +14,8 @@ const Withdraw = ({
   vault: any;
   setPending: Function;
 }): JSX.Element => {
-  const context = useWeb3React<Web3Provider>();
-  const { chainId, connector, account, deactivate, activate } = context;
   const [amount, setAmount] = useState(0);
-
-  const withdraw = async () => {
-    if (!connector || !account || !chainId || vault === null) {
-      return;
-    }
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const bento = new Contract(BENTOBOX_ADDR[chainId], bentoAbi, web3Provider.getSigner());
-    const dca = new Contract(vault.id, dcaAbi, web3Provider.getSigner());
-    const parsedAmount = parseUnits(amount.toString(), vault.sellToken.decimals);
-    const shares = await bento.toShare(vault.sellToken.id, parsedAmount, false);
-    const tx = await dca.withdraw(shares);
-    setPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await web3Provider.waitForTransaction(tx.hash, 5);
-    setPending('');
-    deactivate(); //dirty update will refacto
-    activate(connector);
-    setOpen(false);
-  };
+  const withdraw = useWithdrawDca(amount, vault);
 
   if (vault === null) return <></>;
   return (
