@@ -40,7 +40,7 @@ const Dca = (): JSX.Element => {
 
   return (
     <>
-      <CreateVault open={open} setOpen={setOpen} setTxPending={setTxPending} />
+      <CreateVault open={open} setOpen={setOpen} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} setPending={setTxPending} />
       <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />
       <div className="container p-16 mx-auto text-center text-white">

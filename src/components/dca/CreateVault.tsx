@@ -1,52 +1,21 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
-import { DCA_FACTORY, DCA_TOKENS } from '../../helpers/dca';
-import { CHAIN_IDS, NETWORKS } from '../../helpers/network';
+import { DCA_TOKENS } from '../../helpers/dca';
+import { CHAIN_IDS } from '../../helpers/network';
+import useCreateDca from '../../hooks/dca/useCreateDca';
 import Modal from '../general/Modal';
-import dcaFactoryABI from './../../imports/abis/dcaFactory.json';
 
-const CreateVault = ({
-  open,
-  setOpen,
-  setTxPending,
-}: {
-  open: boolean;
-  setOpen: Function;
-  setTxPending: Function;
-}): JSX.Element => {
+const CreateVault = ({ open, setOpen }: { open: boolean; setOpen: Function }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { chainId, connector, account } = context;
+  const { account } = context;
   const [dcaData, setDcaData] = useState({
     buyToken: DCA_TOKENS[CHAIN_IDS.POLYGON][0],
     sellToken: DCA_TOKENS[CHAIN_IDS.POLYGON][0],
     frequency: 1,
     amount: 0,
   });
-
-  const createDca = async () => {
-    if (!connector || chainId !== CHAIN_IDS.POLYGON || !account) return;
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const factory = new Contract(DCA_FACTORY[CHAIN_IDS.POLYGON], dcaFactoryABI, web3Provider.getSigner());
-    const frequency = dcaData.frequency * 3600 * 24;
-    const amount = parseUnits(dcaData.amount.toString(), dcaData.sellToken.decimals);
-    const tx = await factory.createDCA(
-      account,
-      dcaData.sellToken.address,
-      dcaData.buyToken.address,
-      dcaData.sellToken.priceFeed,
-      dcaData.buyToken.priceFeed,
-      frequency,
-      dcaData.buyToken.decimals - dcaData.sellToken.decimals,
-      amount
-    );
-    setTxPending(NETWORKS[CHAIN_IDS.POLYGON].explorer + 'tx/' + tx.hash);
-    setOpen(false);
-    await web3Provider.waitForTransaction(tx.hash, 2);
-    setTxPending('');
-  };
+  const createDca = useCreateDca(dcaData, account);
 
   return (
     <Modal open={open} setOpen={setOpen}>
