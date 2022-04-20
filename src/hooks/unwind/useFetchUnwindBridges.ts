@@ -1,9 +1,15 @@
+import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from 'ethers';
 import { useEffect, useState } from 'react';
 import { UNWINDOOOR_ADDR } from '../../helpers/unwindooor';
-import { SUSHIMAKER_ABI } from '../../imports/abis';
+import { ERC20_ABI, SUSHIMAKER_ABI } from '../../imports/abis';
 import { getToken } from '../../imports/tokens';
 import useWeb3 from './../useWeb3';
+
+async function fetchTokenSymbol(provider: Web3Provider, address: string): Promise<string> {
+  const erc20 = new Contract(address, ERC20_ABI, provider);
+  return await erc20.symbol();
+}
 
 export default function useFetchUnwindbridges(tokens: any[]): { bridges: string[]; loading: boolean } {
   const { chainId, provider } = useWeb3();
@@ -29,7 +35,7 @@ export default function useFetchUnwindbridges(tokens: any[]): { bridges: string[
               return 'WETH';
             } else {
               const token = getToken(bridge, chainId);
-              return token.symbol === 'UT' ? bridge : token.symbol;
+              return token.symbol === 'UT' ? await fetchTokenSymbol(provider, bridge) : token.symbol;
             }
           })
         )
