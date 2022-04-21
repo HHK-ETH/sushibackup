@@ -1,35 +1,17 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import { useContext, useEffect, useState } from 'react';
-import { TxPending } from '../../context';
+import useFetchFarmPositions from '../../hooks/farm/useFetchFarmPositions';
 import useHarvest from '../../hooks/farm/useHarvest';
 import useUnstake from '../../hooks/farm/useUnstake';
-import { IFarmPosition, MINICHEF_ADDR, queryFarmPositions } from './../../helpers/farm';
+import { IFarmPosition } from './../../helpers/farm';
 
 const Farm = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector, account } = context;
-  const { txPending } = useContext(TxPending);
-  const [positions, setPositions]: [positions: IFarmPosition[], setPositions: Function] = useState([]);
-  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
-
+  const { active, account } = context;
+  const { positions, loading } = useFetchFarmPositions(account);
   const unstake = useUnstake(account);
   const harvest = useHarvest(account);
-
-  useEffect(() => {
-    const fetchFarms = async () => {
-      if (txPending !== '') return;
-      if (!active || !connector || !account || !chainId) return;
-      if (chainId !== 1 && !MINICHEF_ADDR[chainId]) return;
-      setLoading(true);
-      const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      setPositions(await queryFarmPositions(chainId, account, web3Provider));
-      setLoading(false);
-    };
-    fetchFarms();
-  }, [active, connector, chainId, account, txPending]);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
