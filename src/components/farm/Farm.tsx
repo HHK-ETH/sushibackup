@@ -1,54 +1,22 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
+import { providers } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { useContext, useEffect, useState } from 'react';
 import { TxPending } from '../../context';
-import { NETWORKS } from '../../helpers/network';
+import useHarvest from '../../hooks/farm/useHarvest';
+import useUnstake from '../../hooks/farm/useUnstake';
 import { IFarmPosition, MINICHEF_ADDR, queryFarmPositions } from './../../helpers/farm';
 
 const Farm = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, connector, account } = context;
-  const { txPending, setTxPending } = useContext(TxPending);
+  const { txPending } = useContext(TxPending);
   const [positions, setPositions]: [positions: IFarmPosition[], setPositions: Function] = useState([]);
   const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
 
-  const unstake = async (harvest: boolean, contract: Contract, pid: string, amount: string) => {
-    if (!connector || !chainId || !account) return;
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    contract = contract.connect(web3Provider.getSigner());
-    let tx;
-    if (chainId === 1 && contract.address === '0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd') {
-      //msv1
-      tx = await contract.withdraw(pid, amount);
-    } else {
-      if (harvest) {
-        tx = await contract.withdrawAndHarvest(pid, amount, account);
-      } else {
-        tx = await contract.withdraw(pid, amount, account);
-      }
-    }
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await web3Provider.waitForTransaction(tx.hash, 2);
-    setTxPending('');
-  };
-
-  const harvest = async (contract: Contract, pid: string) => {
-    if (!connector || !chainId || !account) return;
-    const web3Provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    contract = contract.connect(web3Provider.getSigner());
-    let tx;
-    if (chainId === 1 && contract.address === '0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd') {
-      //msv1
-      tx = await contract.deposit(pid, 0);
-    } else {
-      tx = await contract.harvest(pid, account);
-    }
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await web3Provider.waitForTransaction(tx.hash, 2);
-    setTxPending('');
-  };
+  const unstake = useUnstake(account);
+  const harvest = useHarvest(account);
 
   useEffect(() => {
     const fetchFarms = async () => {
@@ -100,19 +68,33 @@ const Farm = (): JSX.Element => {
                 <div className="col-span-2">
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => unstake(false, position.contract, position.pid, position.amount)}
+                    onClick={() =>
+                      unstake({
+                        harvest: false,
+                        contract: position.contract,
+                        pid: position.pid,
+                        amount: position.amount,
+                      })
+                    }
                   >
                     Unstake
                   </button>
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => harvest(position.contract, position.pid)}
+                    onClick={() => harvest({ contract: position.contract, pid: position.pid })}
                   >
                     Harvest
                   </button>
                   <button
                     className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => unstake(true, position.contract, position.pid, position.amount)}
+                    onClick={() =>
+                      unstake({
+                        harvest: true,
+                        contract: position.contract,
+                        pid: position.pid,
+                        amount: position.amount,
+                      })
+                    }
                   >
                     Unstake & Harvest
                   </button>
