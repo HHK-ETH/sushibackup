@@ -40,10 +40,10 @@ const Farm = (): JSX.Element => {
                 <div>{position.name}</div>
                 <div>{formatUnits(position.amount)} SLP</div>
                 <div>
-                  <div>{formatUnits(position.pendingSushi)} SUSHI</div>
+                  <div>{parseFloat(formatUnits(position.pendingSushi)).toFixed(6)} SUSHI</div>
                   {position.rewardToken && position.pendingToken && (
                     <div>
-                      {formatUnits(position.pendingToken)} {position.rewardToken}
+                      {parseFloat(formatUnits(position.pendingToken)).toFixed(6)} {position.rewardToken}
                     </div>
                   )}
                 </div>
