@@ -1,4 +1,4 @@
-import { Contract } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import { BENTOBOX_ADDR } from '../../helpers/bentobox';
 import { BENTO_ABI } from '../../imports/abis';
 import useTxPending from '../useTxPending';
@@ -8,7 +8,7 @@ export default function useWithdrawBento(account: string | undefined | null) {
   const { chainId, provider } = useWeb3();
   const setTxPending = useTxPending();
 
-  async function withdraw(token: string, share: string) {
+  async function withdraw(token: string, share: BigNumber) {
     if (!provider || !chainId || !account) return;
     let bentobox = new Contract(BENTOBOX_ADDR[chainId], BENTO_ABI, provider);
     bentobox = bentobox.connect(provider.getSigner());

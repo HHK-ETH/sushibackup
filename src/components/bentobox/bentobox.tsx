@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { formatUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import useFetchbalances from '../../hooks/bento/useFetchBalances';
 import useWithdrawBento from '../../hooks/bento/useWithdrawBento';
 
@@ -40,7 +40,7 @@ const Bentobox = (): JSX.Element => {
                 <div>
                   <button
                     className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-                    onClick={() => withdraw(position.token.id, position.share)}
+                    onClick={() => withdraw(position.token.id, parseUnits(position.share, position.token.decimals))}
                   >
                     Withdraw
                   </button>
