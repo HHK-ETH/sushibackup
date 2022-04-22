@@ -18,7 +18,7 @@ const EXCHANGE_ENDPOINTS: { [chainId: number]: string } = {
   [CHAIN_IDS.FANTOM]: 'https://api.thegraph.com/subgraphs/name/sushiswap/fantom-exchange',
   [CHAIN_IDS.HARMONY]: 'https://sushi.graph.t.hmny.io/subgraphs/name/sushiswap/harmony-exchange',
   [CHAIN_IDS.MOONRIVER]: 'https://api.thegraph.com/subgraphs/name/sushiswap/moonriver-exchange',
-  [CHAIN_IDS.POLYGON]: 'https://api.thegraph.com/subgraphs/name/matthewlilley/matic-exchange',
+  [CHAIN_IDS.POLYGON]: 'https://api.thegraph.com/subgraphs/name/jiro-ono/matic-exchange-staging',
   [CHAIN_IDS.XDAI]: 'https://api.thegraph.com/subgraphs/name/sushiswap/xdai-exchange',
 };
 
