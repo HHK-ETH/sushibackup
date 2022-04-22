@@ -7,8 +7,8 @@ import useWithdrawBento from '../../hooks/bento/useWithdrawBento';
 const Bentobox = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, account } = context;
-  const { positions, loading } = useFetchbalances(account);
-  const withdraw = useWithdrawBento(account);
+  const { positions, loading, fetchBalances } = useFetchbalances(account);
+  const withdraw = useWithdrawBento(account, fetchBalances);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
