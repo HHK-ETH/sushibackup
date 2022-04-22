@@ -5,7 +5,7 @@ import { DCA_TOKENS } from '../../helpers/dca';
 import { CHAIN_IDS } from '../../helpers/network';
 import useCreateDca from '../../hooks/dca/useCreateDca';
 
-const CreateVault = (): JSX.Element => {
+const CreateVault = ({ fetchVaults }: { fetchVaults: () => Promise<void> }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const [dcaData, setDcaData] = useState({
@@ -14,7 +14,7 @@ const CreateVault = (): JSX.Element => {
     frequency: 1,
     amount: 0,
   });
-  const createDca = useCreateDca(dcaData, account);
+  const createDca = useCreateDca(dcaData, account, fetchVaults);
 
   return (
     <div className="text-center text-white">

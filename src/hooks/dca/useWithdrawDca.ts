@@ -5,7 +5,11 @@ import { BENTO_ABI, DCA_ABI } from '../../imports/abis';
 import useTxPending from '../useTxPending';
 import useWeb3 from '../useWeb3';
 
-export default function useWithdrawDca(amount: number, vault: any): () => Promise<void> {
+export default function useWithdrawDca(
+  amount: number,
+  vault: any,
+  fetchVaults: () => Promise<void>
+): () => Promise<void> {
   const { provider, chainId } = useWeb3();
   const setTxPending = useTxPending();
 
@@ -18,7 +22,8 @@ export default function useWithdrawDca(amount: number, vault: any): () => Promis
     const parsedAmount = parseUnits(amount.toString(), vault.sellToken.decimals);
     const shares = await bento.toShare(vault.sellToken.id, parsedAmount, false);
     const tx = await dca.withdraw(shares);
-    setTxPending(tx.hash, 3);
+    await setTxPending(tx.hash, 5);
+    await fetchVaults();
   };
 
   return withdraw;

@@ -14,7 +14,7 @@ const Dca = (): JSX.Element => {
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
   const [modalContent, setModalContent]: [content: string, setOpen: Function] = useState('');
   const [selectedVault, setSelectedVault]: [selectedVault: any, setselectedVault: Function] = useState(null);
-  const { vaults, loading } = useFetchVaults(account);
+  const { vaults, loading, fetchVaults } = useFetchVaults(account);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
@@ -26,9 +26,9 @@ const Dca = (): JSX.Element => {
   return (
     <>
       <Modal open={open} setOpen={setOpen}>
-        {modalContent === 'create' && <CreateVault />}
-        {modalContent === 'deposit' && <Deposit vault={selectedVault} />}
-        {modalContent === 'withdraw' && <Withdraw vault={selectedVault} />}
+        {modalContent === 'create' && <CreateVault fetchVaults={fetchVaults} />}
+        {modalContent === 'deposit' && <Deposit vault={selectedVault} fetchVaults={fetchVaults} />}
+        {modalContent === 'withdraw' && <Withdraw vault={selectedVault} fetchVaults={fetchVaults} />}
       </Modal>
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>

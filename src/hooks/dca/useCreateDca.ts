@@ -5,7 +5,11 @@ import { DCA_FACTORY_ABI } from '../../imports/abis';
 import useTxPending from '../useTxPending';
 import useWeb3 from '../useWeb3';
 
-export default function useCreateDca(dcaData: any, account: string | null | undefined): () => Promise<void> {
+export default function useCreateDca(
+  dcaData: any,
+  account: string | null | undefined,
+  fetchVaults: () => Promise<void>
+): () => Promise<void> {
   const { chainId, provider } = useWeb3();
   const setTxPending = useTxPending();
 
@@ -24,7 +28,8 @@ export default function useCreateDca(dcaData: any, account: string | null | unde
       dcaData.buyToken.decimals - dcaData.sellToken.decimals,
       amount
     );
-    setTxPending(tx.hash, 3);
+    await setTxPending(tx.hash, 10);
+    await fetchVaults();
   }
 
   return createDCA;

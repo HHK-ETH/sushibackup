@@ -2,9 +2,9 @@ import { formatUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
 import useWithdrawDca from '../../hooks/dca/useWithdrawDca';
 
-const Withdraw = ({ vault }: { vault: any }): JSX.Element => {
+const Withdraw = ({ vault, fetchVaults }: { vault: any; fetchVaults: () => Promise<void> }): JSX.Element => {
   const [amount, setAmount] = useState(0);
-  const withdraw = useWithdrawDca(amount, vault);
+  const withdraw = useWithdrawDca(amount, vault, fetchVaults);
 
   if (vault === null) return <></>;
   return (

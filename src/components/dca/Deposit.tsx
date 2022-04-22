@@ -7,7 +7,7 @@ import useApprove from '../../hooks/useApprove';
 import useDepositDca from '../../hooks/dca/useDepositDca';
 import useFetchDepositBalance from '../../hooks/dca/useFetchDepositBalance';
 
-const Deposit = ({ vault }: { vault: any }): JSX.Element => {
+const Deposit = ({ vault, fetchVaults }: { vault: any; fetchVaults: () => Promise<void> }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { chainId, account } = context;
   const [fromWallet, setFromWallet] = useState(true);
@@ -19,7 +19,7 @@ const Deposit = ({ vault }: { vault: any }): JSX.Element => {
     BENTOBOX_ADDR[chainId ? chainId : 1],
     parseUnits(amount.toString(), vault.sellToken.decimals)
   );
-  const deposit = useDepositDca({ account, vault, fromWallet, amount });
+  const deposit = useDepositDca({ account, vault, fromWallet, amount, fetchVaults });
 
   if (vault === null) return <></>;
   return (

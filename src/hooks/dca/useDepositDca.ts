@@ -10,12 +10,13 @@ type DepositDcaParams = {
   vault: any;
   fromWallet: boolean;
   amount: number;
+  fetchVaults: () => Promise<void>;
 };
 
 export default function useDepositDca(params: DepositDcaParams): () => Promise<void> {
   const { provider, chainId } = useWeb3();
   const setTxPending = useTxPending();
-  const { account, vault, fromWallet, amount } = params;
+  const { account, vault, fromWallet, amount, fetchVaults } = params;
 
   async function depositDCA() {
     if (!provider || !account || !chainId || vault === null) {
@@ -30,7 +31,8 @@ export default function useDepositDca(params: DepositDcaParams): () => Promise<v
     } else {
       tx = await bento.transfer(vault.sellToken.id, account, vault.id, shares);
     }
-    setTxPending(tx.hash, 3);
+    await setTxPending(tx.hash, 5);
+    await fetchVaults();
   }
 
   return depositDCA;
