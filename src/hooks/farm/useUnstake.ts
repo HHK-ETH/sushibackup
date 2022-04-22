@@ -10,7 +10,10 @@ type UnstakeParams = {
   amount: string;
 };
 
-export default function useUnstake(account: string | null | undefined): (params: UnstakeParams) => Promise<void> {
+export default function useUnstake(
+  account: string | null | undefined,
+  fetchFarms: () => Promise<void>
+): (params: UnstakeParams) => Promise<void> {
   const { chainId, provider } = useWeb3();
   const setTxPending = useTxPending();
 
@@ -28,7 +31,8 @@ export default function useUnstake(account: string | null | undefined): (params:
         tx = await farm.withdraw(pid, amount, account);
       }
     }
-    setTxPending(tx.hash, 3);
+    await setTxPending(tx.hash, 3);
+    await fetchFarms();
   }
 
   return unstake;

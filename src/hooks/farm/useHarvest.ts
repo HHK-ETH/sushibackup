@@ -8,7 +8,10 @@ type HarvestParams = {
   pid: string;
 };
 
-export default function useHarvest(account: string | null | undefined): (params: HarvestParams) => Promise<void> {
+export default function useHarvest(
+  account: string | null | undefined,
+  fetchFarms: () => Promise<void>
+): (params: HarvestParams) => Promise<void> {
   const { chainId, provider } = useWeb3();
   const setTxPending = useTxPending();
 
@@ -22,7 +25,8 @@ export default function useHarvest(account: string | null | undefined): (params:
     } else {
       tx = await farm.harvest(pid, account);
     }
-    setTxPending(tx.hash, 3);
+    await setTxPending(tx.hash, 3);
+    await fetchFarms();
   }
 
   return harvest;

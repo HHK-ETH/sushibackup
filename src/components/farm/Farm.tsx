@@ -9,9 +9,9 @@ import { IFarmPosition } from './../../helpers/farm';
 const Farm = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, account } = context;
-  const { positions, loading } = useFetchFarmPositions(account);
-  const unstake = useUnstake(account);
-  const harvest = useHarvest(account);
+  const { positions, loading, fetchFarms } = useFetchFarmPositions(account);
+  const unstake = useUnstake(account, fetchFarms);
+  const harvest = useHarvest(account, fetchFarms);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
@@ -40,7 +40,7 @@ const Farm = (): JSX.Element => {
                 <div>{position.name}</div>
                 <div>{formatUnits(position.amount)} SLP</div>
                 <div>
-                  <div>{parseFloat(formatUnits(position.pendingSushi)).toFixed(6)} SUSHI</div>
+                  <div>{parseFloat(formatUnits(position.pendingSushi)).toFixed(10)} SUSHI</div>
                   {position.rewardToken && position.pendingToken && (
                     <div>
                       {parseFloat(formatUnits(position.pendingToken)).toFixed(6)} {position.rewardToken}
