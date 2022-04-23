@@ -9,8 +9,8 @@ const Trident = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, account } = context;
   const [open, setOpen] = useState(false);
-  const [targetPos, settargetPos] = useState({});
-  const { positions, loading } = useFetchTridentPositions(account);
+  const [targetPos, settargetPos] = useState(null);
+  const { positions, loading, fetchTridentPositions } = useFetchTridentPositions(account);
 
   if (!active || !chainId || !SUBGRAPH_ENDPOINTS[chainId]) {
     return <div className="text-center text-white">Please connect your wallet and switch de a valid network.</div>;
@@ -22,7 +22,9 @@ const Trident = (): JSX.Element => {
 
   return (
     <>
-      <Remove open={open} setOpen={setOpen} position={targetPos} />
+      {targetPos !== null && (
+        <Remove open={open} setOpen={setOpen} position={targetPos} fetchTridentPositions={fetchTridentPositions} />
+      )}
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} Trident position(s).</h1>
         <div className="grid grid-cols-7 mt-2 text-xl bg-indigo-900 rounded-t-xl">

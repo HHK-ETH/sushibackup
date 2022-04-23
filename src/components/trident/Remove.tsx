@@ -1,46 +1,47 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, Contract, providers } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
-import { useEffect, useState } from 'react';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
+import { useState } from 'react';
 import { TRIDENT_ROUTER_ADDRESSES } from '../../helpers/trident';
+import useFetchMinimumOutCPP from '../../hooks/trident/useFetchMinimumOutCPP';
 import useRemoveLiquidityTrident from '../../hooks/trident/useRemoveLiquidityTrident';
 import useApprove from '../../hooks/useApprove';
+import useFetchAllowance from '../../hooks/useFetchAllowance';
 import Modal from '../general/Modal';
-import erc20ABI from './../../imports/abis/erc20.json';
 
-const Remove = ({ position, open, setOpen }: { position: any; open: boolean; setOpen: Function }): JSX.Element => {
+const Remove = ({
+  position,
+  open,
+  setOpen,
+  fetchTridentPositions,
+}: {
+  position: any;
+  open: boolean;
+  setOpen: Function;
+  fetchTridentPositions: () => Promise<void>;
+}): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { chainId, connector, account } = context;
+  const { chainId, account } = context;
   const [slippage, setSlippage] = useState(1);
-  const [allowance, setAllowance] = useState(BigNumber.from(0));
-
-  useEffect(() => {
-    const fetchInfos = async () => {
-      if (!connector || !account || !chainId) {
-        return;
-      }
-      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const lpContract = new Contract(position.pool.id, erc20ABI, provider);
-      setAllowance(await lpContract.allowance(account, TRIDENT_ROUTER_ADDRESSES[chainId]));
-    };
-    fetchInfos();
-  }, [connector, account, chainId, position.pool.id]);
+  const { allowance, fetchAllowance } = useFetchAllowance(
+    position.pool.id,
+    account,
+    TRIDENT_ROUTER_ADDRESSES[chainId ? chainId : 1]
+  );
 
   const isApproved = allowance.gte(parseUnits(position.balance, 18)) ? true : false;
   const approveColor = !isApproved ? 'bg-pink-500 hover:bg-pink-600' : 'bg-gray-400';
+  const removeColor = isApproved ? 'bg-pink-500 hover:bg-pink-600' : 'bg-gray-400';
 
-  const tokensToBeReceived = [
-    (position.balance / position.pool.kpi.liquidity) * position.pool.assets[0].reserve * (1 - slippage / 100),
-    (position.balance / position.pool.kpi.liquidity) * position.pool.assets[1].reserve * (1 - slippage / 100),
-  ];
+  const { minimumOut, loading } = useFetchMinimumOutCPP(position.pool.id, position.balance, slippage);
 
   const approve = useApprove(
     position.pool.id,
     TRIDENT_ROUTER_ADDRESSES[chainId ? chainId : 1],
-    parseUnits(position.balance, 18)
+    parseUnits(position.balance, 18),
+    fetchAllowance
   );
-  const removeLiquidity = useRemoveLiquidityTrident(account, position, tokensToBeReceived);
+  const removeLiquidity = useRemoveLiquidityTrident(account, position, minimumOut, fetchTridentPositions);
 
   return (
     <Modal open={open} setOpen={setOpen}>
@@ -68,13 +69,20 @@ const Remove = ({ position, open, setOpen }: { position: any; open: boolean; set
               }}
             />
           </div>
-          <p className="mb-4">
-            Minimum received: {tokensToBeReceived[0].toFixed(5)} {position.pool.assets[0].token.symbol} -{' '}
-            {tokensToBeReceived[1].toFixed(5)} {position.pool.assets[1].token.symbol}.
-          </p>
+          {loading ? (
+            <p className="mb-4">loading...</p>
+          ) : (
+            <p className="mb-4">
+              Minimum received:{' '}
+              {parseFloat(formatUnits(minimumOut.token0, position.pool.assets[0].token.decimals)).toFixed(5)}{' '}
+              {position.pool.assets[0].token.symbol} -{' '}
+              {parseFloat(formatUnits(minimumOut.token1, position.pool.assets[1].token.decimals)).toFixed(5)}{' '}
+              {position.pool.assets[1].token.symbol}.
+            </p>
+          )}
           <button
             onClick={() => removeLiquidity()}
-            className="px-8 py-2 font-medium text-white bg-pink-500 rounded-full hover:bg-pink-600"
+            className={'px-8 py-2 font-medium text-white rounded-full ' + removeColor}
           >
             Remove liquidity
           </button>
