@@ -15,6 +15,7 @@ import { formatUnits } from 'ethers/lib/utils';
 import BurnPairs from './modal/BurnPairs';
 import SetBridge from './modal/Setbridge';
 import useFetchUnwindData from '../../hooks/unwind/useFetchUnwindData';
+import TransferPairs from './modal/TransferPairs';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -47,6 +48,12 @@ const Unwindooor = (): JSX.Element => {
             <Withdraw wethBalance={parseFloat(formatUnits(wethBalance))} isOwner={isOwner} />
           )}
           {modalContent === 'setBridge' && <SetBridge isOwner={isOwner} />}
+          {modalContent === 'transfer' && <TransferPairs />}
+        </Modal>
+      )}
+      {!isTrusted && (
+        <Modal open={open} setOpen={setOpen}>
+          {modalContent === 'transfer' && <TransferPairs />}
         </Modal>
       )}
       <div className="container p-16 mx-auto text-center text-white">

@@ -44,10 +44,13 @@ const Dashboard = ({
           {chainId === 1 ? 'Buy Sushi' : 'Transfer WETH'}
         </button>
         <button
-          className="px-16 text-lg font-medium text-white bg-gray-400 rounded hover:bg-gray-500"
-          onClick={() => {}}
+          className="px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600"
+          onClick={() => {
+            setModalContent('transfer');
+            setOpen(true);
+          }}
         >
-          {chainId === 1 ? 'Sweep' : 'Bridge WETH'}
+          Transfer pairs
         </button>
       </div>
       <div className="">
