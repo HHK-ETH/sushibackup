@@ -1,65 +1,34 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import Dashboard from './dashboard';
-import { UNWINDOOOR_ADDR, queryUnwindooorPositions, queryUnwindooorTokens } from './../../helpers/unwindooor';
+import { UNWINDOOOR_ADDR } from './../../helpers/unwindooor';
 import { Tab } from '@headlessui/react';
 import Pairs from './Pairs';
 import Tokens from './Tokens';
-import { TxPending } from '../../context';
 import Modal from '../general/Modal';
 import UnwindPairs from './modal/UnwindPairs';
 import BuyWeth from './modal/buyWeth';
 import BuySushi from './modal/buySushi';
 import Withdraw from './modal/withdraw';
-import { BigNumber, Contract, providers } from 'ethers';
-import { WETH } from '../../imports/tokens';
-import erc20Abi from '../../imports/abis/erc20.json';
 import { formatUnits } from 'ethers/lib/utils';
 import BurnPairs from './modal/BurnPairs';
-import sushiMakerAbi from '../../imports/abis/sushiMaker.json';
 import SetBridge from './modal/Setbridge';
+import useFetchUnwindData from '../../hooks/unwind/useFetchUnwindData';
+import TransferPairs from './modal/TransferPairs';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector, account } = context;
-  const { setTxPending } = useContext(TxPending);
+  const { active, chainId, account } = context;
   const [selectedPairs, setSelectedPairs]: [any[], Function] = useState([]);
   const [modalContent, setModalContent]: [string, Function] = useState('');
   const [open, setOpen]: [boolean, Function] = useState(false);
-  const [wethBalance, setWethBalance] = useState(BigNumber.from(0));
-  const [loading, setLoading] = useState(false);
-  const [positions, setPositions]: [positions: any, setPositions: Function] = useState({
-    totalFees: 0,
-    positions: [],
-  });
-  const [tokens, setTokens]: [tokens: { total: number; tokens: any[] }, setTokens: Function] = useState({
-    total: 0,
-    tokens: [],
-  });
   const [pairTab, setPairTab] = useState(true);
-  const [isTrusted, setIsTrusted] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
   const [selectedTokens, setSelectedTokens]: [selectedTokens: any[], setSelectedTokens: Function] = useState([]);
-
-  useEffect(() => {
-    const fetchPositions = async () => {
-      if (!active || !chainId || !UNWINDOOOR_ADDR[chainId] || !connector) return;
-      setLoading(true);
-      setPositions(await queryUnwindooorPositions(chainId));
-      setTokens(await queryUnwindooorTokens(chainId));
-      const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-      const weth = new Contract(WETH[chainId], erc20Abi, provider);
-      const balance = await weth.balanceOf(UNWINDOOOR_ADDR[chainId]);
-      setWethBalance(balance);
-      const sushiMaker = new Contract(UNWINDOOOR_ADDR[chainId], sushiMakerAbi, provider.getSigner());
-      const owner = await sushiMaker.owner();
-      setIsOwner(owner === account);
-      setIsTrusted(owner === account ? true : await sushiMaker.trusted(account));
-      setLoading(false);
-    };
-    fetchPositions();
-  }, [active, chainId, connector, account]);
+  const {
+    data: { positions, tokens, wethBalance, isOwner, isTrusted },
+    loading,
+  } = useFetchUnwindData(account);
 
   if (chainId && !UNWINDOOOR_ADDR[chainId]) {
     return <div className={'mt-24 text-xl text-center text-white'}>Unwindooor is not available on this network.</div>;
@@ -71,20 +40,20 @@ const Unwindooor = (): JSX.Element => {
     <>
       {isTrusted && (
         <Modal open={open} setOpen={setOpen}>
-          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} setTxPending={setTxPending} />}
-          {modalContent === 'buyWeth' && <BuyWeth setTxPending={setTxPending} selectedTokens={selectedTokens} />}
-          {modalContent === 'buySushi' && (
-            <BuySushi setTxPending={setTxPending} wethBalance={parseFloat(formatUnits(wethBalance))} />
-          )}
+          {modalContent === 'unwind' && <UnwindPairs pairs={selectedPairs} />}
+          {modalContent === 'burn' && <BurnPairs pairs={selectedPairs} />}
+          {modalContent === 'buyWeth' && <BuyWeth selectedTokens={selectedTokens} />}
+          {modalContent === 'buySushi' && <BuySushi wethBalance={parseFloat(formatUnits(wethBalance))} />}
           {modalContent === 'withdraw' && (
-            <Withdraw
-              setTxPending={setTxPending}
-              wethBalance={parseFloat(formatUnits(wethBalance))}
-              isOwner={isOwner}
-            />
+            <Withdraw wethBalance={parseFloat(formatUnits(wethBalance))} isOwner={isOwner} />
           )}
-          {modalContent === 'setBridge' && <SetBridge setTxPending={setTxPending} isOwner={isOwner} />}
+          {modalContent === 'setBridge' && <SetBridge isOwner={isOwner} />}
+          {modalContent === 'transfer' && <TransferPairs />}
+        </Modal>
+      )}
+      {!isTrusted && (
+        <Modal open={open} setOpen={setOpen}>
+          {modalContent === 'transfer' && <TransferPairs />}
         </Modal>
       )}
       <div className="container p-16 mx-auto text-center text-white">

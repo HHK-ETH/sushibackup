@@ -1,35 +1,20 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
-import { useContext, useEffect, useState } from 'react';
-import { TxPending } from '../../context';
-import { DCA_FACTORY, queryVaults } from '../../helpers/dca';
+import { useState } from 'react';
+import useFetchVaults from '../../hooks/dca/useFetchVaults';
+import Modal from '../general/Modal';
 import CreateVault from './CreateVault';
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
 
 const Dca = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, account } = context;
-  const { setTxPending } = useContext(TxPending);
-  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
+  const { active, account } = context;
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
-  const [openDeposit, setOpenDeposit]: [open: boolean, setOpen: Function] = useState(false);
-  const [openWithdraw, setOpenWithdraw]: [open: boolean, setOpen: Function] = useState(false);
-  const [vaults, setVaults]: [vaults: any[], setVaults: Function] = useState([]);
+  const [modalContent, setModalContent]: [content: string, setOpen: Function] = useState('');
   const [selectedVault, setSelectedVault]: [selectedVault: any, setselectedVault: Function] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!chainId || !account || !DCA_FACTORY[chainId]) {
-        return;
-      }
-      setLoading(true);
-      setVaults(await queryVaults(chainId, account));
-      setLoading(false);
-    };
-    fetchData();
-  }, [chainId, account, active]);
+  const { vaults, loading, fetchVaults } = useFetchVaults(account);
 
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
@@ -40,14 +25,19 @@ const Dca = (): JSX.Element => {
 
   return (
     <>
-      <CreateVault open={open} setOpen={setOpen} setTxPending={setTxPending} />
-      <Deposit open={openDeposit} setOpen={setOpenDeposit} vault={selectedVault} setPending={setTxPending} />
-      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} vault={selectedVault} setPending={setTxPending} />
+      <Modal open={open} setOpen={setOpen}>
+        {modalContent === 'create' && <CreateVault fetchVaults={fetchVaults} />}
+        {modalContent === 'deposit' && <Deposit vault={selectedVault} fetchVaults={fetchVaults} />}
+        {modalContent === 'withdraw' && <Withdraw vault={selectedVault} fetchVaults={fetchVaults} />}
+      </Modal>
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
         <button
           className={'px-8 py-2 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setModalContent('create');
+            setOpen(true);
+          }}
         >
           Create a new vault
         </button>
@@ -89,7 +79,8 @@ const Dca = (): JSX.Element => {
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
-                      setOpenDeposit(true);
+                      setModalContent('deposit');
+                      setOpen(true);
                     }}
                   >
                     Deposit
@@ -98,7 +89,8 @@ const Dca = (): JSX.Element => {
                     className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
-                      setOpenWithdraw(true);
+                      setModalContent('withdraw');
+                      setOpen(true);
                     }}
                   >
                     Withdraw

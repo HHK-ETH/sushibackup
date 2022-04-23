@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
 import Home from './components/general/Home';
 import { BACKGROUNDS } from './imports/images/backgrounds/backgrounds';
-import SushiMaker from './components/sushiMaker/SushiMaker';
+import Fees from './components/fees/Fees';
 import Unwindoor from './components/unwindooor/Unwindooor';
 import Farm from './components/farm/Farm';
 import Bentobox from './components/bentobox/bentobox';
@@ -46,7 +46,7 @@ function App(): JSX.Element {
                 <Bentobox />
               </Route>
               <Route path={'/fees'}>
-                <SushiMaker />
+                <Fees />
               </Route>
               <Route path={'/unwindooor'}>
                 <Unwindoor />

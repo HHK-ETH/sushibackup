@@ -1,35 +1,16 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useContext, useEffect, useState } from 'react';
-import { TxPending } from '../../context';
-import { queryTridentPositions, SUBGRAPH_ENDPOINTS } from '../../helpers/trident';
+import { useState } from 'react';
+import { SUBGRAPH_ENDPOINTS } from '../../helpers/trident';
+import useFetchTridentPositions from '../../hooks/trident/useFetchTridentPositions';
 import Remove from './Remove';
 
 const Trident = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, chainId, account } = context;
-  const { txPending, setTxPending } = useContext(TxPending);
-  const [positions, setPositions] = useState([]);
-  const [loading, setLoading]: [loading: boolean, setLoading: Function] = useState(false);
   const [open, setOpen] = useState(false);
-  const [targetPos, settargetPos] = useState({});
-
-  useEffect(() => {
-    const fetchPositions = async () => {
-      if (txPending !== '') return;
-      if (!account || !chainId || !SUBGRAPH_ENDPOINTS[chainId]) {
-        return;
-      }
-      setLoading(true);
-      setPositions(
-        (await queryTridentPositions(chainId, account)).filter((position: any) => {
-          return position.balance > 0;
-        })
-      );
-      setLoading(false);
-    };
-    fetchPositions();
-  }, [account, chainId, active, txPending]);
+  const [targetPos, settargetPos] = useState(null);
+  const { positions, loading, fetchTridentPositions } = useFetchTridentPositions(account);
 
   if (!active || !chainId || !SUBGRAPH_ENDPOINTS[chainId]) {
     return <div className="text-center text-white">Please connect your wallet and switch de a valid network.</div>;
@@ -41,7 +22,9 @@ const Trident = (): JSX.Element => {
 
   return (
     <>
-      <Remove open={open} setOpen={setOpen} setTxPending={setTxPending} position={targetPos} />
+      {targetPos !== null && (
+        <Remove open={open} setOpen={setOpen} position={targetPos} fetchTridentPositions={fetchTridentPositions} />
+      )}
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} Trident position(s).</h1>
         <div className="grid grid-cols-7 mt-2 text-xl bg-indigo-900 rounded-t-xl">

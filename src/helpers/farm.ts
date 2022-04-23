@@ -189,4 +189,4 @@ const querySidechainPositions = async (
   ]);
 };
 
-export { queryFarmPositions, MINICHEF_ADDR };
+export { queryFarmPositions, MINICHEF_ADDR, MASTERCHEF_ADDR };

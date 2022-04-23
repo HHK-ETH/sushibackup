@@ -59,8 +59,7 @@ const UNWINDOOOR_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.XDAI]: '0x1026cbed7b7E851426b959BC69dcC1bf5876512d',
 };
 
-const queryUnwindooorTokens = async (chainId: number): Promise<{ total: number; tokens: any[] }> => {
-  const address = UNWINDOOOR_ADDR[chainId];
+const queryTokensZapper = async (address: string, chainId: number): Promise<{ total: number; tokens: any[] }> => {
   const networkName = NETWORKS[chainId].zapperId;
   const res = await fetch(
     `https://api.zapper.fi/v1/apps/tokens/balances?api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241&addresses%5B%5D=${address}&network=${networkName}`
@@ -71,10 +70,17 @@ const queryUnwindooorTokens = async (chainId: number): Promise<{ total: number; 
   const json: any = await res.json();
   return {
     total: json.balances[Object.keys(json.balances)[0]].meta[0].value,
-    tokens: json.balances[Object.keys(json.balances)[0]].products[0].assets.sort((tokenA: any, tokenB: any) => {
-      return tokenA.balanceUSD < tokenB.balanceUSD;
-    }),
+    tokens: json.balances[Object.keys(json.balances)[0]].products[0]
+      ? json.balances[Object.keys(json.balances)[0]].products[0].assets.sort((tokenA: any, tokenB: any) => {
+          return tokenA.balanceUSD < tokenB.balanceUSD;
+        })
+      : [],
   };
+};
+
+const queryUnwindooorTokens = async (chainId: number): Promise<{ total: number; tokens: any[] }> => {
+  const address = UNWINDOOOR_ADDR[chainId];
+  return await queryTokensZapper(address, chainId);
 };
 
 const queryUnwindooorPositions = async (chainId: number): Promise<any> => {
@@ -228,4 +234,5 @@ export {
   calculateBuyWethOutput,
   calculateBuySushiOutput,
   queryUnwindooorTokens,
+  queryTokensZapper,
 };

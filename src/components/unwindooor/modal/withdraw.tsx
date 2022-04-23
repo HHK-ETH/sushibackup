@@ -1,41 +1,19 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Contract, providers } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
-import { NETWORKS } from '../../../helpers/network';
-import { UNWINDOOOR_ADDR } from '../../../helpers/unwindooor';
-import { WETH } from '../../../imports/tokens';
-import wethMakerABI from '../../../imports/abis/wethMaker.json';
+import useUnwindWithdraw from '../../../hooks/unwind/useUnwindWithdraw';
 
-const Withdraw = ({
-  setTxPending,
-  wethBalance,
-  isOwner,
-}: {
-  setTxPending: Function;
-  wethBalance: number;
-  isOwner: boolean;
-}): JSX.Element => {
+const Withdraw = ({ wethBalance, isOwner }: { wethBalance: number; isOwner: boolean }): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, chainId, connector, account } = context;
+  const { active } = context;
   const [amount, setAmount] = useState(0);
   const [recipient, setRecipient] = useState('');
+  const withdraw = useUnwindWithdraw(recipient, amount);
 
   if (!isOwner)
     return (
       <div className="text-center text-white">Only owner can withdraw WETH. Please connect with the right account.</div>
     );
-
-  const execWithdraw = async () => {
-    if (!chainId || !connector || !account) return;
-    const provider = new providers.Web3Provider(await connector.getProvider(), 'any');
-    const maker = new Contract(UNWINDOOOR_ADDR[chainId], wethMakerABI, provider).connect(provider.getSigner());
-    const tx = await maker.withdraw(WETH[chainId], recipient, parseUnits(amount.toString(), 'ether'));
-    setTxPending(NETWORKS[chainId].explorer + 'tx/' + tx.hash);
-    await provider.waitForTransaction(tx.hash, 1);
-    setTxPending('');
-  };
 
   if (!active) return <div className="text-center text-white">Please connect your wallet.</div>;
 
@@ -69,7 +47,7 @@ const Withdraw = ({
         </div>
         <button
           className={'px-16 text-lg font-medium text-white bg-pink-500 rounded hover:bg-pink-600'}
-          onClick={() => execWithdraw()}
+          onClick={() => withdraw()}
         >
           Withdraw
         </button>
