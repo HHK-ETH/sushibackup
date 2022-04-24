@@ -9,13 +9,14 @@ const TransferPairs = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { account, chainId } = context;
   const { positions, loading, fetchPositions } = useFetchPositions(account);
+  const top5pos = positions.splice(-5);
   const transferLps = useTransferToken(fetchPositions);
 
   if (loading) return <div className="text-center text-white">Loading...</div>;
   return (
     <div className="text-center text-white">
       <h1 className="mb-2 text-lg font-semibold">
-        Positions for <span className="text-pink-500">{account}</span>
+        Top 5 positions for <span className="text-pink-500">{account}</span>
       </h1>
       <div className="grid grid-cols-4 mb-2 text-lg font-semibold">
         <div>Pair name</div>
@@ -23,7 +24,7 @@ const TransferPairs = (): JSX.Element => {
         <div>Value</div>
         <div>Action</div>
       </div>
-      {positions.map((pos) => {
+      {top5pos.map((pos) => {
         const value =
           (parseFloat(pos.liquidityTokenBalance) / parseFloat(pos.pair.totalSupply)) * parseFloat(pos.pair.reserveUSD);
         return (
