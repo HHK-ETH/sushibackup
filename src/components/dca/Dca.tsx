@@ -55,7 +55,7 @@ const Dca = (): JSX.Element => {
             let nextExec = vault.nextExecutableTimestamp;
             const today = new Date().getTime() / 1000;
             if (nextExec !== 0 && nextExec > today) {
-              nextExec = (nextExec - today) / (3600 * 24);
+              nextExec = ((nextExec - today) / (3600 * 24)).toFixed(3);
             } else {
               nextExec = 0;
             }
@@ -70,7 +70,7 @@ const Dca = (): JSX.Element => {
                   {parseFloat(formatUnits(vault.balance, vault.sellToken.decimals)).toFixed(4)} {vault.sellToken.symbol}
                 </div>
                 <div>
-                  {vault.totalBuy} {vault.buyToken.symbol}
+                  {parseFloat(formatUnits(vault.totalBuy, vault.sellToken.decimals)).toFixed(4)} {vault.buyToken.symbol}
                 </div>
                 <div>Every {vault.epochDuration / (3600 * 24)} days</div>
                 <div>In {nextExec} days</div>
