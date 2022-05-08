@@ -42,10 +42,10 @@ const Dca = (): JSX.Element => {
           Create a new vault
         </button>
         <div className="grid grid-cols-8 mt-4 text-xl bg-indigo-900 rounded-t-xl">
-          <div>Token to sell</div>
-          <div>Token to buy</div>
+          <div>Tokens</div>
           <div>Balance</div>
           <div>Total bought</div>
+          <div>Amount</div>
           <div>Frequency</div>
           <div>Next execution</div>
           <div className="col-span-2">Action</div>
@@ -64,16 +64,22 @@ const Dca = (): JSX.Element => {
                 key={index}
                 className="grid grid-cols-8 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
               >
-                <div>{vault.sellToken.symbol}</div>
-                <div>{vault.buyToken.symbol}</div>
+                <div>{vault.sellToken.symbol + ' => ' + vault.buyToken.symbol}</div>
                 <div>
                   {parseFloat(formatUnits(vault.balance, vault.sellToken.decimals)).toFixed(4)} {vault.sellToken.symbol}
                 </div>
                 <div>
-                  {parseFloat(formatUnits(vault.totalBuy, vault.sellToken.decimals)).toFixed(4)} {vault.buyToken.symbol}
+                  {parseFloat(formatUnits(vault.totalBuy, vault.buyToken.decimals)).toFixed(4)} {vault.buyToken.symbol}
+                </div>
+                <div>
+                  {parseFloat(formatUnits(vault.amount, vault.sellToken.decimals)).toFixed(4)} {vault.sellToken.symbol}
                 </div>
                 <div>Every {vault.epochDuration / (3600 * 24)} days</div>
-                <div>In {nextExec} days</div>
+                <div>
+                  {parseFloat(vault.balance) < parseFloat(vault.amount)
+                    ? 'Insufficient balance'
+                    : 'In ' + nextExec + ' days'}
+                </div>
                 <div className="col-span-2">
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}

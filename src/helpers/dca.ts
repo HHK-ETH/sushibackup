@@ -45,16 +45,16 @@ const queryVaults = async (chaindId: number, account: string): Promise<any[]> =>
 const DCA_TOKENS: { [chainId: number]: { symbol: string; address: string; priceFeed: string; decimals: number }[] } = {
   [CHAIN_IDS.POLYGON]: [
     {
-      symbol: 'DAI',
-      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
-      priceFeed: '0x4746DeC9e833A82EC7C2C1356372CcF2cfcD2F3D',
-      decimals: 18,
-    },
-    {
       symbol: 'USDC',
       address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
       priceFeed: '0xfE4A8cc5b5B2366C1B58Bea3858e81843581b2F7',
       decimals: 6,
+    },
+    {
+      symbol: 'DAI',
+      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      priceFeed: '0x4746DeC9e833A82EC7C2C1356372CcF2cfcD2F3D',
+      decimals: 18,
     },
     {
       symbol: 'USDT',
