@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { queryVaults } from '../../helpers/dca';
+import { CHAIN_IDS } from '../../helpers/network';
 import useWeb3 from '../useWeb3';
 
 export default function useFetchVaults(account: string | null | undefined) {
@@ -8,7 +9,7 @@ export default function useFetchVaults(account: string | null | undefined) {
   const [loading, setLoading] = useState(false);
 
   const fetchVaults = useCallback(async () => {
-    if (!chainId || !account) {
+    if (!chainId || !account || chainId !== CHAIN_IDS.POLYGON) {
       return;
     }
     setLoading(true);

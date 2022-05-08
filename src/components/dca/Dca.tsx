@@ -2,6 +2,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
 import { useState } from 'react';
+import { CHAIN_IDS } from '../../helpers/network';
 import useFetchVaults from '../../hooks/dca/useFetchVaults';
 import Modal from '../general/Modal';
 import CreateVault from './CreateVault';
@@ -10,12 +11,15 @@ import Withdraw from './Withdraw';
 
 const Dca = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
-  const { active, account } = context;
+  const { active, account, chainId } = context;
   const [open, setOpen]: [open: boolean, setOpen: Function] = useState(false);
   const [modalContent, setModalContent]: [content: string, setOpen: Function] = useState('');
   const [selectedVault, setSelectedVault]: [selectedVault: any, setselectedVault: Function] = useState(null);
   const { vaults, loading, fetchVaults } = useFetchVaults(account);
 
+  if (chainId !== CHAIN_IDS.POLYGON) {
+    return <div className="text-center text-white">Please connect to the Polygon blockchain.</div>;
+  }
   if (loading) {
     return <div className="text-center text-white">Loading data...</div>;
   }
