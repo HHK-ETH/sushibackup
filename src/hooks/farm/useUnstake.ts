@@ -1,4 +1,4 @@
-import { Contract } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import { MASTERCHEF_ADDR } from '../../helpers/farm';
 import useTxPending from '../useTxPending';
 import useWeb3 from '../useWeb3';
@@ -7,7 +7,7 @@ type UnstakeParams = {
   harvest: boolean;
   contract: Contract;
   pid: string;
-  amount: string;
+  amount: BigNumber;
 };
 
 export default function useUnstake(
