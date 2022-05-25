@@ -8,16 +8,18 @@ import minichefAbi from './../imports/abis/minichef.json';
 import rewarderAbi from './../imports/abis/rewarder.json';
 import erc20Abi from './../imports/abis/erc20.json';
 import { EXCHANGE_ENDPOINTS } from './exchange';
+import { ERC20_ABI, MINICHEF_ABI, SLP_ABI } from '../imports/abis';
+import { multicall } from './multicall';
+import { AbiCoder } from 'ethers/lib/utils';
 
 export interface IFarmPosition {
-  pair: string;
-  name: string;
   pid: string;
-  amount: string;
-  pendingSushi: BigNumber;
-  pendingToken: BigNumber | undefined;
-  rewardToken: string | undefined;
+  pair: string;
+  amount: BigNumber;
   contract: Contract;
+  pendingSushi: BigNumber;
+  pendingToken: BigNumber;
+  rewardToken: string;
 }
 
 const MSV1_QUERY = gql`
@@ -91,6 +93,72 @@ const MASTERCHEF_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sus
 const MASTERCHEF_ADDR: string = '0xc2EdaD668740f1aA35E4D8f227fB8E17dcA888Cd';
 const MASTERCHEFV2_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sushiswap/master-chefv2';
 const MASTERCHEFV2_ADDR: string = '0xef0881ec094552b2e128cf945ef17a6752b4ec5d';
+
+const queryFarmsWeb3 = async (chainId: number, address: string, web3provider: Web3Provider) => {
+  if (chainId === 1) {
+    return [
+      ...(await queryFarmWeb3(chainId, address, MASTERCHEF_ADDR, web3provider)),
+      ...(await queryFarmWeb3(chainId, address, MASTERCHEFV2_ADDR, web3provider)),
+    ];
+  }
+  return await queryFarmWeb3(chainId, address, MINICHEF_ADDR[chainId], web3provider);
+};
+
+const queryFarmWeb3 = async (chainId: number, address: string, farmAddress: string, web3provider: Web3Provider) => {
+  const farm = new Contract(farmAddress, MINICHEF_ABI, web3provider);
+  const length: BigNumber = await farm.poolLength();
+  let queries = [];
+  for (let index = 0; index < length.toNumber(); index++) {
+    queries.push({
+      target: farmAddress,
+      callData: farm.interface.encodeFunctionData('userInfo', [index, address]),
+    });
+  }
+  let results = await Promise.all(
+    (
+      await multicall(queries, web3provider)
+    ).returnData
+      .filter((encodedRes: string, pid: number) => {
+        const data = new AbiCoder().decode(['uint256', 'uint256'], encodedRes);
+        return data[1].gt(0);
+      })
+      .map(async (encodedRes: string, pid: number) => {
+        const data = new AbiCoder().decode(['uint256', 'uint256'], encodedRes);
+        let pendingSushi = BigNumber.from(0);
+        let pendingToken = BigNumber.from(0);
+        let rewardToken = '';
+        let pair = 'UNKNOW';
+        pendingSushi = await farm.pendingSushi(pid, address);
+        if (farm.address.toLocaleLowerCase() !== MASTERCHEF_ADDR.toLocaleLowerCase()) {
+          const rewarderAddr = await farm.rewarder(pid);
+          const rewarder = new Contract(rewarderAddr, rewarderAbi, web3provider);
+          pendingToken = await rewarder.pendingToken(pid, address);
+          rewardToken = REWARD_TOKEN[chainId] ? REWARD_TOKEN[chainId] : 'Unknow token';
+          pair = await farm.lpToken(pid);
+        } else {
+          pair = (await farm.poolInfo(pid)).lpToken;
+        }
+        if (pair !== 'UNKNOW') {
+          const lp = new Contract(pair, SLP_ABI, web3provider);
+          try {
+            const token0 = new Contract(await lp.token0(), ERC20_ABI, web3provider);
+            const token1 = new Contract(await lp.token1(), ERC20_ABI, web3provider);
+            pair = (await token0.symbol()) + '-' + (await token1.symbol());
+          } catch (e) {}
+        }
+        return {
+          pid: pid,
+          pair: pair,
+          amount: data[0],
+          contract: farm,
+          pendingSushi: pendingSushi,
+          pendingToken: pendingToken,
+          rewardToken: rewardToken,
+        };
+      })
+  );
+  return results;
+};
 
 const queryFarmPositions = async (
   chainId: number,
@@ -189,4 +257,4 @@ const querySidechainPositions = async (
   ]);
 };
 
-export { queryFarmPositions, MINICHEF_ADDR, MASTERCHEF_ADDR };
+export { queryFarmPositions, queryFarmsWeb3, MINICHEF_ADDR, MASTERCHEF_ADDR };
