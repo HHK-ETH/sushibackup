@@ -1,15 +1,15 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { formatUnits } from 'ethers/lib/utils';
-import useFetchFarmPositions from '../../hooks/farm/useFetchFarmPositions';
+import { IFarmPosition } from '../../helpers/farm';
+import useFetchFarmsWeb3 from '../../hooks/farm/useFetchFarmWeb3';
 import useHarvest from '../../hooks/farm/useHarvest';
 import useUnstake from '../../hooks/farm/useUnstake';
-import { IFarmPosition } from './../../helpers/farm';
 
 const Farm = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
   const { active, account } = context;
-  const { positions, loading, fetchFarms } = useFetchFarmPositions(account);
+  const { positions, loading, fetchFarms } = useFetchFarmsWeb3(account);
   const unstake = useUnstake(account, fetchFarms);
   const harvest = useHarvest(account, fetchFarms);
 
@@ -37,11 +37,11 @@ const Farm = (): JSX.Element => {
                 key={index}
                 className="grid grid-cols-5 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
               >
-                <div>{position.name}</div>
+                <div>{position.pair}</div>
                 <div>{formatUnits(position.amount)} SLP</div>
                 <div>
                   <div>{parseFloat(formatUnits(position.pendingSushi)).toFixed(6)} SUSHI</div>
-                  {position.rewardToken && position.pendingToken && (
+                  {position.pendingToken.gt(0) && (
                     <div>
                       {parseFloat(formatUnits(position.pendingToken)).toFixed(6)} {position.rewardToken}
                     </div>
