@@ -114,16 +114,22 @@ const queryFarmWeb3 = async (chainId: number, address: string, farmAddress: stri
       callData: farm.interface.encodeFunctionData('userInfo', [index, address]),
     });
   }
+  let pids: number[] = [];
   let results = await Promise.all(
     (
       await multicall(queries, web3provider)
     ).returnData
       .filter((encodedRes: string, pid: number) => {
         const data = new AbiCoder().decode(['uint256', 'uint256'], encodedRes);
-        return data[1].gt(0);
+        if (data[1].gt(0)) {
+          pids.push(pid);
+          return true;
+        }
+        return false;
       })
-      .map(async (encodedRes: string, pid: number) => {
+      .map(async (encodedRes: string, pid_index: number) => {
         const data = new AbiCoder().decode(['uint256', 'uint256'], encodedRes);
+        const pid = pids[pid_index];
         let pendingSushi = BigNumber.from(0);
         let pendingToken = BigNumber.from(0);
         let rewardToken = '';
