@@ -137,15 +137,18 @@ const queryFarmWeb3 = async (chainId: number, address: string, farmAddress: stri
         pendingSushi = await farm.pendingSushi(pid, address);
         if (farm.address.toLocaleLowerCase() !== MASTERCHEF_ADDR.toLocaleLowerCase()) {
           const rewarderAddr = await farm.rewarder(pid);
-          const rewarder = new Contract(rewarderAddr, rewarderAbi, web3provider);
-          pendingToken = await rewarder.pendingToken(pid, address);
-          rewardToken = REWARD_TOKEN[chainId] ? REWARD_TOKEN[chainId] : 'Unknow token';
+          if (rewarderAddr !== '0x0000000000000000000000000000000000000000') {
+            const rewarder = new Contract(rewarderAddr, rewarderAbi, web3provider);
+            pendingToken = await rewarder.pendingToken(pid, address);
+            rewardToken = REWARD_TOKEN[chainId] ? REWARD_TOKEN[chainId] : 'Unknow token';
+          }
           pair = await farm.lpToken(pid);
         } else {
           pair = (await farm.poolInfo(pid)).lpToken;
         }
         if (pair !== 'UNKNOW') {
           const lp = new Contract(pair, SLP_ABI, web3provider);
+          pair = await lp.symbol();
           try {
             const token0 = new Contract(await lp.token0(), ERC20_ABI, web3provider);
             const token1 = new Contract(await lp.token1(), ERC20_ABI, web3provider);
