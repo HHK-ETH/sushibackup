@@ -4,6 +4,7 @@ import { request, gql } from 'graphql-request';
 import { CHAIN_IDS } from './network';
 import bentoBoxABI from '../imports/abis/bento.json';
 import { parseUnits } from 'ethers/lib/utils';
+import { BENTO_ABI, ERC20_ABI } from '../imports/abis';
 
 const QUERY = gql`
   query queryBentobox($address: ID!) {
@@ -42,7 +43,6 @@ const BENTOBOX_ADDR: { [chainId: number]: string } = {
 const queryBentoboxPositions = async (chainId: number, address: string, web3provider: Web3Provider): Promise<any> => {
   const positions = (await request(BENTOBOX_ENDPOINT[chainId], QUERY, { address: address.toLowerCase() })).userTokens;
   if (positions === null) return null;
-  console.log(positions);
   const bentobox = new Contract(BENTOBOX_ADDR[chainId], bentoBoxABI, web3provider);
   return await Promise.all(
     positions
@@ -54,4 +54,25 @@ const queryBentoboxPositions = async (chainId: number, address: string, web3prov
   );
 };
 
-export { BENTOBOX_ENDPOINT, BENTOBOX_ADDR, queryBentoboxPositions };
+const queryBentoboxPositionWeb3 = async (
+  chainId: number,
+  account: string,
+  address: string,
+  web3provider: Web3Provider
+): Promise<any> => {
+  const bentobox = new Contract(BENTOBOX_ADDR[chainId], BENTO_ABI, web3provider);
+  try {
+    const token = new Contract(address, ERC20_ABI, web3provider);
+    const share = await bentobox.balanceOf(address, account);
+    return {
+      symbol: await token.symbol(),
+      decimals: await token.decimals(),
+      balance: await bentobox.toAmount(address, share, false),
+      share: share,
+    };
+  } catch (e) {
+    return null;
+  }
+};
+
+export { BENTOBOX_ENDPOINT, BENTOBOX_ADDR, queryBentoboxPositions, queryBentoboxPositionWeb3 };
