@@ -34,11 +34,41 @@ const QUERY = gql`
   }
 `;
 
+const QUERY_VAULT_DETAILS = gql`
+  query vault($id: ID!) {
+    vault(id: $id) {
+      buyToken {
+        symbol
+        decimals
+      }
+      sellToken {
+        symbol
+        decimals
+      }
+      amount
+      totalBuy
+      totalSell
+      executedOrders(orderBy: timestamp, orderDirection: desc) {
+        id
+        amount
+        timestamp
+      }
+    }
+  }
+`;
+
 const queryVaults = async (chaindId: number, account: string): Promise<any[]> => {
   const res = await request(SUBGRAPH_ENDPOINTS[chaindId], QUERY, {
     owner: account,
   });
   return res.vaults;
+};
+
+const queryVault = async (chainId: number, id: string): Promise<any> => {
+  const res = await request(SUBGRAPH_ENDPOINTS[chainId], QUERY_VAULT_DETAILS, {
+    id: id,
+  });
+  return res.vault;
 };
 
 //Any token could be used but we display only most used ones to make it simpler.
@@ -89,4 +119,4 @@ const DCA_TOKENS: { [chainId: number]: { symbol: string; address: string; priceF
   ],
 };
 
-export { DCA_FACTORY, DCA_TOKENS, queryVaults };
+export { DCA_FACTORY, DCA_TOKENS, queryVaults, queryVault };
