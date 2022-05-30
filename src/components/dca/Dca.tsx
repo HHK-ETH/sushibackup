@@ -7,6 +7,7 @@ import useFetchVaults from '../../hooks/dca/useFetchVaults';
 import Modal from '../general/Modal';
 import CreateVault from './CreateVault';
 import Deposit from './Deposit';
+import Vault from './Vault';
 import Withdraw from './Withdraw';
 
 const Dca = (): JSX.Element => {
@@ -33,6 +34,7 @@ const Dca = (): JSX.Element => {
         {modalContent === 'create' && <CreateVault fetchVaults={fetchVaults} />}
         {modalContent === 'deposit' && <Deposit vault={selectedVault} fetchVaults={fetchVaults} />}
         {modalContent === 'withdraw' && <Withdraw vault={selectedVault} fetchVaults={fetchVaults} />}
+        {modalContent === 'details' && <Vault id={selectedVault.id} />}
       </Modal>
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="mb-2 text-xl">You have {vaults.length} vaults.</h1>
@@ -45,10 +47,9 @@ const Dca = (): JSX.Element => {
         >
           Create a new vault
         </button>
-        <div className="grid grid-cols-8 mt-4 text-xl bg-indigo-900 rounded-t-xl">
+        <div className="grid grid-cols-7 mt-4 text-xl bg-indigo-900 rounded-t-xl">
           <div>Tokens</div>
           <div>Balance</div>
-          <div>Total bought</div>
           <div>Amount</div>
           <div>Frequency</div>
           <div>Next execution</div>
@@ -66,14 +67,11 @@ const Dca = (): JSX.Element => {
             return (
               <div
                 key={index}
-                className="grid grid-cols-8 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
+                className="grid grid-cols-7 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
               >
                 <div>{vault.sellToken.symbol + ' => ' + vault.buyToken.symbol}</div>
                 <div>
                   {parseFloat(formatUnits(vault.balance, vault.sellToken.decimals)).toFixed(4)} {vault.sellToken.symbol}
-                </div>
-                <div>
-                  {parseFloat(formatUnits(vault.totalBuy, vault.buyToken.decimals)).toFixed(4)} {vault.buyToken.symbol}
                 </div>
                 <div>
                   {parseFloat(formatUnits(vault.amount, vault.sellToken.decimals)).toFixed(4)} {vault.sellToken.symbol}
@@ -85,6 +83,16 @@ const Dca = (): JSX.Element => {
                     : 'In ' + nextExec + ' days'}
                 </div>
                 <div className="col-span-2">
+                  <button
+                    className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    onClick={() => {
+                      setSelectedVault(vault);
+                      setModalContent('details');
+                      setOpen(true);
+                    }}
+                  >
+                    Details
+                  </button>
                   <button
                     className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
