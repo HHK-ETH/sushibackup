@@ -8,8 +8,6 @@ const Find = ({ account }: { account: string | null | undefined }): JSX.Element 
   const { position, loading } = useFindPosition(account, address);
   const withdraw = useWithdrawBento(account, async () => {});
 
-  console.log(position);
-
   return (
     <div className="text-center text-white">
       <h2 className="m-2 text-lg">Token address:</h2>
@@ -18,7 +16,7 @@ const Find = ({ account }: { account: string | null | undefined }): JSX.Element 
         placeholder="Enter token address here"
         onChange={(e) => setAddress(e.target.value)}
       />
-      {address !== '' && !loading && (
+      {address.length === 42 && !loading && (
         <div className="mt-4 text-lg">
           <h2>Token symbol: {position.symbol}</h2>
           <h2>BentoBox balance: {parseFloat(formatUnits(position.balance, position.decimals)).toFixed(4)}</h2>
