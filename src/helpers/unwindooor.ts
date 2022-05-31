@@ -42,6 +42,14 @@ const QUERY = gql`
           ${pairQuery}
           liquidityTokenBalance
         }
+        lp3: liquidityPositions(skip: 2000, first: 1000, orderBy: timestamp, orderDirection: desc) {
+          ${pairQuery}
+          liquidityTokenBalance
+        }
+        lp4: liquidityPositions(skip: 3000, first: 1000, orderBy: timestamp, orderDirection: desc) {
+          ${pairQuery}
+          liquidityTokenBalance
+        }
       }
     }
   `;
@@ -98,14 +106,17 @@ const queryPositions = async (address: string, chainId: number): Promise<any> =>
       totalFees: 0,
     };
   }
-  const positions: any[] = [...res.user.lp1, ...res.user.lp2].sort((positionA: any, positionB: any) => {
-    const pairA = positionA.pair;
-    const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;
-    const pairB = positionB.pair;
-    const valueB = (positionB.liquidityTokenBalance / pairB.totalSupply) * pairB.reserveUSD;
-    if (valueA > valueB) return -1;
-    return +1;
-  });
+  console.log(res);
+  const positions: any[] = [...res.user.lp1, ...res.user.lp2, ...res.user.lp3, ...res.user.lp4].sort(
+    (positionA: any, positionB: any) => {
+      const pairA = positionA.pair;
+      const valueA = (positionA.liquidityTokenBalance / pairA.totalSupply) * pairA.reserveUSD;
+      const pairB = positionB.pair;
+      const valueB = (positionB.liquidityTokenBalance / pairB.totalSupply) * pairB.reserveUSD;
+      if (valueA > valueB) return -1;
+      return +1;
+    }
+  );
   if (positions.length > 250) {
     positions.splice(250);
   }
