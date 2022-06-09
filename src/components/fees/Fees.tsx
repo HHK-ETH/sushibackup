@@ -19,7 +19,7 @@ const SushiMaker = (): JSX.Element => {
           let bgColor = chainId === network.toString() ? 'bg-pink-600' : 'bg-pink-500';
           return (
             <button
-              className={'px-6 m-4 text-lg font-medium text-white rounded hover:bg-pink-600 ' + bgColor}
+              className={'px-6 m-2 text-lg font-medium text-white rounded hover:bg-pink-600 ' + bgColor}
               key={chainId}
               onClick={() => {
                 setNetwork(chainId);
@@ -31,20 +31,23 @@ const SushiMaker = (): JSX.Element => {
         })}
       </div>
       <div>
-        <h1 className="text-2xl text-center">
+        <h1 className="text-2xl">
           Total fees available on this chain : {total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
         </h1>
         {fees.map((recipient) => {
           return (
-            <div key={recipient.address} className="grid grid-cols-2 p-16 py-8 my-4 bg-indigo-900 rounded-xl">
-              <div className="text-md">
+            <div
+              key={recipient.address}
+              className="grid py-4 my-4 break-all bg-indigo-900 md:p-12 lg:grid-cols-2 sm:grid-cols-1 rounded-xl"
+            >
+              <div className="sm:text-sm md:text-lg">
                 <h2>Address: {recipient.address}</h2>
                 <h2>Label: {getAddressLabel(network, recipient.address)}</h2>
                 <h2>LPs value: {recipient.lpsValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
                 <h2>Tokens value: {recipient.tokensValue.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$</h2>
               </div>
               <div>
-                <h2 className="my-8 text-xl">
+                <h2 className="my-12 sm:text-lg md:text-2xl">
                   Total value:{' '}
                   {(recipient.lpsValue + recipient.tokensValue).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}$
                 </h2>
