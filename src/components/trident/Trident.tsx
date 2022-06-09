@@ -47,7 +47,9 @@ const Trident = (): JSX.Element => {
                 <div className="md:col-span-2">{position.balance} SLP</div>
                 <div>
                   <button
-                    className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    className={
+                      'mr-2 px-2 xl:px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'
+                    }
                     onClick={() => {
                       settargetPos(position);
                       setOpen(true);
