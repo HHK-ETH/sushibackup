@@ -47,13 +47,13 @@ const Dca = (): JSX.Element => {
         >
           Create a new vault
         </button>
-        <div className="grid grid-cols-7 mt-4 text-xl bg-indigo-900 rounded-t-xl">
+        <div className="grid mt-4 text-xl bg-indigo-900 md:grid-cols-7 sm:grid-cols-1 rounded-t-xl">
           <div>Tokens</div>
           <div>Balance</div>
           <div>Amount</div>
           <div>Frequency</div>
           <div>Next execution</div>
-          <div className="col-span-2">Action</div>
+          <div className="md:col-span-2">Action</div>
         </div>
         <div className="rounded-b-xl">
           {vaults.map((vault, index: number) => {
@@ -67,7 +67,7 @@ const Dca = (): JSX.Element => {
             return (
               <div
                 key={index}
-                className="grid grid-cols-7 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
+                className="grid py-2 bg-indigo-900 md:grid-cols-7 sm:grid-cols-1 text-md bg-opacity-60 hover:bg-opacity-75"
               >
                 <div>{vault.sellToken.symbol + ' => ' + vault.buyToken.symbol}</div>
                 <div>
@@ -82,9 +82,9 @@ const Dca = (): JSX.Element => {
                     ? 'Insufficient balance'
                     : 'In ' + nextExec + ' days'}
                 </div>
-                <div className="col-span-2">
+                <div className="md:col-span-2">
                   <button
-                    className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    className={'m-1 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
                       setModalContent('details');
@@ -94,7 +94,7 @@ const Dca = (): JSX.Element => {
                     Details
                   </button>
                   <button
-                    className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    className={'m-1 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
                       setModalContent('deposit');
@@ -104,7 +104,7 @@ const Dca = (): JSX.Element => {
                     Deposit
                   </button>
                   <button
-                    className={'px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    className={'m-1 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
                     onClick={() => {
                       setSelectedVault(vault);
                       setModalContent('withdraw');
