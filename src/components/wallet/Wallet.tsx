@@ -79,7 +79,7 @@ export function Wallet() {
 
           return (
             <button
-              className={bgColor + ' text-white text-md px-8 py-2 rounded-full w-full'}
+              className={bgColor + ' text-white text-md px-4 py-2 rounded-full w-full'}
               disabled={disabled}
               key={name}
               onClick={() => {

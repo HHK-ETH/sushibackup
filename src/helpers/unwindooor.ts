@@ -106,7 +106,6 @@ const queryPositions = async (address: string, chainId: number): Promise<any> =>
       totalFees: 0,
     };
   }
-  console.log(res);
   const positions: any[] = [...res.user.lp1, ...res.user.lp2, ...res.user.lp3, ...res.user.lp4].sort(
     (positionA: any, positionB: any) => {
       const pairA = positionA.pair;

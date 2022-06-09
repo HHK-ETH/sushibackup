@@ -27,11 +27,11 @@ const Trident = (): JSX.Element => {
       )}
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} Trident position(s).</h1>
-        <div className="grid grid-cols-7 mt-2 text-xl bg-indigo-900 rounded-t-xl">
+        <div className="grid mt-2 text-xl bg-indigo-900 md:grid-cols-7 sm:grid-cols-1 rounded-t-xl">
           <div>Pair</div>
-          <div className="col-span-2">Address</div>
+          <div className="md:col-span-2">Address</div>
           <div>Fee tier</div>
-          <div className="col-span-2">Balance</div>
+          <div className="md:col-span-2">Balance</div>
           <div>Action</div>
         </div>
         <div className="rounded-b-xl">
@@ -39,15 +39,17 @@ const Trident = (): JSX.Element => {
             return (
               <div
                 key={index}
-                className="grid grid-cols-7 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75"
+                className="grid py-2 break-all bg-indigo-900 md:grid-cols-7 sm:grid-cols-1 text-md bg-opacity-60 hover:bg-opacity-75"
               >
                 <div>{position.pool.assets[0].token.symbol + ' - ' + position.pool.assets[1].token.symbol}</div>
-                <div className="col-span-2">{position.pool.id}</div>
+                <div className="md:col-span-2">{position.pool.id}</div>
                 <div>{parseInt(position.pool.swapFee, 10) / 100} %</div>
-                <div className="col-span-2">{position.balance} SLP</div>
+                <div className="md:col-span-2">{position.balance} SLP</div>
                 <div>
                   <button
-                    className={'mr-2 px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'}
+                    className={
+                      'mr-2 px-2 xl:px-8 font-medium text-white bg-pink-500 rounded hover:bg-pink-600 inline-block'
+                    }
                     onClick={() => {
                       settargetPos(position);
                       setOpen(true);
