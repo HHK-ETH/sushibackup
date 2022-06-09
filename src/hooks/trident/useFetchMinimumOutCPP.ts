@@ -18,8 +18,8 @@ export default function useFetchMinimumOutCPP(lpAddress: string, balance: string
     const totalSupply = await lp.totalSupply();
     const ratio = parseUnits(balance)
       .mul(BigNumber.from(10e12))
-      .mul(100 - slippage)
-      .div(100)
+      .mul(1000 - slippage * 10)
+      .div(1000)
       .div(totalSupply);
     const reserves = await lp.getReserves();
     console.log(reserves);
