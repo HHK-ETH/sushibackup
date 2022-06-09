@@ -28,14 +28,17 @@ const Bentobox = (): JSX.Element => {
       </Modal>
       <div className="container p-16 mx-auto text-center text-white">
         <h1 className="text-xl">You have {positions.length} positions in BentoBox.</h1>
-        <div className="grid grid-cols-3 mt-2 text-xl bg-indigo-900 rounded-t-xl">
+        <div className="grid mt-2 text-xl bg-indigo-900 sm:grid-cols-1 md:grid-cols-3 rounded-t-xl">
           <div>Token</div>
           <div>Balance</div>
           <div>Action</div>
         </div>
         {positions.map((position: any, index: number) => {
           return (
-            <div key={index} className="grid grid-cols-3 py-2 bg-indigo-900 text-md bg-opacity-60 hover:bg-opacity-75">
+            <div
+              key={index}
+              className="grid py-2 bg-indigo-900 md:grid-cols-3 sm:grid-cols-1 text-md bg-opacity-60 hover:bg-opacity-75"
+            >
               <div>
                 {position.token.name} ({position.token.symbol})
               </div>
