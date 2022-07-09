@@ -16,6 +16,7 @@ import BurnPairs from './modal/BurnPairs';
 import SetBridge from './modal/Setbridge';
 import useFetchUnwindData from '../../hooks/unwind/useFetchUnwindData';
 import TransferPairs from './modal/TransferPairs';
+import zapper from './../../imports/images/products/zapper.svg';
 
 const Unwindooor = (): JSX.Element => {
   const context = useWeb3React<Web3Provider>();
@@ -33,7 +34,15 @@ const Unwindooor = (): JSX.Element => {
   if (chainId && !UNWINDOOOR_ADDR[chainId]) {
     return <div className={'mt-24 text-xl text-center text-white'}>Unwindooor is not available on this network.</div>;
   }
-  if (loading) return <div className="container p-16 mx-auto text-center text-white">Loading data...</div>;
+  if (loading)
+    return (
+      <div className="container p-16 mx-auto text-center text-white">
+        Loading data...{' '}
+        <div className="absolute bottom-0 left-0">
+          <img src={zapper} alt="zapper" width={'200px'} />
+        </div>
+      </div>
+    );
   if (!active) return <div className="container p-16 mx-auto text-center text-white">Please connect your wallet.</div>;
 
   return (
@@ -116,6 +125,10 @@ const Unwindooor = (): JSX.Element => {
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
+
+        <div className="absolute bottom-0 left-0">
+          <img src={zapper} alt="zapper" width={'200px'} />
+        </div>
 
         <div className="absolute right-6 bottom-6">
           {selectedPairs.length > 0 && (

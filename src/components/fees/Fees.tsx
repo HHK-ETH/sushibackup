@@ -2,13 +2,21 @@ import { useState } from 'react';
 import { CHAIN_IDS, NETWORKS } from '../../helpers/network';
 import { FEE_TO_LIST, getAddressLabel } from '../../helpers/sushiMaker';
 import useFetchFees from '../../hooks/fees/useFetchFees';
+import zapper from './../../imports/images/products/zapper.svg';
 
 const SushiMaker = (): JSX.Element => {
   const [network, setNetwork]: [network: number, setNetwork: Function] = useState(CHAIN_IDS.ETHEREUM);
   const { fees, total, loading } = useFetchFees(network);
 
   if (loading) {
-    return <div className="text-center text-white">Loading data...</div>;
+    return (
+      <div className="text-center text-white">
+        Loading data...{' '}
+        <div className="absolute bottom-0 left-0">
+          <img src={zapper} alt="zapper" width={'200px'} />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -66,6 +74,9 @@ const SushiMaker = (): JSX.Element => {
             BoringCrypto DAO VIEW
           </a>
         </p>
+      </div>
+      <div className="absolute bottom-0 left-0">
+        <img src={zapper} alt="zapper" width={'200px'} />
       </div>
     </div>
   );
