@@ -70,7 +70,7 @@ const UNWINDOOOR_ADDR: { [chainId: number]: string } = {
 const queryTokensZapper = async (address: string, chainId: number): Promise<{ total: number; tokens: any[] }> => {
   const networkName = NETWORKS[chainId].zapperId;
   const res = await fetch(
-    `https://api.zapper.fi/v1/apps/tokens/balances?api_key=96e0cc51-a62e-42ca-acee-910ea7d2a241&addresses%5B%5D=${address}&network=${networkName}`
+    `https://api.zapper.fi/v2/apps/tokens/balances?api_key=a7e35619-a5ed-4263-8774-446e566d561a&addresses%5B%5D=${address}&network=${networkName}`
   );
   if (!res.ok) {
     return { total: 0, tokens: [] };
