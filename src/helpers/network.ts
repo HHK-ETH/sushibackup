@@ -8,6 +8,7 @@ import harmony from '../imports/images/networks/harmony.png';
 import moonriver from '../imports/images/networks/moonriver.png';
 import polygon from '../imports/images/networks/polygon.png';
 import gnosis from '../imports/images/networks/gnosis.jpeg';
+import fuse from '../imports/images/networks/fuse.png';
 
 interface INetwork {
   id: number;
@@ -30,6 +31,7 @@ enum CHAIN_IDS {
   CELO = 42220,
   AVALANCHE = 43114,
   HARMONY = 1666600000,
+  FUSE = 122,
 }
 
 const NETWORKS: { [id: number]: INetwork } = {
@@ -120,6 +122,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://rpc.gnosischain.com/',
     zapperId: 'gnosis',
     explorer: 'https://blockscout.com/xdai/mainnet/',
+  },
+  [CHAIN_IDS.FUSE]: {
+    id: 100,
+    name: 'Fuse chain',
+    logo: fuse,
+    rpc: 'https://rpc.fuse.io/',
+    zapperId: 'fuse',
+    explorer: 'https://explorer.fuse.io/',
   },
 };
 
