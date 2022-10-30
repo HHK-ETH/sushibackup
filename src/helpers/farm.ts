@@ -8,7 +8,7 @@ import minichefAbi from './../imports/abis/minichef.json';
 import rewarderAbi from './../imports/abis/rewarder.json';
 import erc20Abi from './../imports/abis/erc20.json';
 import { EXCHANGE_ENDPOINTS } from './exchange';
-import { ERC20_ABI, MINICHEF_ABI, SLP_ABI } from '../imports/abis';
+import { ERC20_ABI, MASTERCHEF_ABI, MINICHEF_ABI, SLP_ABI } from '../imports/abis';
 import { multicall } from './multicall';
 import { AbiCoder } from 'ethers/lib/utils';
 
@@ -105,7 +105,11 @@ const queryFarmsWeb3 = async (chainId: number, address: string, web3provider: We
 };
 
 const queryFarmWeb3 = async (chainId: number, address: string, farmAddress: string, web3provider: Web3Provider) => {
-  const farm = new Contract(farmAddress, MINICHEF_ABI, web3provider);
+  const farm = new Contract(
+    farmAddress,
+    farmAddress.toLocaleLowerCase() === MASTERCHEF_ADDR.toLocaleLowerCase() ? MASTERCHEF_ABI : MINICHEF_ABI,
+    web3provider
+  );
   const length: BigNumber = await farm.poolLength();
   let queries = [];
   for (let index = 0; index < length.toNumber(); index++) {
