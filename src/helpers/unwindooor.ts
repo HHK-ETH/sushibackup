@@ -34,19 +34,19 @@ const pairQuery = `
 const QUERY = gql`
     query positions ($feeTo: ID!) {
       user(id: $feeTo) {
-        lp1: liquidityPositions(first: 1000, orderBy: timestamp, orderDirection: desc) {
+        lp1: liquidityPositions(first: 1000, orderBy: timestamp, orderDirection: asc) {
           ${pairQuery}
           liquidityTokenBalance
         }
-        lp2: liquidityPositions(skip: 1000, first: 1000, orderBy: timestamp, orderDirection: desc) {
+        lp2: liquidityPositions(skip: 1000, first: 1000, orderBy: timestamp, orderDirection: asc) {
           ${pairQuery}
           liquidityTokenBalance
         }
-        lp3: liquidityPositions(skip: 2000, first: 1000, orderBy: timestamp, orderDirection: desc) {
+        lp3: liquidityPositions(skip: 2000, first: 1000, orderBy: timestamp, orderDirection: asc) {
           ${pairQuery}
           liquidityTokenBalance
         }
-        lp4: liquidityPositions(skip: 3000, first: 1000, orderBy: timestamp, orderDirection: desc) {
+        lp4: liquidityPositions(skip: 3000, first: 1000, orderBy: timestamp, orderDirection: asc) {
           ${pairQuery}
           liquidityTokenBalance
         }
