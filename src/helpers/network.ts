@@ -9,6 +9,8 @@ import moonriver from '../imports/images/networks/moonriver.png';
 import polygon from '../imports/images/networks/polygon.png';
 import gnosis from '../imports/images/networks/gnosis.jpeg';
 import fuse from '../imports/images/networks/fuse.png';
+import kava from '../imports/images/networks/kava.png';
+import boba from '../imports/images/networks/boba.png';
 
 interface INetwork {
   id: number;
@@ -32,6 +34,8 @@ enum CHAIN_IDS {
   AVALANCHE = 43114,
   HARMONY = 1666600000,
   FUSE = 122,
+  KAVA = 2222,
+  BOBA = 288,
 }
 
 const NETWORKS: { [id: number]: INetwork } = {
@@ -130,6 +134,22 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://rpc.fuse.io/',
     zapperId: 'fuse',
     explorer: 'https://explorer.fuse.io/',
+  },
+  [CHAIN_IDS.KAVA]: {
+    id: CHAIN_IDS.KAVA,
+    name: 'Kava chain',
+    logo: kava,
+    rpc: 'https://evm.kava.io',
+    zapperId: 'kava',
+    explorer: 'https://explorer.kava.io/',
+  },
+  [CHAIN_IDS.BOBA]: {
+    id: CHAIN_IDS.BOBA,
+    name: 'Boba chain',
+    logo: boba,
+    rpc: 'https://mainnet.boba.network',
+    zapperId: 'boba',
+    explorer: 'https://bobascan.com/',
   },
 };
 
