@@ -11,6 +11,7 @@ import gnosis from '../imports/images/networks/gnosis.jpeg';
 import fuse from '../imports/images/networks/fuse.png';
 import kava from '../imports/images/networks/kava.png';
 import boba from '../imports/images/networks/boba.png';
+import bttc from '../imports/images/networks/bttc.jpg';
 
 interface INetwork {
   id: number;
@@ -36,6 +37,7 @@ enum CHAIN_IDS {
   FUSE = 122,
   KAVA = 2222,
   BOBA = 288,
+  BTTC = 199,
 }
 
 const NETWORKS: { [id: number]: INetwork } = {
@@ -150,6 +152,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://mainnet.boba.network',
     zapperId: 'boba',
     explorer: 'https://bobascan.com/',
+  },
+  [CHAIN_IDS.BTTC]: {
+    id: CHAIN_IDS.BTTC,
+    name: 'BTTC chain',
+    logo: bttc,
+    rpc: 'https://rpc.bittorrentchain.io',
+    zapperId: 'bttc',
+    explorer: 'https://bttcscan.com/',
   },
 };
 
