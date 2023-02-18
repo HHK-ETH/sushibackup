@@ -12,6 +12,7 @@ import fuse from '../imports/images/networks/fuse.png';
 import kava from '../imports/images/networks/kava.png';
 import boba from '../imports/images/networks/boba.png';
 import bttc from '../imports/images/networks/bttc.jpg';
+import metis from '../imports/images/networks/metis.png';
 
 interface INetwork {
   id: number;
@@ -38,6 +39,7 @@ enum CHAIN_IDS {
   KAVA = 2222,
   BOBA = 288,
   BTTC = 199,
+  METIS = 1088,
 }
 
 const NETWORKS: { [id: number]: INetwork } = {
@@ -160,6 +162,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://rpc.bittorrentchain.io',
     zapperId: 'bttc',
     explorer: 'https://bttcscan.com/',
+  },
+  [CHAIN_IDS.METIS]: {
+    id: CHAIN_IDS.METIS,
+    name: 'Metis chain',
+    logo: metis,
+    rpc: 'https://andromeda.metis.io/?owner=1088',
+    zapperId: 'metis',
+    explorer: 'https://andromeda-explorer.metis.io/',
   },
 };
 

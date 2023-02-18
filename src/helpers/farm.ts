@@ -69,6 +69,7 @@ const MINICHEF_ENDPOINT: { [chainId: number]: string } = {
   [CHAIN_IDS.XDAI]: 'https://api.thegraph.com/subgraphs/name/matthewlilley/xdai-minichef',
   [CHAIN_IDS.FANTOM]: 'https://api.thegraph.com/subgraphs/name/sushiswap/fantom-minichef',
   [CHAIN_IDS.BTTC]: 'https://subgraphs.sushi.com/subgraphs/name/sushiswap/minichef-bttc',
+  [CHAIN_IDS.METIS]: 'https://andromeda.thegraph.metis.io/subgraphs/name/sushiswap/metis-minichef',
 };
 
 const MINICHEF_ADDR: { [chainId: number]: string } = {
@@ -82,6 +83,7 @@ const MINICHEF_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.KAVA]: '0xf731202A3cf7EfA9368C2d7bD613926f7A144dB5',
   [CHAIN_IDS.BOBA]: '0x75f52766a6a23f736edefcd69dfbe6153a48c3f3',
   [CHAIN_IDS.BTTC]: '0xC09756432dAD2FF50B2D40618f7B04546DD20043',
+  [CHAIN_IDS.METIS]: '0x1334c8e873e1cae8467156e2a81d1c8b566b2da1',
 };
 
 const REWARD_TOKEN: { [chainId: number]: string } = {
@@ -92,6 +94,7 @@ const REWARD_TOKEN: { [chainId: number]: string } = {
   [CHAIN_IDS.XDAI]: 'STAKE',
   [CHAIN_IDS.FANTOM]: 'FTM',
   [CHAIN_IDS.BTTC]: 'BTT',
+  [CHAIN_IDS.METIS]: 'METIS',
 };
 
 const MASTERCHEF_ENDPOINT: string = 'https://api.thegraph.com/subgraphs/name/sushiswap/master-chef';
