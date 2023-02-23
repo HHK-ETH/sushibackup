@@ -13,6 +13,7 @@ import kava from '../imports/images/networks/kava.png';
 import boba from '../imports/images/networks/boba.png';
 import bttc from '../imports/images/networks/bttc.jpg';
 import metis from '../imports/images/networks/metis.png';
+import optimism from '../imports/images/networks/optimism.png';
 
 interface INetwork {
   id: number;
@@ -25,6 +26,7 @@ interface INetwork {
 
 enum CHAIN_IDS {
   ETHEREUM = 1,
+  OPTIMISM = 10,
   BSC = 56,
   POLYGON = 137,
   XDAI = 100,
@@ -170,6 +172,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://andromeda.metis.io/?owner=1088',
     zapperId: 'metis',
     explorer: 'https://andromeda-explorer.metis.io/',
+  },
+  [CHAIN_IDS.OPTIMISM]: {
+    id: CHAIN_IDS.OPTIMISM,
+    name: 'Optimism',
+    logo: optimism,
+    rpc: 'https://mainnet.optimism.io',
+    zapperId: 'optimism',
+    explorer: 'https://optimistic.etherscan.io/',
   },
 };
 
