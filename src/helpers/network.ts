@@ -14,6 +14,7 @@ import boba from '../imports/images/networks/boba.png';
 import bttc from '../imports/images/networks/bttc.jpg';
 import metis from '../imports/images/networks/metis.png';
 import optimism from '../imports/images/networks/optimism.png';
+import arbitrum_nova from '../imports/images/networks/nova.png';
 
 interface INetwork {
   id: number;
@@ -42,6 +43,7 @@ enum CHAIN_IDS {
   BOBA = 288,
   BTTC = 199,
   METIS = 1088,
+  ARBITRUM_NOVA = 42170,
 }
 
 const NETWORKS: { [id: number]: INetwork } = {
@@ -52,6 +54,14 @@ const NETWORKS: { [id: number]: INetwork } = {
     rpc: 'https://arb1.arbitrum.io/rpc',
     zapperId: 'arbitrum',
     explorer: 'https://arbiscan.io/',
+  },
+  [CHAIN_IDS.ARBITRUM_NOVA]: {
+    id: 42170,
+    name: 'Arbitrum Nova',
+    logo: arbitrum_nova,
+    rpc: 'https://nova.arbitrum.io/rpc',
+    zapperId: 'arbitrum_nova',
+    explorer: 'https://nova.arbiscan.io/',
   },
   [CHAIN_IDS.AVALANCHE]: {
     id: 43114,

@@ -71,6 +71,7 @@ const MINICHEF_ENDPOINT: { [chainId: number]: string } = {
   [CHAIN_IDS.BTTC]: 'https://subgraphs.sushi.com/subgraphs/name/sushiswap/minichef-bttc',
   [CHAIN_IDS.METIS]: 'https://andromeda.thegraph.metis.io/subgraphs/name/sushiswap/metis-minichef',
   [CHAIN_IDS.OPTIMISM]: 'https://api.thegraph.com/subgraphs/name/sushiswap/minichef-optimism',
+  [CHAIN_IDS.ARBITRUM_NOVA]: 'http://subgraphs.sushi.com/subgraphs/name/sushiswap/minichef-arbitrum-nova/graphql',
 };
 
 const MINICHEF_ADDR: { [chainId: number]: string } = {
@@ -86,6 +87,7 @@ const MINICHEF_ADDR: { [chainId: number]: string } = {
   [CHAIN_IDS.BTTC]: '0xC09756432dAD2FF50B2D40618f7B04546DD20043',
   [CHAIN_IDS.METIS]: '0x1334c8e873e1cae8467156e2a81d1c8b566b2da1',
   [CHAIN_IDS.OPTIMISM]: '0xb25157bf349295a7cd31d1751973f426182070d6',
+  [CHAIN_IDS.ARBITRUM_NOVA]: '0xc09756432dad2ff50b2d40618f7b04546dd20043',
 };
 
 const REWARD_TOKEN: { [chainId: number]: string } = {
